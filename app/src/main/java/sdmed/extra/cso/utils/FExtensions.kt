@@ -119,11 +119,19 @@ object FExtensions {
     fun rhsTokenIsMost(newToken: String): Boolean {
         val tokenAccess = FRetrofitVariable.token ?: return true
         return try {
-            val previousLong = JWT(tokenAccess).claims["exp"]?.asLong() ?: 0
-            val newLong = JWT(newToken).claims["exp"]?.asLong() ?: 0
+            val previousLong = JWT(tokenAccess).claims[FConstants.CLAIMS_EXP]?.asLong() ?: 0
+            val newLong = JWT(newToken).claims[FConstants.CLAIMS_EXP]?.asLong() ?: 0
             newLong >= previousLong
         } catch (_: Exception) {
             true
+        }
+    }
+    fun getThisPK(context: Context): String {
+        val token = FRetrofitVariable.token ?: FStorage.getAuthToken(context) ?: return ""
+        return try {
+            JWT(token).claims[FConstants.CLAIMS_INDEX]?.asString() ?: ""
+        } catch (_: Exception) {
+            ""
         }
     }
     fun logout(context: Context, expired: Boolean = false) {
