@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">SD Extra-CSO</string>
+    <string name="sample_txt">hello world!</string>
+    <string name="expired_token">expired authentication</string>
+    <string name="do_logout">has been logout</string>
+    <string name="left_desc">left</string>
+    <string name="right_desc">right</string>
+    <string name="new_version_update_desc">plz need to update</string>
+    <string name="update_desc">update</string>
+    <string name="cancel_desc">cancel</string>
+    <string name="start_desc">start</string>
+    <string name="back_btn_close_Desc">Press \'Back\' again to exit.</string>
+    <string name="login_id_edit_desc">user id (3~20)</string>
+    <string name="login_pw_edit_desc">password (8~20)</string>
+    <string name="signUp_desc">signUp</string>
+    <string name="forgot_id_desc">forgot id</string>
+    <string name="forgot_pw_desc">forgot password</string>
+    <string name="login_btn_desc">signIn</string>
+    <string name="login_title_desc">CSO Login</string>
+
+    <string name="menu_edi_desc">EDI</string>
+    <string name="menu_price_desc">Price</string>
+    <string name="menu_home_desc">Home</string>
+    <string name="menu_qna_desc">QnA</string>
+    <string name="menu_my_desc">My</string>
+</resources>

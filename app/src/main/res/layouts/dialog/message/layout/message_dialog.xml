@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.views.dialog.message.MessageDialogVM.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.views.dialog.message.MessageDialogVM" />
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/def_background"
+        app:divider="@drawable/shape_vertical_divider"
+        app:showDividers="middle"
+        tools:background="@color/absolute_black">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="@{dataContext.title}"
+            android:textColor="@color/def_foreground"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            tools:text="@string/sample_txt"
+            tools:textColor="@color/absolute_white"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:divider="@drawable/shape_horizontal_divider"
+            app:showDividers="middle">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_left_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.LEFT)}"
+                android:text="@{dataContext.leftBtnText}"
+                android:textColor="@{dataContext.leftBtnTextColor}"
+                android:visibility="@{dataContext.leftBtnVisible ? View.VISIBLE : View.GONE}"
+                android:layout_weight="1"
+                tools:text="@string/left_desc"
+                tools:textColor="@color/absolute_white" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_right_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.RIGHT)}"
+                android:text="@{dataContext.rightBtnText}"
+                android:textColor="@{dataContext.rightBtnTextColor}"
+                android:visibility="@{dataContext.rightBtnVisible ? View.VISIBLE : View.GONE}"
+                android:layout_weight="1"
+                tools:text="@string/right_desc"
+                tools:textColor="@color/absolute_white" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

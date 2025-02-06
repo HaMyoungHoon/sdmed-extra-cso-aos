@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="sdmed.extra.cso.MainActivityVM.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.MainActivityVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/def_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <FrameLayout
+                android:id="@+id/fl_fragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/def_background"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/vw_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/transparent"
+                android:contentDescription="@string/menu_home_desc"
+                android:src="@drawable/menu_home"
+                android:elevation="0dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOME)}"
+                style="@style/FloatingActionButtonStyle"
+                app:tint="@null"
+                app:borderWidth="0dp"
+                app:maxImageSize="90dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            <View
+                android:id="@+id/vw_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_gray"
+                app:layout_constraintBottom_toTopOf="@id/ll_bottom" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/def_background"
+                android:orientation="horizontal"
+                android:elevation="2dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.EDI)}"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@{dataContext.ediMenuState ? @drawable/vector_menu_edi_primary : @drawable/vector_menu_edi_def}"
+                        tools:src="@drawable/vector_menu_edi_primary" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.PRICE)}"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@{dataContext.priceMenuState ? @drawable/vector_menu_price_primary : @drawable/vector_menu_price_def}"
+                        tools:src="@drawable/vector_menu_price_def" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOME)}"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/menu_home" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.QNA)}"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@{dataContext.qnaMenuState ? @drawable/vector_menu_qna_primary : @drawable/vector_menu_qna_def}"
+                        tools:src="@drawable/vector_menu_qna_def" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.MY)}"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@{dataContext.myMenuState ? @drawable/vector_menu_my_primary : @drawable/vector_menu_my_def}"
+                        tools:src="@drawable/vector_menu_my_def" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
