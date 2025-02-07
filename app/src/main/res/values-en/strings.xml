@@ -8,6 +8,8 @@
     <string name="new_version_update_desc">plz need to update</string>
     <string name="update_desc">update</string>
     <string name="cancel_desc">cancel</string>
+    <string name="confirm_desc">confirm</string>
+    <string name="apply_desc">apply</string>
     <string name="start_desc">start</string>
     <string name="back_btn_close_Desc">Press \'Back\' again to exit.</string>
     <string name="login_id_edit_desc">user id (3~20)</string>
@@ -23,4 +25,25 @@
     <string name="menu_home_desc">Home</string>
     <string name="menu_qna_desc">QnA</string>
     <string name="menu_my_desc">My</string>
+    <string name="edi_list_desc">edi list</string>
+    <string name="edi_request_desc">edi upload</string>
+    <string name="edi_view_desc">edi view</string>
+
+    <string name="week_mon_desc">mon</string>
+    <string name="week_tues_desc">tues</string>
+    <string name="week_wed_desc">wed</string>
+    <string name="week_thur_desc">thur</string>
+    <string name="week_fri_desc">fri</string>
+    <string name="week_sat_desc">sat</string>
+    <string name="week_sun_desc">sun</string>
+    <array name="week_desc_array">
+        <item>@string/week_mon_desc</item>
+        <item>@string/week_tues_desc</item>
+        <item>@string/week_wed_desc</item>
+        <item>@string/week_thur_desc</item>
+        <item>@string/week_fri_desc</item>
+        <item>@string/week_sat_desc</item>
+        <item>@string/week_sun_desc</item>
+    </array>
+    <string name="search_desc">search</string>
 </resources>

@@ -31,4 +31,8 @@
     <style name="SpinnerWithChevronStyle" parent="android:Widget.Spinner">
         <item name="android:background">@drawable/selector_spinner_drop_down</item>
     </style>
+
+    <style name="tab_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14dp</item>
+    </style>
 </resources>

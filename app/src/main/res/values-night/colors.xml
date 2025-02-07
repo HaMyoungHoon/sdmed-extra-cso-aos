@@ -24,7 +24,13 @@
     <color name="color_AA000000">#AA000000</color>
     <color name="color_AAFFFFFF">#AAFFFFFF</color>
 
-    <color name="divider_gray">#FF000000</color>
+    <color name="divider_gray">#FF9FA4AB</color>
     <color name="disable_fore_gray">#FF777B7E</color>
     <color name="disable_back_gray">#FFD9DDDC</color>
+
+    <color name="edi_state_none">@color/def_foreground</color>
+    <color name="edi_state_ok">#FF018786</color>
+    <color name="edi_state_reject">#FFD0505D</color>
+    <color name="edi_state_pending">#FF6F8F8F</color>
+    <color name="edi_state_partial">#FF6260EE</color>
 </resources>
