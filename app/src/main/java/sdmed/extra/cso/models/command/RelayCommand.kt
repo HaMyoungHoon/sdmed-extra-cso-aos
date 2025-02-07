@@ -29,7 +29,7 @@ class RelayCommand(private val _execute: (params: Any?) -> Unit, private val _ca
     }
 
     private fun setEnable(data: Boolean) {
-        _isEnabled.compareAndSet(true, data)
+        _isEnabled.compareAndSet(getEnable(), data)
     }
     private fun getEnable(): Boolean {
         return _isEnabled.get()

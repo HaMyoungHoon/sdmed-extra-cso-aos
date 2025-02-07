@@ -48,7 +48,7 @@ class AsyncRelayCommand(private val _execute: suspend CoroutineScope.(params: An
         }
     }
     private fun setEnable(data: Boolean) {
-        _isEnabled.compareAndSet(!data, data)
+        _isEnabled.compareAndSet(getEnable(), data)
     }
     private fun getEnable(): Boolean {
         return _isEnabled.get()
