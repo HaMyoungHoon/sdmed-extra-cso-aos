@@ -10,11 +10,10 @@ import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.models.RestResultT
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
-import java.util.Date
 
 interface IEDIListService {
     @GET("${FConstants.REST_API_EDI_LIST}/list")
-    suspend fun getList(@Query("startDate") startDate: Date, @Query("endDate") endDate: Date): RestResultT<List<EDIUploadModel>>
+    suspend fun getList(@Query("startDate") startDate: String, @Query("endDate") endDate: String): RestResultT<List<EDIUploadModel>>
     @GET("${FConstants.REST_API_EDI_LIST}/data/{thisPK}")
     suspend fun getData(@Path("thisPK") thisPK: String): RestResultT<EDIUploadModel>
     @POST("${FConstants.REST_API_EDI_LIST}/file/{thisPK}")
