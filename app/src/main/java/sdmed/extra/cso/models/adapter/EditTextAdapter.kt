@@ -1,14 +1,14 @@
 package sdmed.extra.cso.models.adapter
 
 import android.text.InputFilter
-import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.databinding.BindingAdapter
 
 class EditTextAdapter {
     companion object {
         @JvmStatic
         @BindingAdapter(value = ["inputFilterPattern", "inputFilterMaxLength"], requireAll = false)
-        fun editTextInputFilterAdapter(editText: EditText, inputFilterPattern: String?, inputFilterMaxLength: Int?) {
+        fun editTextInputFilterAdapter(editText: AppCompatEditText, inputFilterPattern: String?, inputFilterMaxLength: Int?) {
             if (inputFilterPattern.isNullOrEmpty() && inputFilterMaxLength == null) return
 
             val filters: MutableList<InputFilter> = mutableListOf()
