@@ -36,7 +36,7 @@ abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
         FUIStateService()
     }
     val multiDexApplication by lazy {
-        requireActivity().application as MultiDexApplication
+        contextBuff!!.applicationContext as MultiDexApplication
     }
     protected var singlePermissionResult: ActivityResultLauncher<String>? = null
         private set
@@ -137,7 +137,7 @@ abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
     protected fun toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) = toast(resources.getString(resId), duration)
     protected fun toast(message: String?, duration: Int = Toast.LENGTH_SHORT) = uiStateService.toast(contextBuff, message, duration)
     protected fun loading(message: String = "", isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(contextBuff, message, isVisible, alpha)
-    protected fun loading(isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(contextBuff, "", isVisible, alpha)
+    protected fun loading(isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(contextBuff, "", isVisible)
     protected fun getResString(@StringRes resId: Int) = contextBuff?.getString(resId) ?: ""
     protected fun getResColor(@ColorRes resId: Int) = contextBuff?.getColor(resId) ?: 0
 

@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="price fragment"
+            android:fontFamily="@font/goyang"
             android:textColor="@color/def_foreground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
