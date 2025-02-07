@@ -27,15 +27,11 @@ abstract class FBaseViewModel(application: MultiDexApplication): AndroidViewMode
             commonRepository.tokenRefresh()
         }, { ret(it) })
     }
-    fun getMyState(ret: (RestResultT<UserStatus>) -> Unit) {
-        FCoroutineUtil.coroutineScope({
-            commonRepository.getMyState()
-        }, { ret(it) })
+    suspend fun getMyState(): RestResultT<UserStatus> {
+        return commonRepository.getMyState()
     }
-    fun getMyRole(ret: (RestResultT<Int>) -> Unit) {
-        FCoroutineUtil.coroutineScope({
-            commonRepository.getMyRole()
-        }, { ret(it) })
+    suspend fun getMyRole(): RestResultT<Int> {
+        return commonRepository.getMyRole()
     }
 
     fun getGenerateSasKey(blobName: String, ret: (RestResultT<BlobStorageInfoModel>) -> Unit) {

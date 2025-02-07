@@ -1,4 +1,4 @@
-package sdmed.extra.cso.views.main.login
+package sdmed.extra.cso.views.login
 
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
@@ -11,7 +11,6 @@ import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.utils.FStorage
 import sdmed.extra.cso.databinding.LoginActivityBinding
 import sdmed.extra.cso.models.retrofit.FRetrofitVariable
-import sdmed.extra.cso.utils.FLog
 
 class LoginActivity: FBaseActivity<LoginActivityBinding, LoginActivityVM>() {
     override var layoutId = R.layout.login_activity
@@ -40,7 +39,7 @@ class LoginActivity: FBaseActivity<LoginActivityBinding, LoginActivityVM>() {
         }
     }
     private fun fillDataCheck() {
-        dataContext.fillDataState.value = dataContext.loginID.value.length >= 3 && dataContext.loginPW.value.length >= 8
+        dataContext.fillDataState.value = dataContext.loginID.value.length >= 3 && dataContext.loginPW.value.length >= 4
     }
 
     private fun forgotIDEvent() {

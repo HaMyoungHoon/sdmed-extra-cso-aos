@@ -11,11 +11,11 @@ class MainActivityVM(application: MultiDexApplication): FBaseViewModel(applicati
     val qnaMenuState = MutableStateFlow(false)
     val myMenuState = MutableStateFlow(false)
 
-    enum class ClickEvent {
-        EDI,
-        PRICE,
-        HOME,
-        QNA,
-        MY,
+    enum class ClickEvent(var index: Int) {
+        EDI(0),
+        PRICE(1),
+        HOME(2),
+        QNA(3),
+        MY(4),
     }
 }

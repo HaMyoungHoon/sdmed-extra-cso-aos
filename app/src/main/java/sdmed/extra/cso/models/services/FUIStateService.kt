@@ -19,7 +19,7 @@ class FUIStateService {
             Toast.makeText(motherContext, message, duration).show()
         })
     }
-    fun loading(context: Context?, message: String = "", isVisible: Boolean = false) {
+    fun loading(context: Context?, message: String = "", isVisible: Boolean = false, alpha: Float = 0F) {
         if (!isVisible) {
             if (loadingDialog?.isShowing == true) {
                 loadingDialog?.dismiss()
@@ -32,7 +32,7 @@ class FUIStateService {
         if (context == null) {
             return
         }
-        loadingDialog = LoadingDialog(context, message)
+        loadingDialog = LoadingDialog(context, message, alpha)
         try {
             loadingDialog?.show()
         } catch (_: Exception) {

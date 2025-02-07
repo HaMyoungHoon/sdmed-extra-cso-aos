@@ -1,4 +1,4 @@
-package sdmed.extra.cso.views.main.landing
+package sdmed.extra.cso.views.landing
 
 import androidx.multidex.MultiDexApplication
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ class LandingActivityVM(application: MultiDexApplication): FBaseViewModel(applic
             commonRepository.versionCheck()
         }, { ret(it) })
     }
-    enum class ClickEvent {
-        START
+    enum class ClickEvent(var index: Int) {
+        START(0)
     }
 }

@@ -66,8 +66,8 @@ abstract class FBaseDialogFragment<T1: ViewDataBinding, T2: FBaseViewModel>: Dia
 
     protected fun toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) = toast(resources.getString(resId), duration)
     protected fun toast(message: String?, duration: Int = Toast.LENGTH_SHORT) = uiStateService.toast(contextBuff, message, duration)
-    protected fun loading(message: String = "", isVisible: Boolean = true) = uiStateService.loading(contextBuff, message, isVisible)
-    protected fun loading(isVisible: Boolean = true) = uiStateService.loading(contextBuff, "", isVisible)
+    protected fun loading(message: String = "", isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(contextBuff, message, isVisible, alpha)
+    protected fun loading(isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(contextBuff, "", isVisible, alpha)
     protected fun getResString(@StringRes resId: Int) = contextBuff?.getString(resId) ?: ""
     protected fun getResColor(@ColorRes resId: Int) = contextBuff?.getColor(resId) ?: 0
 }

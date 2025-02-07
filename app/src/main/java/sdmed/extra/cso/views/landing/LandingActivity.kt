@@ -1,7 +1,6 @@
-package sdmed.extra.cso.views.main.landing
+package sdmed.extra.cso.views.landing
 
 import android.content.Intent
-import android.net.Uri
 import sdmed.extra.cso.MainActivity
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseActivity
@@ -13,8 +12,7 @@ import sdmed.extra.cso.utils.FVersionControl
 import sdmed.extra.cso.views.dialog.message.MessageDialog
 import sdmed.extra.cso.views.dialog.message.MessageDialogVM
 import androidx.core.net.toUri
-import sdmed.extra.cso.utils.FLog
-import sdmed.extra.cso.views.main.login.LoginActivity
+import sdmed.extra.cso.views.login.LoginActivity
 
 class LandingActivity: FBaseActivity<LandingActivityBinding, LandingActivityVM>() {
     override var layoutId = R.layout.landing_activity

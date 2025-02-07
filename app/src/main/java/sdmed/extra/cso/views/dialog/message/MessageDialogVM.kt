@@ -13,8 +13,8 @@ class MessageDialogVM(multiDexApplication: MultiDexApplication): FBaseViewModel(
     val leftBtnTextColor = MutableStateFlow(0)
     val rightBtnTextColor = MutableStateFlow(0)
 
-    enum class ClickEvent {
-        LEFT,
-        RIGHT
+    enum class ClickEvent(var index: Int) {
+        LEFT(0),
+        RIGHT(1)
     }
 }

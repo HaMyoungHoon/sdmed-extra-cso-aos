@@ -16,11 +16,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.multidex.MultiDexApplication
+import sdmed.extra.cso.interfaces.command.IAsyncEventListener
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRole.Companion.getFlag
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.models.retrofit.users.UserStatus
 import sdmed.extra.cso.models.services.FUIStateService
+import sdmed.extra.cso.utils.FCoroutineUtil
 
 abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRoles: UserRoles = UserRole.None.toS()): Fragment() {
     protected abstract var layoutId: Int
@@ -54,7 +56,9 @@ abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onViewCreateAfter()
+        FCoroutineUtil.coroutineScope({
+            onViewCreateAfter()
+        })
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -68,7 +72,7 @@ abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
         contextBuff = null
         onAfterDetach()
     }
-    private fun onViewCreateAfter() {
+    private suspend fun onViewCreateAfter() {
         loading()
         stateCheck()
         if (myState != UserStatus.Live) {
@@ -86,31 +90,41 @@ abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
     }
 
     open fun onBindAfter() { }
-    open fun viewInit() { }
+    open fun viewInit() {
+        setEventListener()
+    }
     open fun onAfterAttach() { }
     open fun onAfterDetach() { }
 
-    private fun stateCheck() {
-        dataContext.getMyState {
-            if (it.result == true) {
-                myState = it.data ?: UserStatus.None
-            } else {
-                toast(it.msg)
+    open fun setEventListener() {
+        dataContext.addEventListener(object: IAsyncEventListener {
+            override suspend fun onEvent(data: Any?) {
+                setLayoutCommand(data)
             }
+        })
+    }
+    open fun setLayoutCommand(data: Any?) {
+    }
+
+    private suspend fun stateCheck() {
+        val ret = dataContext.getMyState()
+        if (ret.result == true) {
+            myState = ret.data ?: UserStatus.None
+        } else {
+            toast(ret.msg)
         }
     }
-    private fun roleCheck() {
+    private suspend fun roleCheck() {
         if (needRoles.getFlag() == 0) {
             haveRole = true
             return
         }
-        dataContext.getMyRole {
-            if (it.result == true) {
-                haveRole = ((it.data ?: 0) and needRoles.getFlag()) != 0
-            } else {
-                haveRole = false
-                toast(it.msg)
-            }
+        val ret = dataContext.getMyRole()
+        if (ret.result == true) {
+            haveRole = ((ret.data ?: 0) and needRoles.getFlag()) != 0
+        } else {
+            haveRole = false
+            toast(ret.msg)
         }
     }
     private fun initPermissionResult() {
@@ -122,8 +136,8 @@ abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
 
     protected fun toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) = toast(resources.getString(resId), duration)
     protected fun toast(message: String?, duration: Int = Toast.LENGTH_SHORT) = uiStateService.toast(contextBuff, message, duration)
-    protected fun loading(message: String = "", isVisible: Boolean = true) = uiStateService.loading(contextBuff, message, isVisible)
-    protected fun loading(isVisible: Boolean = true) = uiStateService.loading(contextBuff, "", isVisible)
+    protected fun loading(message: String = "", isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(contextBuff, message, isVisible, alpha)
+    protected fun loading(isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(contextBuff, "", isVisible, alpha)
     protected fun getResString(@StringRes resId: Int) = contextBuff?.getString(resId) ?: ""
     protected fun getResColor(@ColorRes resId: Int) = contextBuff?.getColor(resId) ?: 0
 

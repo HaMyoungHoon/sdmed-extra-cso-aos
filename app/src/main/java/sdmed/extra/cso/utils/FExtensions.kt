@@ -16,7 +16,7 @@ import sdmed.extra.cso.models.DataExceptionHandler
 import sdmed.extra.cso.models.RestResult
 import sdmed.extra.cso.models.RestResultT
 import sdmed.extra.cso.models.retrofit.FRetrofitVariable
-import sdmed.extra.cso.views.main.landing.LandingActivity
+import sdmed.extra.cso.views.landing.LandingActivity
 import java.util.Locale
 import java.util.UUID
 

@@ -21,10 +21,11 @@ import sdmed.extra.cso.models.retrofit.users.UserRole.Companion.getFlag
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.models.retrofit.users.UserStatus
 import sdmed.extra.cso.models.services.FUIStateService
+import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FStorage
-import sdmed.extra.cso.views.main.landing.LandingActivity
-import sdmed.extra.cso.views.main.login.LoginActivity
+import sdmed.extra.cso.views.landing.LandingActivity
+import sdmed.extra.cso.views.login.LoginActivity
 
 abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRoles: UserRoles = UserRole.None.toS()): AppCompatActivity(), KodeinAware {
     protected abstract var layoutId: Int
@@ -56,7 +57,9 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
         }
         _needTokenRefresh = getToken()
         if (initAble) {
-            afterOnCreate()
+            FCoroutineUtil.coroutineScope({
+                afterOnCreate()
+            })
         }
     }
     override fun onResume() {
@@ -80,7 +83,7 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
         binding = null
     }
 
-    private fun afterOnCreate() {
+    private suspend fun afterOnCreate() {
         loading()
         if (this !is LandingActivity && this !is LoginActivity) {
             stateCheck()
@@ -113,30 +116,28 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
 
     protected fun toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) = toast(resources.getString(resId), duration)
     protected fun toast(message: String?, duration: Int = Toast.LENGTH_SHORT) = uiStateService.toast(this, message, duration)
-    protected fun loading(message: String = "", isVisible: Boolean = true) = uiStateService.loading(this, message, isVisible)
-    protected fun loading(isVisible: Boolean = true) = uiStateService.loading(this, "", isVisible)
+    protected fun loading(message: String = "", isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(this, message, isVisible, alpha)
+    protected fun loading(isVisible: Boolean = true, alpha: Float = 0F) = uiStateService.loading(this, "", isVisible, alpha)
 
-    private fun stateCheck() {
-        dataContext.getMyState {
-            if (it.result == true) {
-                myState = it.data ?: UserStatus.None
-            } else {
-                toast(it.msg)
-            }
+    private suspend fun stateCheck() {
+        val ret = dataContext.getMyState()
+        if (ret.result == true) {
+            myState = ret.data ?: UserStatus.None
+        } else {
+            toast(ret.msg)
         }
     }
-    private fun roleCheck() {
+    private suspend fun roleCheck() {
         if (needRoles.getFlag() == 0) {
             haveRole = true
             return
         }
-        dataContext.getMyRole {
-            if (it.result == true) {
-                haveRole = ((it.data ?: 0) and needRoles.getFlag()) != 0
-            } else {
-                haveRole = false
-                toast(it.msg)
-            }
+        val ret = dataContext.getMyRole()
+        if (ret.result == true) {
+            haveRole = ((ret.data ?: 0) and needRoles.getFlag()) != 0
+        } else {
+            haveRole = false
+            toast(ret.msg)
         }
     }
     private fun getToken(): Boolean {
@@ -164,7 +165,9 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
     }
     private fun goToLogin(expired: Boolean = false) {
         if (this is LandingActivity || this is LoginActivity) {
-            afterOnCreate()
+            FCoroutineUtil.coroutineScope({
+                afterOnCreate()
+            })
         } else {
             FExtensions.logout(this, expired = expired)
         }
@@ -193,7 +196,9 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
                 FStorage.removeAuthToken(this)
                 goToLogin(true)
             }
-            afterOnCreate()
+            FCoroutineUtil.coroutineScope({
+                afterOnCreate()
+            })
         }
     }
 

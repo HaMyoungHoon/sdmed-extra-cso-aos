@@ -1,4 +1,4 @@
-package sdmed.extra.cso.views.main.login
+package sdmed.extra.cso.views.login
 
 import androidx.multidex.MultiDexApplication
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,9 +19,9 @@ class LoginActivityVM(application: MultiDexApplication): FBaseViewModel(applicat
         }, { ret(it) })
     }
 
-    enum class ClickEvent {
-        FORGOT_ID,
-        FORGOT_PW,
-        SIGN_IN
+    enum class ClickEvent(var index: Int) {
+        FORGOT_ID(0),
+        FORGOT_PW(1),
+        SIGN_IN(2)
     }
 }
