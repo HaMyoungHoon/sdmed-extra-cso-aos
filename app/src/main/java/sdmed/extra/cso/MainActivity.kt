@@ -28,6 +28,7 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
         binding?.dataContext = dataContext
         super.viewInit()
         setBackPressed()
+        openEDIFragment(MainActivityVM.ClickEvent.EDI)
     }
 
     override fun setLayoutCommand(data: Any?) {
