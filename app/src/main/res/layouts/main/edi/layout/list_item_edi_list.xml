@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="sdmed.extra.cso.models.retrofit.edi.EDIUploadModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.edi.EDIUploadModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_content_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{() -> dataContext.onClick(ClickEvent.OPEN)}" >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@{dataContext.regDateString}"
+                android:fontFamily="@font/goyang"
+                android:textSize="24sp"
+                android:textColor="@color/def_foreground"
+                tools:text="2025-01" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@{dataContext.yearMonth}"
+                android:fontFamily="@font/goyang"
+                android:textSize="24sp"
+                android:textColor="@color/def_foreground"
+                android:visibility="gone"
+                tools:text="2025-01" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginEnd="5dp"
+                android:text="@{dataContext.orgName}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="24sp"
+                android:ellipsize="middle"
+                tools:text="땡땡땡 병원" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.ediState.desc}"
+                android:fontFamily="@font/goyang"
+                android:textSize="24sp"
+                app:textColorResId="@{dataContext.ediColor}"
+                tools:text="반려"
+                tools:textColor="@color/edi_state_reject"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/divider_gray"
+            app:layout_constraintTop_toBottomOf="@id/ll_content_container" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

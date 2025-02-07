@@ -1,0 +1,34 @@
+package sdmed.extra.cso.views.main.edi.ediList
+
+import androidx.multidex.MultiDexApplication
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.kodein.di.generic.instance
+import sdmed.extra.cso.bases.FBaseViewModel
+import sdmed.extra.cso.fDate.FDateTime
+import sdmed.extra.cso.interfaces.repository.IEDIListRepository
+import sdmed.extra.cso.models.RestResult
+import sdmed.extra.cso.models.RestResultT
+import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
+import sdmed.extra.cso.utils.FExtensions
+
+class EDIListFragmentVM(application: MultiDexApplication): FBaseViewModel(application) {
+    private val ediListRepository: IEDIListRepository by kodein.instance(IEDIListRepository::class)
+
+    val startDate = MutableStateFlow(FExtensions.getToday().addMonth(-1).toString("yyyy-MM-dd"))
+    val endDate = MutableStateFlow(FExtensions.getTodayString())
+    val ediUploadModel = MutableStateFlow(mutableListOf<EDIUploadModel>())
+
+    suspend fun getList(): RestResultT<List<EDIUploadModel>> {
+        val ret = ediListRepository.getList(startDate.value, endDate.value)
+        if (ret.result == true) {
+            ediUploadModel.value = ret.data?.toMutableList() ?: mutableListOf()
+        }
+        return ret
+    }
+
+    enum class ClickEvent(var index: Int) {
+        START_DATE(0),
+        END_DATE(1),
+        SEARCH(2),
+    }
+}

@@ -52,7 +52,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
-        <activity android:name="sdmed.extra.cso.views.login.LoginActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
+        <activity android:name=".views.login.LoginActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
+        <activity android:name=".views.main.edi.ediView.EDIViewActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
     </application>
 
 </manifest>
