@@ -17,6 +17,9 @@ import sdmed.extra.cso.models.RestResult
 import sdmed.extra.cso.models.RestResultT
 import sdmed.extra.cso.models.retrofit.FRetrofitVariable
 import sdmed.extra.cso.views.landing.LandingActivity
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
@@ -24,10 +27,24 @@ object FExtensions {
     fun dpToPx(context: Context, dp: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics).toInt()
     fun dpToPx(context: Context, dp: Int) = dpToPx(context, dp.toFloat())
 
+    fun getCalendarMinimumDate(): Calendar {
+        val ret = Calendar.getInstance()
+        ret.time = parseDateStringToDate("2024-12-01")
+        return ret
+    }
     fun getLocalize() = FLocalize.parseThis(Locale.getDefault().language)
     fun getToday() = FDateTime().setLocalize(getLocalize()).setThis(System.currentTimeMillis())
     fun getTodayString() = getToday().toString("yyyy-MM-dd")
     fun getTodayDateTimeString() = getToday().toString("yyyy-MM-dd hh:mm:ss")
+    fun parseDateStringToDate(dateString: String, pattern: String = "yyyy-MM-dd"): Date {
+        val ret = SimpleDateFormat(pattern, Locale.getDefault())
+        return ret.parse(dateString)
+    }
+    fun parseDateStringToCalendar(dateString: String, pattern: String = "yyyy-MM-dd"): Calendar {
+        val ret = Calendar.getInstance()
+        ret.time = parseDateStringToDate(dateString, pattern)
+        return ret
+    }
 
     fun getUUID() = UUID.randomUUID().toString()
     fun getResult(data: String?): IRestResult {
