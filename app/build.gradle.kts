@@ -22,17 +22,19 @@ android {
                 "src/main/res",
                 "src/main/res/layouts",
                 "src/main/res/layouts/activity",
-                "src/main/res/layouts/activity/main",
-                "src/main/res/layouts/fragment/main/edi",
-                "src/main/res/layouts/fragment/main/price",
-                "src/main/res/layouts/fragment/main/home",
-                "src/main/res/layouts/fragment/main/qna",
-                "src/main/res/layouts/fragment/main/my",
-                "src/main/res/layouts/activity/landing",
-                "src/main/res/layouts/activity/login",
-
                 "src/main/res/layouts/fragment",
                 "src/main/res/layouts/dialog",
+
+                "src/main/res/layouts/landing",
+                "src/main/res/layouts/login",
+
+                "src/main/res/layouts/main",
+                "src/main/res/layouts/main/edi",
+                "src/main/res/layouts/main/price",
+                "src/main/res/layouts/main/home",
+                "src/main/res/layouts/main/qna",
+                "src/main/res/layouts/main/my",
+
                 "src/main/res/layouts/dialog/loading",
                 "src/main/res/layouts/dialog/toast",
                 "src/main/res/layouts/dialog/message",
