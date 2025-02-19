@@ -45,7 +45,7 @@
                 android:text="@{dataContext.item.ediState.desc}"
                 android:fontFamily="@font/goyang"
                 android:textSize="16sp"
-                android:textColor="@{dataContext.item.ediColor}"
+                app:textColorResId="@{dataContext.item.ediColor}"
                 app:layout_constraintTop_toTopOf="@id/tv_name"
                 app:layout_constraintBottom_toBottomOf="@id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
