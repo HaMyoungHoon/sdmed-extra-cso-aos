@@ -14,8 +14,6 @@ abstract class FBaseDialog<T1: ViewDataBinding, T2: FBaseViewModel>(private val 
     protected abstract var layoutId: Int
     protected var binding: T1? = null
     protected abstract val dataContext: T2
-    private var _context: Context? = null
-    val contextBuff get() = _context
     val multiDexApplication by lazy {
         motherContext.applicationContext as MultiDexApplication
     }
@@ -30,24 +28,21 @@ abstract class FBaseDialog<T1: ViewDataBinding, T2: FBaseViewModel>(private val 
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        _context = window?.context
         onAfterAttach()
     }
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        _context = null
         binding = null
         onAfterDetach()
     }
     override fun dismiss() {
         super.dismiss()
-        _context = null
         binding = null
     }
     open fun onCreateAfter() { }
     open fun onAfterAttach() { }
     open fun onAfterDetach() { }
 
-    protected fun getResString(@StringRes resId: Int) = _context?.getString(resId) ?: ""
-    protected fun getResColor(@ColorRes resId: Int) = _context?.getColor(resId) ?: 0
+    protected fun getResString(@StringRes resId: Int) = motherContext.getString(resId)
+    protected fun getResColor(@ColorRes resId: Int) = motherContext.getColor(resId)
 }

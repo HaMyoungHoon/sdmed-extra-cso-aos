@@ -1,9 +1,12 @@
 package sdmed.extra.cso.bases
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.multidex.MultiDexApplication
@@ -21,6 +24,7 @@ import sdmed.extra.cso.models.retrofit.users.UserRole.Companion.getFlag
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.models.retrofit.users.UserStatus
 import sdmed.extra.cso.models.services.FUIStateService
+import sdmed.extra.cso.utils.FAmhohwa
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FStorage
@@ -149,7 +153,7 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
             return true
         }
         try {
-            if (!FExtensions.checkInvalidToken(this)) {
+            if (!FAmhohwa.checkInvalidToken(this)) {
                 if (FStorage.getRefreshing(this)) {
                     return true
                 }
@@ -169,7 +173,7 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
                 afterOnCreate()
             })
         } else {
-            FExtensions.logout(this, expired = expired)
+            FAmhohwa.logout(this, expired = expired)
         }
     }
     private fun reCreate() {
@@ -188,7 +192,7 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
             FStorage.setRefreshing(this, false)
             if (x.result == true) {
                 val newToken = x.data ?: ""
-                if (FExtensions.rhsTokenIsMost(newToken)) {
+                if (FAmhohwa.rhsTokenIsMost(newToken)) {
                     FStorage.setAuthToken(this, newToken)
                 }
                 FRetrofitVariable.token = FStorage.getAuthToken(this)
@@ -200,6 +204,11 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
                 afterOnCreate()
             })
         }
+    }
+
+    protected fun shouldShowRequestPermissionRationale(permissions: Array<String>) = permissions.any { ActivityCompat.shouldShowRequestPermissionRationale(this, it) }
+    protected fun hasPermissionsGranted(permissions: Array<String>) = permissions.none {
+        ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

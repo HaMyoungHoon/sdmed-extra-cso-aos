@@ -13,6 +13,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.multidex.MultiDexApplication
 import sdmed.extra.cso.R
+import sdmed.extra.cso.interfaces.command.IAsyncEventListener
 import sdmed.extra.cso.models.services.FUIStateService
 
 abstract class FBaseDialogFragment<T1: ViewDataBinding, T2: FBaseViewModel>: DialogFragment() {
@@ -27,11 +28,12 @@ abstract class FBaseDialogFragment<T1: ViewDataBinding, T2: FBaseViewModel>: Dia
         FUIStateService()
     }
     val multiDexApplication by lazy {
-        requireActivity().application as MultiDexApplication
+        contextBuff!!.applicationContext as MultiDexApplication
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.base_dialog)
         onCreateAfter()
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,9 +62,24 @@ abstract class FBaseDialogFragment<T1: ViewDataBinding, T2: FBaseViewModel>: Dia
     }
 
     open fun onCreateAfter() { }
-    open fun onBindAfter() { }
+    fun onBindAfter() {
+        viewInit()
+    }
     open fun onAfterAttach() { }
     open fun onAfterDetach() { }
+
+    open fun viewInit() {
+        setEventListener()
+    }
+    open fun setEventListener() {
+        dataContext.addEventListener(object: IAsyncEventListener {
+            override suspend fun onEvent(data: Any?) {
+                setLayoutCommand(data)
+            }
+        })
+    }
+    open fun setLayoutCommand(data: Any?) {
+    }
 
     protected fun toast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) = toast(resources.getString(resId), duration)
     protected fun toast(message: String?, duration: Int = Toast.LENGTH_SHORT) = uiStateService.toast(contextBuff, message, duration)

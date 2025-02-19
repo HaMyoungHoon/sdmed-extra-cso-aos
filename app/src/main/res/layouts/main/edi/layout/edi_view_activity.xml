@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View" />
         <import type="sdmed.extra.cso.views.main.edi.ediView.EDIViewActivityVM.ClickEvent" />
         <variable
             name="dataContext"
@@ -11,6 +12,143 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/vector_arrow_left"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.CLOSE)}"
+                app:layout_constraintTop_toTopOf="@id/tv_name"
+                app:layout_constraintBottom_toBottomOf="@id/tv_name"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.item.orgName}"
+                android:fontFamily="@font/goyang"
+                android:textSize="24sp"
+                android:textColor="@color/def_foreground"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="뿅뿅 병원"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.item.ediState.desc}"
+                android:fontFamily="@font/goyang"
+                android:textSize="16sp"
+                android:textColor="@{dataContext.item.ediColor}"
+                app:layout_constraintTop_toTopOf="@id/tv_name"
+                app:layout_constraintBottom_toBottomOf="@id/tv_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="반려"
+                tools:textColor="@color/edi_state_reject" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_gray"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/cl_top_container"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_pharma_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:recyclerEDIPharmaList="@{dataContext.item}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_edi_file_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    android:maxHeight="360dp"
+                    android:orientation="horizontal"
+                    android:visibility="@{dataContext.item.fileList.size() > 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintTop_toBottomOf="@id/rv_pharma_list"
+                    tools:layout_editor_absoluteX="0dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_ellipse_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:recyclerEllipseList="@{dataContext.ellipseList}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/vp_edi_file_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_response_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:recyclerEDIResponseList="@{dataContext.item}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/rv_ellipse_list" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_upload_buff_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="@{dataContext.uploadItems.size() > 0 ? View.VISIBLE : View.GONE}"
+                    app:recyclerUploadBuffList="@{dataContext.uploadItems}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/rv_response_list"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="@{dataContext.addable ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintTop_toBottomOf="@id/rv_upload_buff_list"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:text="@string/add_desc"
+                        android:fontFamily="@font/goyang"
+                        android:textSize="24sp"
+                        android:textColor="@color/absolute_white"
+                        android:background="@drawable/selector_rounded_transparent"
+                        android:backgroundTint="@color/absolute_black"
+                        android:backgroundTintMode="screen"
+                        android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.ADD_IMAGE)}"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="5dp"
+                        android:text="@string/save_desc"
+                        android:fontFamily="@font/goyang"
+                        android:textSize="24sp"
+                        android:textColor="@{dataContext.isSavable ? @color/absolute_white : @color/disable_fore_gray}"
+                        android:background="@drawable/selector_rounded_transparent"
+                        android:backgroundTint="@{dataContext.isSavable ? @color/secondary : @color/disable_back_gray}"
+                        android:backgroundTintMode="screen"
+                        tools:textColor="@color/disable_fore_gray"
+                        tools:backgroundTint="@color/disable_back_gray"
+                        android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SAVE)}"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

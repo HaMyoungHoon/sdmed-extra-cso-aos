@@ -3,6 +3,8 @@ package sdmed.extra.cso.models.repository
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.interfaces.repository.ICommonRepository
 import sdmed.extra.cso.interfaces.services.ICommonService
+import sdmed.extra.cso.models.RestResultT
+import sdmed.extra.cso.models.retrofit.common.BlobStorageInfoModel
 import sdmed.extra.cso.models.retrofit.common.VersionCheckType
 
 class CommonRepository(private val _service: ICommonService): ICommonRepository {
@@ -20,6 +22,7 @@ class CommonRepository(private val _service: ICommonService): ICommonRepository 
     override suspend fun getMyRole() = FExtensions.restTryT { _service.getMyRole() }
     override suspend fun getMyState() = FExtensions.restTryT { _service.getMyState() }
     override suspend fun getGenerateSas(blobName: String) = FExtensions.restTryT { _service.getGenerateSas(blobName) }
+    override suspend fun postGenerateSasList(blobName: List<String>) = FExtensions.restTryT { _service.postGenerateSasList(blobName) }
     override suspend fun downloadFile(url: String) =
         try {
             _service.downloadFile(url)

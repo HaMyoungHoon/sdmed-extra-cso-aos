@@ -52,8 +52,8 @@ class EDIFragment: FBaseFragment<EdiFragmentBinding, EDIFragmentVM>(), AppBarLay
         val binding = super.binding ?: return
         TabLayoutMediator(binding.tlContent, binding.vpContent) { tab, position ->
             when (position) {
-                0 -> getTabView(tab, getResString(R.string.edi_list_desc))
-                1 -> getTabView(tab, getResString(R.string.edi_request_desc))
+                0 -> getTabView(tab, getResString(R.string.edi_list_desc), true)
+                1 -> getTabView(tab, getResString(R.string.edi_request_desc), false)
             }
         }.attach()
         binding.tlContent.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
@@ -64,13 +64,20 @@ class EDIFragment: FBaseFragment<EdiFragmentBinding, EDIFragmentVM>(), AppBarLay
         })
     }
     private fun setAppBarLayout() = binding?.alContent?.addOnOffsetChangedListener(this)
-    private fun getTabView(tab: TabLayout.Tab, text: String) {
+    private fun getTabView(tab: TabLayout.Tab, text: String, isSelect: Boolean = false) {
         val binding = super.binding ?: return
         val context = contextBuff ?: return
         val inflater = LayoutInflater.from(context)
         val view: EdiTabItemBinding = DataBindingUtil.inflate(inflater, R.layout.edi_tab_item, binding.tlContent, false)
         view.tvText.text = text
         view.tvText.visibility = if (text.isEmpty()) View.GONE else View.VISIBLE
+        if (isSelect) {
+            view.tvText.setTextColor(getResColor(R.color.def_foreground))
+            view.tvText.setTypeface(WriteFontFamily.getTypeface(context), Typeface.BOLD)
+        } else {
+            view.tvText.setTextColor(getResColor(R.color.disable_fore_gray))
+            view.tvText.setTypeface(WriteFontFamily.getTypeface(context), Typeface.NORMAL)
+        }
         tab.customView = view.root
     }
     private fun selectTab(tab: TabLayout.Tab?) {

@@ -4,8 +4,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.databinding.MainActivityBinding
+import sdmed.extra.cso.models.mqtt.MqttContentModel
+import sdmed.extra.cso.models.mqtt.MqttContentType
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRoles
+import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.views.main.edi.EDIFragment
 import sdmed.extra.cso.views.main.home.HomeFragment
 import sdmed.extra.cso.views.main.my.MyFragment
@@ -29,6 +32,7 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
         super.viewInit()
         setBackPressed()
         openEDIFragment(MainActivityVM.ClickEvent.EDI)
+        mqttInit()
     }
 
     override fun setLayoutCommand(data: Any?) {
@@ -82,7 +86,7 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
         _backPressed = object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (!finishConfirmed) {
-                    toast(R.string.back_btn_close_Desc)
+                    toast(R.string.back_btn_close_desc)
                 }
             }
         }
@@ -90,4 +94,21 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
     }
 
 
+    private fun mqttInit() {
+        FCoroutineUtil.coroutineScope({
+            dataContext.mqttService.mqttInit()
+        })
+    }
+    private fun test() {
+        val topic = "aos-extra-cso" // "private/fc1b9a2e-ae8a-437d-8074-a19d3acd1813"
+        val mqttContentModel = MqttContentModel().apply {
+            this.senderName = "ㅎㅁㅎ"
+            this.content = "안드로이드 테스트"
+            this.contentType = MqttContentType.None
+            this.targetItemPK = "1234"
+        }
+        FCoroutineUtil.coroutineScope({
+            dataContext.mqttService.mqttSend(topic, mqttContentModel)
+        })
+    }
 }

@@ -41,15 +41,19 @@ object FConstants {
 
     val LOCATION_PERMISSION = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     val ALARM_PERMISSION = arrayOf(Manifest.permission.SCHEDULE_EXACT_ALARM)
+    val NOTIFICATION_PERMISSION = arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+    val CAMERA_PERMISSION = arrayOf(Manifest.permission.CAMERA)
     val READ_EXTERNAL_PERMISSION_32 = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    val READ_EXTERNAL_PERMISSION_33 = arrayOf(Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO)
+    val READ_EXTERNAL_PERMISSION_33 = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO)
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    val READ_EXTERNAL_PERMISSION_34 = arrayOf(Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
+    val READ_EXTERNAL_PERMISSION_34 = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO, Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
     enum class Permit(val index: Int) {
         LOCATION(1),
         ALARM(2),
         LOCATION_WIFI(3),
         READ_EXTERNAL(4),
+        CAMERA(5),
+        NOTIFICATION(6),
     }
 }

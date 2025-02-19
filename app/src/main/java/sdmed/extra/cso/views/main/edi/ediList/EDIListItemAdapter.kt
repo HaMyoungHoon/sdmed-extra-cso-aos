@@ -8,14 +8,14 @@ import sdmed.extra.cso.models.adapter.FRecyclerAdapter
 import sdmed.extra.cso.models.adapter.FRecyclerViewHolder
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
 
-class EDIListItemAdapter(val lifeCycleOwner: LifecycleOwner, val relayCommand: ICommand): FRecyclerAdapter<ListItemEdiListBinding, EDIUploadModel>() {
+class EDIListItemAdapter(val lifecycleOwner: LifecycleOwner, val relayCommand: ICommand): FRecyclerAdapter<ListItemEdiListBinding, EDIUploadModel>() {
     override var layoutId = R.layout.list_item_edi_list
-    override var lifecycle = lifeCycleOwner.lifecycle
+    override var lifecycle = lifecycleOwner.lifecycle
     override fun onBindViewHolder(holder: FRecyclerViewHolder<ListItemEdiListBinding>, position: Int) {
         holder.binding?.let {
             val item = items.value[position]
             item.relayCommand = relayCommand
-            it.lifecycleOwner = lifeCycleOwner
+            it.lifecycleOwner = lifecycleOwner
             it.dataContext = item
         }
     }

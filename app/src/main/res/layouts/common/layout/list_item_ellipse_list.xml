@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.common.EllipseItemModel" />
+    </data>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:visibility="@{dataContext.visible ? View.VISIBLE : View.GONE}"
+        app:glideResSrc="@{dataContext.thisSrc}"
+        app:imageViewWidth="@{dataContext.widthSize}"
+        app:imageViewHeight="@{dataContext.heightSize}"
+        tools:src="@drawable/vector_ellipse_disable"
+        tools:layout_width="5dp"
+        tools:layout_height="5dp" />
+</layout>

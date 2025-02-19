@@ -1,7 +1,5 @@
 package sdmed.extra.cso.models.retrofit.edi
 
-import java.util.Date
-
 data class EDIPharmaDueDateModel(
     var thisPK: String = "",
     var pharmaPK: String = "",
@@ -9,6 +7,6 @@ data class EDIPharmaDueDateModel(
     var year: String = "",
     var month: String = "",
     var day: String = "",
-    var regDate: Date = Date()
+    var regDate: String = ""
 ) {
 }

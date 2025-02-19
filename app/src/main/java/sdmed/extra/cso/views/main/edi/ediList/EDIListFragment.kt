@@ -1,11 +1,17 @@
 package sdmed.extra.cso.views.main.edi.ediList
 
+import android.content.Intent
+import android.os.Build
+import android.os.Environment
+import android.provider.Settings
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import sdmed.extra.cso.BuildConfig
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseFragment
 import sdmed.extra.cso.databinding.EdiListFragmentBinding
@@ -19,6 +25,7 @@ import sdmed.extra.cso.utils.calendar.CalendarView
 import sdmed.extra.cso.utils.calendar.DatePicker
 import sdmed.extra.cso.utils.calendar.builders.DatePickerBuilder
 import sdmed.extra.cso.utils.calendar.listeners.IOnSelectDateListener
+import sdmed.extra.cso.views.main.edi.ediView.EDIViewActivity
 import java.util.ArrayList
 import java.util.Calendar
 
@@ -86,9 +93,17 @@ class EDIListFragment: FBaseFragment<EdiListFragmentBinding, EDIListFragmentVM>(
                 toast(ret.msg)
             }
         })
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                val uri = "package:${BuildConfig.APPLICATION_ID}".toUri()
+                startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
+            }
+        }
     }
     private fun openEDIView(data: EDIUploadModel) {
-        toast(data.orgName)
+        startActivity(Intent(contextBuff, EDIViewActivity::class.java).apply {
+            putExtra("thisPK", data.thisPK)
+        })
     }
     private fun calendarOpen(dateString: String, ret: (String) -> Unit): DatePicker? {
         val context = contextBuff ?: return null
@@ -112,8 +127,8 @@ class EDIListFragment: FBaseFragment<EdiListFragmentBinding, EDIListFragmentVM>(
         @JvmStatic
         @BindingAdapter("recyclerEDIListItems")
         fun setEDIListItems(recyclerView: RecyclerView, listItems: StateFlow<MutableList<EDIUploadModel>>?) {
-            val adapter = (recyclerView.adapter as? EDIListItemAdapter) ?: return
-            adapter.lifeCycleOwner.lifecycleScope.launch {
+            val adapter = recyclerView.adapter as? EDIListItemAdapter ?: return
+            adapter.lifecycleOwner.lifecycleScope.launch {
                 listItems?.collectLatest {
                     adapter.updateItems(it)
                 }

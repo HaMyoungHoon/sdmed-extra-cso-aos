@@ -144,7 +144,7 @@ class FGlideSupport {
 
             Glide.with(imageView.context).load(src)
                 .skipMemoryCache(true)
-                .override(width ?: Target.SIZE_ORIGINAL,height ?: Target.SIZE_ORIGINAL)
+                .override(width ?: Target.SIZE_ORIGINAL, height ?: Target.SIZE_ORIGINAL)
                 .optionalCenterCrop()
                 .priority(Priority.IMMEDIATE)
                 .into(imageView)

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.common.MediaFileType" />
+        <import type="sdmed.extra.cso.views.media.picker.MediaPickerActivityVM.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.views.media.picker.MediaPickerActivityVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/vector_cross_def"
+                android:onClick="@{()->dataContext.relayCommand.execute(ClickEvent.CLOSE)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <Spinner
+                android:id="@+id/sp_box"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:selectedItemPosition="@={dataContext.boxesPosition}"
+                app:spinnerBoxMediaPickerItems="@{dataContext.boxes}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_close" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.selectableCountString}"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/iv_confirm"
+                tools:text="n개 선택 가능"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_confirm"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{()->dataContext.relayCommand.execute(ClickEvent.CONFIRM)}"
+                android:src="@{dataContext.confirmEnable ? @drawable/shape_circle_check_primary : @drawable/shape_circle_check_gray}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:src="@drawable/shape_circle_check"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <sdmed.extra.cso.utils.view.FZoomLayout
+            android:id="@+id/cl_middle_container"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:visibility="@{dataContext.mediaPath != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/cl_top_container">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.media3.ui.PlayerView
+                    android:id="@+id/player_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:visibility="@{dataContext.mediaFileType == MediaFileType.VIDEO ? View.VISIBLE : View.GONE}"
+                    app:playerUri="@{dataContext.videoPath}"
+                    app:playerAutoPlay="@{true}"
+                    app:show_subtitle_button="false"
+                    app:use_controller="false"
+                    app:show_buffering="always"
+                    app:surface_type="texture_view"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:visibility="@{dataContext.mediaFileType == MediaFileType.IMAGE ? View.VISIBLE : View.GONE}"
+                    app:glideSrcUri="@{dataContext.mediaPath}"
+                    app:glideUriSrcFitCenter="@{true}"
+                    tools:src="@drawable/ic_launcher_foreground" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:visibility="@{dataContext.mediaFileType == MediaFileType.PDF ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/image_pdf"
+                    app:glideUriSrcFitCenter="@{true}" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:visibility="@{dataContext.mediaFileType == MediaFileType.EXCEL ? View.VISIBLE : View.GONE}"
+                    android:src="@drawable/image_excel"
+                    app:glideUriSrcFitCenter="@{true}" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </sdmed.extra.cso.utils.view.FZoomLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_media_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:stretchMode="columnWidth"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            app:layout_constraintTop_toBottomOf="@id/cl_middle_container"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:recyclerMediaPickerItems="@{dataContext.items}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

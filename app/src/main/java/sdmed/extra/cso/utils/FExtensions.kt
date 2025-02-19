@@ -3,20 +3,21 @@ package sdmed.extra.cso.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.TypedValue
 import androidx.core.app.ActivityCompat
-import com.auth0.android.jwt.JWT
+import androidx.core.net.toFile
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.fDate.FDateTime
 import sdmed.extra.cso.fDate.FLocalize
 import sdmed.extra.cso.interfaces.IRestResult
 import sdmed.extra.cso.models.DataExceptionHandler
 import sdmed.extra.cso.models.RestResult
 import sdmed.extra.cso.models.RestResultT
-import sdmed.extra.cso.models.retrofit.FRetrofitVariable
+import sdmed.extra.cso.utils.FImageUtils.isLocalFile
 import sdmed.extra.cso.views.landing.LandingActivity
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -24,8 +25,11 @@ import java.util.Locale
 import java.util.UUID
 
 object FExtensions {
-    fun dpToPx(context: Context, dp: Float) = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics).toInt()
-    fun dpToPx(context: Context, dp: Int) = dpToPx(context, dp.toFloat())
+    fun dpToPx(context: Context, dp: Float?): Int {
+        dp ?: return Int.MIN_VALUE
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics).toInt()
+    }
+    fun dpToPx(context: Context, dp: Int?) = dpToPx(context, dp?.toFloat())
 
     fun getCalendarMinimumDate(): Calendar {
         val ret = Calendar.getInstance()
@@ -110,55 +114,6 @@ object FExtensions {
         return true
     }
 
-    fun intervalBetweenDate(expiredDate: Long): Boolean {
-        val now = System.currentTimeMillis() / 1000
-        // 이거 나중에 수치 좀 바꿔야겠다
-        return now - expiredDate > 0
-    }
-    fun tokenIntervalValid(token: String?): Boolean {
-        if (token == null) return false
-        try {
-            if (intervalBetweenDate(JWT(token).claims[FConstants.CLAIMS_EXP]?.asLong() ?: 0)) {
-                return false
-            }
-            return true
-        } catch (_: Exception) {
-            return false
-        }
-    }
-    fun checkInvalidToken(context: Context): Boolean {
-        if (FRetrofitVariable.token.isNullOrEmpty()) {
-            FRetrofitVariable.token = FStorage.getAuthToken(context)
-        }
-        val tokenRefresh = FRetrofitVariable.token ?: return false
-        return tokenIntervalValid(tokenRefresh)
-    }
-    fun rhsTokenIsMost(newToken: String): Boolean {
-        val tokenAccess = FRetrofitVariable.token ?: return true
-        return try {
-            val previousLong = JWT(tokenAccess).claims[FConstants.CLAIMS_EXP]?.asLong() ?: 0
-            val newLong = JWT(newToken).claims[FConstants.CLAIMS_EXP]?.asLong() ?: 0
-            newLong >= previousLong
-        } catch (_: Exception) {
-            true
-        }
-    }
-    fun getThisPK(context: Context): String {
-        val token = FRetrofitVariable.token ?: FStorage.getAuthToken(context) ?: return ""
-        return try {
-            JWT(token).claims[FConstants.CLAIMS_INDEX]?.asString() ?: ""
-        } catch (_: Exception) {
-            ""
-        }
-    }
-    fun logout(context: Context, expired: Boolean = false) {
-        removeLoginData(context)
-        moveToLandingActivity(context, expired)
-    }
-    fun removeLoginData(context: Context) {
-        FRetrofitVariable.token = ""
-        FStorage.removeAuthToken(context)
-    }
     fun moveToLandingActivity(context: Context, expired: Boolean) {
         ActivityCompat.finishAffinity(context as Activity)
         context.startActivity(Intent(context, LandingActivity::class.java).apply {
@@ -169,6 +124,29 @@ object FExtensions {
                 putExtra("logout", true)
             }
         })
+    }
+
+    fun getMagicNumber(file: File, byteCount: Int = 8): String {
+        file.inputStream().use { x ->
+            val ret = ByteArray(byteCount)
+            x.read(ret, 0, byteCount)
+            return ret.joinToString(" ") { y -> "%02X".format(y) }
+        }
+    }
+    fun getFileMimeType(file: File, byteCount: Int = 8): String {
+        val magicNumber = getMagicNumber(file, byteCount)
+        val ext = when {
+            magicNumber.startsWith("50 4B 03 04") -> "file.zip"
+            magicNumber.startsWith("50 4B 30 30 50 4B 03 04") -> "file.zip"
+            magicNumber.startsWith("25 50 44 46") -> "file.pdf"
+            magicNumber.startsWith("FF D8 FF") -> "file.jpeg"
+            magicNumber.startsWith("89 50 4E 47") -> "file.png"
+            magicNumber.startsWith("42 4D") -> "file.bmp"
+            magicNumber.startsWith("52 49 46 46") && getMagicNumber(file, 12).contains("57 45 42 50") -> "file.webp"
+            magicNumber.startsWith("66 74 79 70 68 65 69 63") -> "file.heic"
+            else -> file.name ?: "file.unknown"
+        }
+        return FContentsType.findContentType(ext)
     }
 
     suspend fun <T> restTryT(fn: suspend () -> RestResultT<T>): RestResultT<T> {

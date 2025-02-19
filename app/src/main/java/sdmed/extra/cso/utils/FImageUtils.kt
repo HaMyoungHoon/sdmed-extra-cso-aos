@@ -36,6 +36,7 @@ import kotlin.math.sqrt
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.scale
 import androidx.exifinterface.media.ExifInterface
+import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FConstants
 
 object FImageUtils {
@@ -136,6 +137,30 @@ object FImageUtils {
     } catch (_: Exception) {
         false
     }
+    fun isImage(ext: String): Boolean {
+        if (ext == "jpeg") return true;
+        if (ext == "jpg") return true;
+        if (ext == "png") return true;
+        if (ext == "bmp") return true;
+        if (ext == "webp") return true;
+        if (ext == "heic") return true;
+        if (ext == "gif") return true;
+
+        return false;
+    }
+    fun getDefaultImage(mimeType: String?): Int {
+        val ext = FContentsType.getExtMimeType(mimeType)
+        if (ext == "pdf") {
+            return R.drawable.image_pdf
+        } else if (ext == "xlsx" || ext == "xls") {
+            return R.drawable.image_excel
+        } else if (ext == "docx" || ext == "doc") {
+            return R.drawable.image_word
+        } else if (ext == "zip") {
+            return R.drawable.image_zip
+        }
+        return R.drawable.image_no_image_1920
+    }
     fun isVideoFile(context: Context, uri: Uri): Boolean {
         val videoFileHeaders = listOf(
             byteArrayOf(0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x33, 0x67, 0x70, 0x35), // mp4
@@ -176,11 +201,11 @@ object FImageUtils {
     fun uriCopyToTempFolder(context: Context, file: File, fileName: String): Uri {
         val fileDescriptor = context.contentResolver.openFileDescriptor(file.toUri(), "r") ?: return file.toUri()
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-        val pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
         var rootDir = File(pictureDir, FConstants.APP_NAME)
         if (!rootDir.exists()) {
             if (!rootDir.mkdirs()) {
-                rootDir = ContextWrapper(context).getDir("Images", Context.MODE_PRIVATE)
+                rootDir = ContextWrapper(context).getDir("Documents", Context.MODE_PRIVATE)
             }
         }
 
@@ -197,24 +222,27 @@ object FImageUtils {
     fun uriToFile(context: Context, fileUri: Uri, fileName: String): File {
         if (isLocalFile(context, fileUri)) return fileUri.toFile()
 
-        val fileDescriptor = context.contentResolver.openFileDescriptor(fileUri, "r") ?: return fileUri.toFile()
-        val inputStream = ByteArrayInputStream(FileInputStream(fileDescriptor.fileDescriptor).readBytes())
-        val pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        var rootDir = File(pictureDir, FConstants.SHARED_FILE_NAME)
+        val fileDescriptor = try {
+            context.contentResolver.openFileDescriptor(fileUri, "r") ?: return fileUri.toFile()
+        } catch (_: Exception) {
+            return File(fileUri.toString())
+        }
+        val fileExt = FContentsType.getExtMimeType(context.contentResolver.getType(fileUri))
+        if (!isImage(fileExt)) {
+            return fileUri.toFile()
+        }
+        val fileStream = FileInputStream(fileDescriptor?.fileDescriptor)
+        val inputStream = ByteArrayInputStream(fileStream.readBytes())
+        val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        var rootDir = File(documentsDir, FConstants.SHARED_FILE_NAME)
         if (!rootDir.exists()) {
             if (!rootDir.mkdirs()) {
-                rootDir = ContextWrapper(context).getDir("Images", Context.MODE_PRIVATE)
+                rootDir = ContextWrapper(context).getDir("Documents", Context.MODE_PRIVATE)
             }
         }
 
-        val splitType = context.contentResolver.getType(fileUri)?.split("/") ?: arrayListOf("image", "jpg")
-        var extension = if (splitType.size >= 2) {
-            splitType[1]
-        } else {
-            "jpg"
-        }
-
-        var needConverter: Boolean = false
+        var extension = fileExt
+        var needConverter = false
         if (extension.lowercase() != "webp") {
             extension = "webp"
             needConverter = true
@@ -223,19 +251,25 @@ object FImageUtils {
         val file = File(rootDir, "${fileName}.$extension")
         if (!file.exists()) {
             inputStream.mark(inputStream.available())
-            if (!imageResize(inputStream, file, needConverter)) {
+            if (fileExt != "webp") {
+                if (!imageResize(inputStream, file, needConverter)) {
+                    val outputStream = FileOutputStream(file)
+                    inputStream.copyTo(outputStream)
+                    outputStream.close()
+                }
+            } else {
                 val outputStream = FileOutputStream(file)
                 inputStream.copyTo(outputStream)
                 outputStream.close()
             }
         }
         inputStream.close()
-        fileDescriptor.close()
+        fileDescriptor?.close()
         return file
     }
     fun createImageFile(context: Context): File {
         val timeStamp: String = FExtensions.getToday().toString("yyyyMMdd_HHmmss")
-        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         return File.createTempFile(
             "jpg_${timeStamp}_", /* prefix */
             ".jpg", /* suffix */
@@ -255,19 +289,19 @@ object FImageUtils {
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888
             }
             inputStream.reset()
-            val resize = calcResize(options)
-            if (resize <= 1F) {
-                return false
-            }
+            val resize = 1F //calcResize(options)
+//            if (resize <= 1F) {
+//                return false
+//            }
             val orientation = getOrientation(inputStream)
             val originBitmap = BitmapFactory.decodeStream(inputStream, null, options) ?: return false
             val resizedBitmap = rotateScaledBitmap(originBitmap, options, resize, orientation)
             val outputStream = FileOutputStream(outFile)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                resizedBitmap.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 50, outputStream)
+                resizedBitmap.compress(Bitmap.CompressFormat.WEBP_LOSSLESS, 100, outputStream)
             } else {
                 @Suppress("DEPRECATION")
-                resizedBitmap.compress(Bitmap.CompressFormat.WEBP, 50, outputStream)
+                resizedBitmap.compress(Bitmap.CompressFormat.WEBP, 100, outputStream)
             }
             originBitmap.recycle()
             resizedBitmap.recycle()

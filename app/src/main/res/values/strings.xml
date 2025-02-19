@@ -11,7 +11,7 @@
     <string name="confirm_desc">확인</string>
     <string name="apply_desc">적용</string>
     <string name="start_desc">시작</string>
-    <string name="back_btn_close_Desc">\'뒤로\' 버튼 한번 더 누르시면 종료됩니다.</string>
+    <string name="back_btn_close_desc">\'뒤로\' 버튼 한번 더 누르시면 종료됩니다.</string>
     <string name="login_id_edit_desc">user id (3~20)</string>
     <string name="login_pw_edit_desc">password (8~20)</string>
     <string name="signUp_desc">회원가입</string>
@@ -46,4 +46,32 @@
         <item>@string/week_sun_desc</item>
     </array>
     <string name="search_desc">찾기</string>
+    <string name="carried_over_desc">이월됨</string>
+    <string name="add_desc">추가</string>
+    <string name="save_desc">저장</string>
+    <string name="permit_album">앨범 권한</string>
+    <string name="permit_read_request">읽기 권한 요청</string>
+    <string name="permit_denied">권한이 거부 됨</string>
+    <string name="permit_setting">권한 설정</string>
+    <string name="media_able_click_suffix_desc">개 선택 가능</string>
+    <string name="permit_require">권한이 필요합니다</string>
+    <string name="permit_camera">카메라 권한이 필요합니다.</string>
+    <string name="permit_title">권한 요청</string>
+    <string name="camera_desc">카메라</string>
+    <string name="file_desc">파일</string>
+    <string name="edi_file_upload">EDI 파일 업로드</string>
+    <string name="edi_file_upload_start">EDI 파일 업로드 시작</string>
+    <string name="edi_file_upload_fail">EDI 파일 업로드 실패</string>
+    <string name="edi_file_upload_comp">EDI 파일 업로드 완료</string>
+    <string name="permit_notify">알림 권한 요청</string>
+    <string name="remove_desc">삭제</string>
+    <string name="mqtt_title_none">info</string>
+    <string name="mqtt_title_qnaRequest">QNA 요청</string>
+    <string name="mqtt_title_qnaReply">QNA 답변</string>
+    <string name="mqtt_title_ediRequest">EDI 요청</string>
+    <string name="mqtt_title_ediReject">EDI 반려</string>
+    <string name="mqtt_title_ediOK">EDI 승인</string>
+    <string name="mqtt_title_ediRecep">EDI 수신</string>
+    <string name="mqtt_title_ediFileAdd">EDI 파일 추가</string>
+    <string name="mqtt_title_ediDelete">EDI 파일 제거</string>
 </resources>

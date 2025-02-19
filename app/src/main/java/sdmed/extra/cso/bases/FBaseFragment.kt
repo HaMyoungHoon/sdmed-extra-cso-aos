@@ -147,12 +147,12 @@ abstract class FBaseFragment<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
         ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
     }
     protected fun requestSinglePermissions(permission: String) {
-        if (!shouldShowRequestPermissionRationale(permission)) {
+        if (shouldShowRequestPermissionRationale(permission)) {
             singlePermissionResult?.launch(permission)
         }
     }
     protected fun requestMultiPermissions(permissions: Array<String>) {
-        if (!shouldShowRequestPermissionRationale(permissions)) {
+        if (shouldShowRequestPermissionRationale(permissions)) {
             multiPermissionResult?.launch(permissions)
         }
     }

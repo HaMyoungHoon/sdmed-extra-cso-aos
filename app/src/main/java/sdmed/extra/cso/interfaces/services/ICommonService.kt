@@ -38,6 +38,8 @@ interface ICommonService {
     suspend fun getMyState(): RestResultT<UserStatus>
     @GET("${FConstants.REST_API_COMMON}/generate/sas")
     suspend fun getGenerateSas(@Query("blobName") blobName: String): RestResultT<BlobStorageInfoModel>
+    @POST("${FConstants.REST_API_COMMON}/generate/sas/list")
+    suspend fun postGenerateSasList(@Body blobName: List<String>): RestResultT<List<BlobStorageInfoModel>>
     @Streaming
     @GET
     suspend fun downloadFile(@Url url: String): Response<ResponseBody>

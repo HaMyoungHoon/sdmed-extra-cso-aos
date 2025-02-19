@@ -24,7 +24,7 @@ class NestedScrollableHost : FrameLayout {
             while (v != null && v !is ViewPager2) {
                 v = v.parent as? View
             }
-            return v as? ViewPager2
+            return v
         }
 
     private val child: View? get() = if (isNotEmpty()) getChildAt(0) else null
@@ -36,8 +36,8 @@ class NestedScrollableHost : FrameLayout {
     private fun canChildScroll(orientation: Int, delta: Float): Boolean {
         val direction = -delta.sign.toInt()
         return when (orientation) {
-            0 -> child?.canScrollHorizontally(direction) ?: false
-            1 -> child?.canScrollVertically(direction) ?: false
+            0 -> child?.canScrollHorizontally(direction) == true
+            1 -> child?.canScrollVertically(direction) == true
             else -> throw IllegalArgumentException()
         }
     }

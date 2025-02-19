@@ -1,8 +1,12 @@
 package sdmed.extra.cso.models.adapter
 
+import sdmed.extra.cso.R
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 
 class TextViewAdapter {
@@ -11,11 +15,12 @@ class TextViewAdapter {
         @BindingAdapter("textColorResId")
         fun textViewTextColorResId(textView: AppCompatTextView, @ColorRes textColorResId: Int?) {
             textColorResId ?: return
-            if (textColorResId == 0) {
-                return
+            var colorBuff = textColorResId
+            if (colorBuff == 0) {
+                colorBuff = R.color.def_foreground
             }
             val color = try {
-                textView.context.getColor(textColorResId)
+                textView.context.getColor(colorBuff)
             } catch (_: Exception) {
                 textView.textColors.defaultColor
             }
@@ -34,6 +39,33 @@ class TextViewAdapter {
                 textView.text
             }
             textView.text = text
+        }
+        @JvmStatic
+        @BindingAdapter(value = ["circleNumberSrc", "circleNumberSolid", "circleNumberStroke"], requireAll = false)
+        fun setCircleNumberTextView(textView: AppCompatTextView, @ColorRes circleNumberSrc: Int?, circleNumberSolid: Int?, @ColorRes circleNumberStroke: Int?) {
+            val drawable = ContextCompat.getDrawable(textView.context, R.drawable.shape_circle)
+            val shape = (drawable as? LayerDrawable)?.getDrawable(0) as? GradientDrawable
+            if (circleNumberSrc == null) {
+                textView.text = ""
+            } else {
+                textView.text = circleNumberSrc.toString()
+            }
+            if (shape == null) {
+                return
+            }
+            val shapeColor = if (circleNumberSolid == null) {
+                textView.context.getColor(R.color.color_AA000000)
+            } else {
+                textView.context.getColor(circleNumberSolid)
+            }
+            shape.setColor(shapeColor)
+            val shapeStroke = if (circleNumberStroke == null) {
+                textView.context.getColor(R.color.color_AAFFFFFF)
+            } else {
+                textView.context.getColor(circleNumberStroke)
+            }
+            shape.setStroke(1, shapeStroke)
+            textView.background = shape
         }
     }
 }

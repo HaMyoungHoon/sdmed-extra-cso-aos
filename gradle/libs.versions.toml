@@ -7,7 +7,7 @@ appcompat = "1.7.0"
 constraintlayout = "2.2.0"
 recyclerview = "1.4.0"
 fragment = "1.8.5"
-kotlinstd = "2.0.21"
+kotlinstd = "2.1.0"
 coroutinesCore = "1.7.3"
 coroutinesAndroid = "1.7.3"
 material = "1.12.0"
@@ -25,6 +25,10 @@ glide = "4.12.0"
 pixplicitySharp = "1.1.0"
 multidex = "2.0.1"
 eventbus = "3.3.1"
+media3-player = "1.5.1"
+webpdecoder = "2.3.4.15.1"
+fasterxml = "2.18.2"
+hivemq = "1.3.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +50,9 @@ androidx-paging-commonKtx = { group = "androidx.paging", name = "paging-common-k
 androidx-paging-guava = { group = "androidx.paging", name = "paging-guava", version.ref = "paging" }
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+media3-player-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3-player" }
+media3-player-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3-player" }
+media3-player-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3-player" }
 jetbrains-kotlin-std = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinstd" }
 jetbrains-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
 jetbrains-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesAndroid" }
@@ -66,13 +73,17 @@ tedpermission = { group = "io.github.ParkSangGwon", name = "tedpermission-corout
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 glide-okhttp = { group = "com.github.bumptech.glide", name = "okhttp3-integration", version.ref = "glide" }
 glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+webpdecoder = { group = "com.github.zjupure", name = "webpdecoder", version.ref = "webpdecoder" }
 
 androidx-multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
 greenrobot-eventbus = { group = "org.greenrobot", name = "eventbus", version.ref = "eventbus" }
+
+fasterxml-jacson = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "fasterxml"}
+hivemq-client = { group = "com.hivemq", name = "hivemq-mqtt-client", version.ref = "hivemq" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "kotlin-kapt" }
-
+kotlin-parcelize = { id = "kotlin-parcelize" }

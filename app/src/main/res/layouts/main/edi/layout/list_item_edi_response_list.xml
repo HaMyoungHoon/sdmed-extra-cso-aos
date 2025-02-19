@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.retrofit.edi.EDIUploadResponseModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.edi.EDIUploadResponseModel" />
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:onClick="@{() -> dataContext.onClick(ClickEvent.OPEN)}"
+            android:background="@drawable/shape_rounded_box_able_5dp"
+            android:animateLayoutChanges="true">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{dataContext.responseDate}"
+                    android:fontFamily="@font/goyang"
+                    android:textSize="24sp"
+                    android:textColor="@color/def_foreground"
+                    tools:text="2025-01-01" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@{dataContext.pharmaName}"
+                    android:fontFamily="@font/goyang"
+                    android:textSize="24sp"
+                    android:textColor="@color/def_foreground"
+                    android:ellipsize="middle"
+                    tools:text="땡떙땡 병원" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{dataContext.ediState.desc}"
+                    android:fontFamily="@font/goyang"
+                    android:textSize="24sp"
+                    app:textColorResId="@{dataContext.ediColor}"
+                    android:drawablePadding="4dp"
+                    android:drawableEnd="@{dataContext.open ? @drawable/vector_arrow_down : @drawable/vector_arrow_up}"
+                    tools:text="반려"
+                    tools:textColor="@color/edi_state_reject"
+                    tools:drawableEnd="@drawable/vector_arrow_up"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.etc}"
+                android:visibility="@{dataContext.open ? View.VISIBLE : View.GONE}"
+                android:fontFamily="@font/goyang"
+                android:textSize="16sp"
+                android:textColor="@color/def_foreground"
+                tools:text="ㅁㄴㅇ리ㅏㅁㄴ얼\nㅁㄴ이ㅏ럼ㄴ아ㅣ러\nasldkfjasdlkfj" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

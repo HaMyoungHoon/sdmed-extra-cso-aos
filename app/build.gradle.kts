@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -25,8 +26,10 @@ android {
                 "src/main/res/layouts/fragment",
                 "src/main/res/layouts/dialog",
 
+                "src/main/res/layouts/common",
                 "src/main/res/layouts/landing",
                 "src/main/res/layouts/login",
+                "src/main/res/layouts/media",
 
                 "src/main/res/layouts/main",
                 "src/main/res/layouts/main/edi",
@@ -39,6 +42,7 @@ android {
                 "src/main/res/layouts/dialog/toast",
                 "src/main/res/layouts/dialog/message",
                 "src/main/res/layouts/dialog/calendar",
+                "src/main/res/layouts/dialog/select",
 
                 "src/main/res/drawables",
                 "src/main/res/drawables/shape",
@@ -85,6 +89,12 @@ android {
         dataBinding = true
         buildConfig = true
     }
+    packaging {
+        resources {
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/io.netty.versions.properties"
+        }
+    }
 }
 
 dependencies {
@@ -94,6 +104,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.fragment)
+    implementation(libs.media3.player.ui)
+    implementation(libs.media3.player.common)
+    implementation(libs.media3.player.exoplayer)
     implementation(libs.material)
     implementation(libs.jetbrains.kotlin.std)
     implementation(libs.jetbrains.coroutines.core)
@@ -131,8 +144,12 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.glide.okhttp)
     implementation(libs.glide.compiler)
+    implementation(libs.webpdecoder)
 
     implementation(libs.androidx.multidex)
 
     implementation(libs.greenrobot.eventbus)
+
+    implementation(libs.fasterxml.jacson)
+    implementation(libs.hivemq.client)
 }

@@ -16,8 +16,7 @@ class AzureBlobRepository(private val _service: IAzureBlobService): IAzureBlobRe
     }
     override suspend fun upload(sasUrl: String, file: File, mimeType: MediaType): Response<ResponseBody> {
         val reqFile = file.asRequestBody(mimeType)
-        val body = MultipartBody.Part.createFormData("file", file.name, reqFile)
-        val response = _service.upload(sasUrl, body)
+        val response = _service.upload(sasUrl, reqFile)
         return response
     }
 }

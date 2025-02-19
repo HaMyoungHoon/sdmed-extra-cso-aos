@@ -9,6 +9,7 @@ import android.os.Build
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 import sdmed.extra.cso.R
+import sdmed.extra.cso.models.common.NotifyIndex
 import sdmed.extra.cso.models.services.FNotificationService
 
 class FBroadcastReceiver: BroadcastReceiver() {
@@ -17,8 +18,8 @@ class FBroadcastReceiver: BroadcastReceiver() {
         val fNotificationService: FNotificationService by kodein.instance(FNotificationService::class)
         val title = intent?.getStringExtra("title") ?: context.getString(R.string.app_name)
         val content = intent?.getStringExtra("content") ?: ""
-        val alarmType = intent?.getIntExtra("alarmType", 0) ?: 0
-        fNotificationService.sendNotify(context, alarmType, title, content, FNotificationService.NotifyType.DEFAULT)
+        val notifyIndex = NotifyIndex.parseIndex(intent?.getIntExtra("alarmType", 0))
+        fNotificationService.sendNotify(context, notifyIndex, title, content, FNotificationService.NotifyType.DEFAULT)
     }
 
     fun setAlarm(context: Context, content: String, afterSec: Int = 1) {

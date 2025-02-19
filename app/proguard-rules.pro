@@ -41,3 +41,6 @@
 -keep class * extends com.google.gson.TypeAdapter
 -keep, allowobfuscation, allowoptimization class org.kodein.di.TypeReference
 -keep, allowobfuscation, allowoptimization class * extends org.kodein.di.TypeReference
+
+-keepclassmembernames class io.netty.** { *; }
+-keepclassmembernames class org.jctools.** { *; }

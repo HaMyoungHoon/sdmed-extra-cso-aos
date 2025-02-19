@@ -5,9 +5,9 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="primary">#FF123456</color>
-    <color name="secondary">#FF15C7FF</color>
-    <color name="secondary2">#FF16EEFF</color>
+    <color name="primary">#FFABCDEF</color>
+    <color name="secondary">#FFFFC715</color>
+    <color name="secondary2">#FFFFEE16</color>
     <color name="red">#FFFF404D</color>
     <color name="red2">#FFFFD4C9</color>
     <color name="gray">#FF9FA4AB</color>

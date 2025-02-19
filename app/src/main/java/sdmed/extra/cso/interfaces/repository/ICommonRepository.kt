@@ -25,5 +25,6 @@ interface ICommonRepository {
     suspend fun getMyRole(): RestResultT<Int>
     suspend fun getMyState(): RestResultT<UserStatus>
     suspend fun getGenerateSas(blobName: String): RestResultT<BlobStorageInfoModel>
+    suspend fun postGenerateSasList(blobName: List<String>): RestResultT<List<BlobStorageInfoModel>>
     suspend fun downloadFile(url: String): Response<ResponseBody>?
 }

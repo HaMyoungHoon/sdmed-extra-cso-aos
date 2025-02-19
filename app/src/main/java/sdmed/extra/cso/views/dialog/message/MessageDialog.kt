@@ -24,9 +24,9 @@ class MessageDialog(
         setStyle(STYLE_NO_TITLE, R.style.TransparentDialog)
     }
 
-    override fun onBindAfter() {
+    override fun viewInit() {
         binding?.dataContext = dataContext
-        setEventListener()
+        super.viewInit()
         dataContext.title.value = title
         dataContext.leftBtnText.value = leftBtnText
         dataContext.rightBtnText.value = rightBtnText
@@ -35,7 +35,7 @@ class MessageDialog(
         if (!isCancel) isCancelable = isCancel
         buttonStyleSet()
     }
-    private fun setEventListener() {
+    override fun setEventListener() {
         dataContext.addEventListener(object: IAsyncEventListener {
             override suspend fun onEvent(data: Any?) {
                 eventListener.onEvent(data)
