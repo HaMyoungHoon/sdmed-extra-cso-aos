@@ -19,11 +19,4 @@ class EDIListItemAdapter(val lifecycleOwner: LifecycleOwner, val relayCommand: I
             it.dataContext = item
         }
     }
-    fun updateItem(data: EDIUploadModel?) {
-        val index = items.value.indexOfFirst { it == data }
-        if (index < 0) {
-            return
-        }
-        notifyItemChanged(index)
-    }
 }

@@ -40,6 +40,13 @@ abstract class FRecyclerAdapter<T1: ViewDataBinding, T2>: RecyclerView.Adapter<F
         items.value = data
         result.dispatchUpdatesTo(this)
     }
+    open fun updateItem(data: T2?) {
+        val index = items.value.indexOfFirst { it == data }
+        if (index < 0) {
+            return
+        }
+        notifyItemChanged(index)
+    }
     fun addItems(data: ArrayList<T2>) {
         val itemsBuff = items.value.toMutableList()
         itemsBuff.addAll(data)

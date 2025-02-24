@@ -16,11 +16,4 @@ class EllipseListAdapter(val lifecycleOwner: LifecycleOwner, val relayCommand: I
             it.dataContext = item
         }
     }
-    fun updateItem(data: EllipseItemModel) {
-        val index = items.value.indexOfFirst { it == data }
-        if (index < 0) {
-            return
-        }
-        notifyItemChanged(index)
-    }
 }

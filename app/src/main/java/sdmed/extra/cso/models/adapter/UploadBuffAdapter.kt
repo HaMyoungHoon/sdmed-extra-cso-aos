@@ -23,13 +23,6 @@ class UploadBuffAdapter(val lifecycleOwner: LifecycleOwner, val relayCommand: IC
             it.dataContext = item
         }
     }
-    fun updateItem(data: MediaPickerSourceModel) {
-        val index = items.value.indexOfFirst { it == data }
-        if (index < 0) {
-            return
-        }
-        notifyItemChanged(index)
-    }
 
     companion object {
         @JvmStatic

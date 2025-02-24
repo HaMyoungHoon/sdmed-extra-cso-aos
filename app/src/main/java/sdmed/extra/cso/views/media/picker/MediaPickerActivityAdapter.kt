@@ -19,11 +19,4 @@ class MediaPickerActivityAdapter(val lifecycleOwner: LifecycleOwner, val relayCo
             it.dataContext = item
         }
     }
-    fun updateItem(data: MediaPickerSourceModel?) {
-        val index = items.value.indexOfFirst { it == data }
-        if (index < 0) {
-            return
-        }
-        notifyItemChanged(index)
-    }
 }
