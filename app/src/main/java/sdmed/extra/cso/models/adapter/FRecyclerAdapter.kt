@@ -55,4 +55,7 @@ abstract class FRecyclerAdapter<T1: ViewDataBinding, T2>: RecyclerView.Adapter<F
         items.value = itemsBuff
         result.dispatchUpdatesTo(this)
     }
+    fun notifyItemChanged() {
+        notifyItemRangeChanged(0, items.value.size)
+    }
 }

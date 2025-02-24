@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.retrofit.medicines.MedicineModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.medicines.MedicineModel" />
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.orgName}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_ingredient_name"
+                tools:text="베아셋세미정 162.5mg" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_ingredient_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@{dataContext.medicineIngredientModel.mainIngredientName}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="acetaminophen 0.1625g" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_client_name_prefix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/client_name"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_client_name"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_client_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@{dataContext.clientName}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_client_name_prefix"
+                app:layout_constraintEnd_toStartOf="@id/tv_kd_code"
+                tools:text="대웅바이오" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_kd_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.kdCode}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="694000830" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_maker_name_prefix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/maker_name"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_maker_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{dataContext.makerName}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_maker_name_prefix"
+                app:layout_constraintEnd_toStartOf="@id/tv_max_price"
+                tools:text="대웅바이오"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_max_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@{dataContext.maxPriceString}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_price_unit"
+                tools:text="162" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_price_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/price_unit"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_standard" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.medicineSubModel.standard}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="40 (~12.54 50)" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_etc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.medicineSubModel.etc1}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                android:visibility="@{dataContext.medicineSubModel.etc1.length() > 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="약가인하: 24년 11월 처방분부터 146원 -> 135원" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_gray" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

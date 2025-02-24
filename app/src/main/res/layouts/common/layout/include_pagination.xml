@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.common.PaginationModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.common.PaginationModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/tv_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@{dataContext.first ? @drawable/vector_double_left_disable : @drawable/vector_double_left}"
+                android:onClick="@{() -> dataContext.onClick(ClickEvent.FIRST)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:src="@drawable/vector_double_left"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_page"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:orientation="horizontal"
+                app:recyclerPageNumberItem="@{dataContext.pages}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_first"
+                app:layout_constraintEnd_toStartOf="@id/tv_last"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/tv_last"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@{dataContext.last ? @drawable/vector_double_right_disable : @drawable/vector_double_right}"
+                android:onClick="@{() -> dataContext.onClick(ClickEvent.LAST)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:src="@drawable/vector_double_right_disable"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

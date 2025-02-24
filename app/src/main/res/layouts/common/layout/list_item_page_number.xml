@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.common.PageNumberModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.common.PageNumberModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="@{dataContext.visible ? View.VISIBLE : View.GONE}"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@{dataContext.select ? @drawable/shape_circle_primary : @drawable/shape_circle_def}"
+            android:visibility="@{dataContext.visible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:src="@drawable/shape_circle_primary"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{dataContext.pageNumberString}"
+            android:fontFamily="@font/goyang"
+            android:textColor="@{dataContext.select ? @color/def_background : @color/def_foreground}"
+            android:textSize="24sp"
+            android:visibility="@{dataContext.visible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="2"
+            tools:textColor="@color/def_foreground"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

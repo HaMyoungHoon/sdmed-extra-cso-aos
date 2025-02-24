@@ -74,4 +74,7 @@
     <string name="mqtt_title_ediRecep">EDI 수신</string>
     <string name="mqtt_title_ediFileAdd">EDI 파일 추가</string>
     <string name="mqtt_title_ediDelete">EDI 파일 제거</string>
+    <string name="price_unit" translatable="false">원</string>
+    <string name="client_name">발주처</string>
+    <string name="maker_name">제조사</string>
 </resources>
