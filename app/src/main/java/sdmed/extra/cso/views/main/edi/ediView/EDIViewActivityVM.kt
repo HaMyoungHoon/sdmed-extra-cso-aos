@@ -30,7 +30,17 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
     val isSavable = MutableStateFlow(false)
 
     suspend fun getData(): RestResultT<EDIUploadModel> {
-        return ediListRepository.getData(thisPK)
+        val ret = ediListRepository.getData(thisPK)
+        if (ret.result == true) {
+            item.value = ret.data ?: EDIUploadModel()
+            val ellipseBuff = mutableListOf<EllipseItemModel>()
+            ret.data?.fileList?.forEach { ellipseBuff.add(EllipseItemModel()) }
+            ellipseList.value = ellipseBuff
+            uploadItems.value = mutableListOf()
+            isAddable.value = item.value.ediState.isEditable()
+            isSavable.value = uploadItems.value.isNotEmpty()
+        }
+        return ret
     }
     suspend fun postFile(ediUploadFileModel: List<EDIUploadFileModel>): RestResultT<List<EDIUploadFileModel>> {
         return ediListRepository.postFile(thisPK, ediUploadFileModel)

@@ -81,6 +81,8 @@
                     android:maxHeight="360dp"
                     android:orientation="horizontal"
                     android:visibility="@{dataContext.item.fileList.size() > 0 ? View.VISIBLE : View.GONE}"
+                    android:nestedScrollingEnabled="false"
+                    app:viewPagerEDIFileList="@{dataContext.item}"
                     app:layout_constraintTop_toBottomOf="@id/rv_pharma_list"
                     tools:layout_editor_absoluteX="0dp" />
                 <androidx.recyclerview.widget.RecyclerView

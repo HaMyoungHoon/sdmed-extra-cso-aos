@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -219,7 +220,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
     }
     private fun setEDIFileAdapter() {
         val binding = super.binding ?: return
-        binding.vpEdiFileList.adapter = EDIViewFileAdapter(this, mutableListOf(), dataContext.relayCommand)
+        binding.vpEdiFileList.adapter = EDIViewFileAdapter(this, dataContext.relayCommand)
         binding.vpEdiFileList.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 updateEllipseList(position)
@@ -258,15 +259,8 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
                 toast(ret.msg)
                 return@coroutineScope
             }
-            dataContext.item.value = ret.data ?: EDIUploadModel()
-            val ellipseList = mutableListOf<EllipseItemModel>()
-            ret.data?.fileList?.forEach { ellipseList.add(EllipseItemModel()) }
-            dataContext.ellipseList.value = ellipseList
-            getFileViewAdapter()?.updateItems(dataContext.item.value.fileList)
+//            getFileViewAdapter()?.updateItems(dataContext.item.value.fileList)
             binding?.vpEdiFileList?.isUserInputEnabled = dataContext.item.value.fileList.size > 1
-            dataContext.uploadItems.value = mutableListOf()
-            dataContext.isAddable.value = dataContext.item.value.ediState.isEditable()
-            dataContext.isSavable.value = dataContext.uploadItems.value.isNotEmpty()
             updateEllipseList(0)
         })
     }
@@ -375,6 +369,16 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         }
     }
     companion object {
+        @JvmStatic
+        @BindingAdapter("viewPagerEDIFileList")
+        fun setViewPagerEDIFileList(viewPager2: ViewPager2, item: StateFlow<EDIUploadModel>?) {
+            val adapter = viewPager2.adapter as? EDIViewFileAdapter ?: return
+            adapter.lifecycleOwner.lifecycleScope.launch {
+                item?.collectLatest {
+                    adapter.updateItems(it.fileList)
+                }
+            }
+        }
         @JvmStatic
         @BindingAdapter("recyclerEDIPharmaList")
         fun setEDIPharmaList(recyclerView: RecyclerView, item: StateFlow<EDIUploadModel>?) {

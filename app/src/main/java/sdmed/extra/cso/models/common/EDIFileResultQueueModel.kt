@@ -19,8 +19,4 @@ data class EDIFileResultQueueModel(
         mediaIndexList.add(itemIndex)
         itemCount--
     }
-    fun getMergeEDIUploadModel(): EDIUploadModel {
-        ediUploadModel.fileList = medias
-        return ediUploadModel
-    }
 }
