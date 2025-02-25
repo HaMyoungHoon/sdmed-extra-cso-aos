@@ -16,6 +16,9 @@
     <color name="absolute_black">#FF000000</color>
     <color name="absolute_white">#FFFFFFFF</color>
 
+    <color name="recycler_odd">#3313F7C5</color>
+    <color name="recycler_even">#33C5F713</color>
+
     <color name="transparent">#00000000</color>
     <color name="def_background">#FFFFFFFF</color>
     <color name="def_foreground">#FF000000</color>
@@ -33,4 +36,9 @@
     <color name="edi_state_reject">#FFD0505D</color>
     <color name="edi_state_pending">#FF6F8F8F</color>
     <color name="edi_state_partial">#FF6260EE</color>
+
+    <color name="qna_state_none">@color/def_foreground</color>
+    <color name="qna_state_ok">#FF018786</color>
+    <color name="qna_state_recep">#FF6F8F8F</color>
+    <color name="qna_state_reply">#FF6260EE</color>
 </resources>

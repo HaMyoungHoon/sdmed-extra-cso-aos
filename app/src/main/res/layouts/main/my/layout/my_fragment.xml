@@ -250,7 +250,6 @@
                     android:id="@+id/vw_hospital_top_line"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_margin="5dp"
                     android:background="@color/divider_gray"
                     app:layout_constraintTop_toBottomOf="@id/ll_middle_container" />
                 <androidx.appcompat.widget.AppCompatTextView
@@ -268,7 +267,6 @@
                     android:id="@+id/rv_user_hospital"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxHeight="300dp"
                     app:recyclerUserHospitalList="@{dataContext.hosList}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/tv_own_hospital_list"
@@ -277,7 +275,6 @@
                     android:id="@+id/vw_pharma_top_line"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_margin="5dp"
                     android:background="@color/divider_gray"
                     app:layout_constraintTop_toBottomOf="@id/rv_user_hospital" />
                 <androidx.appcompat.widget.AppCompatTextView
@@ -295,8 +292,6 @@
                     android:id="@+id/rv_user_pharma"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:maxHeight="300dp"
                     app:recyclerUserPharmaList="@{dataContext.pharmaList}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/tv_own_pharma_list"

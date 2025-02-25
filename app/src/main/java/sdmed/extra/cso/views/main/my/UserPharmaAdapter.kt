@@ -17,6 +17,13 @@ class UserPharmaAdapter(val lifecycleOwner: LifecycleOwner, val relayCommand: IC
             item.relayCommand = relayCommand
             it.lifecycleOwner = lifecycleOwner
             it.dataContext = item
+
+            val backgroundColor = it.root.context.getColor(if (position % 2 == 0) {
+                R.color.recycler_even
+            } else {
+                R.color.recycler_odd
+            })
+            holder.itemView.setBackgroundColor(backgroundColor)
         }
     }
 }
