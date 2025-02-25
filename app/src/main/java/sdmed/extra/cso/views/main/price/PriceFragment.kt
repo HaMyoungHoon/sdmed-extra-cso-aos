@@ -93,7 +93,7 @@ class PriceFragment: FBaseFragment<PriceFragmentBinding, PriceFragmentVM>() {
                     return
                 }
                 dataContext.page.value = 0
-                binding?.includePagination?.updateSelect(0)
+                binding?.includePagination?.firstSelect()
                 addList()
             }
             PaginationModel.ClickEvent.PREV -> { }
@@ -103,7 +103,7 @@ class PriceFragment: FBaseFragment<PriceFragmentBinding, PriceFragmentVM>() {
                     return
                 }
                 dataContext.page.value = dataBuff.totalPages - 1
-                binding?.includePagination?.updateSelect(dataBuff.totalPages - 1)
+                binding?.includePagination?.lastSelect()
                 addList()
             }
         }
