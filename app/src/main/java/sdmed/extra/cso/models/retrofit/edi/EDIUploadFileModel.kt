@@ -1,7 +1,6 @@
 package sdmed.extra.cso.models.retrofit.edi
 
 import sdmed.extra.cso.bases.FDataModelClass
-import sdmed.extra.cso.utils.FImageUtils
 
 data class EDIUploadFileModel(
     var thisPK: String = "",
@@ -25,7 +24,6 @@ data class EDIUploadFileModel(
         this.inVisible = rhs.inVisible
         return this
     }
-    fun getDefaultImage() = FImageUtils.getDefaultImage(mimeType)
     enum class ClickEvent(var index: Int) {
         THIS(0)
     }

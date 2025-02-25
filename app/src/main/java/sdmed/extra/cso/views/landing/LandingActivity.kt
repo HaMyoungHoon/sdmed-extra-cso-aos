@@ -34,6 +34,10 @@ class LandingActivity: FBaseActivity<LandingActivityBinding, LandingActivityVM>(
     }
     private fun versionCheck() {
         dataContext.versionCheck {
+            if (it.result != true) {
+                toast(it.msg)
+                return@versionCheck
+            }
             setEventListener()
             loading(false)
             if (!it.data.isNullOrEmpty()) {

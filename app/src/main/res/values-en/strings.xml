@@ -76,4 +76,11 @@
     <string name="mqtt_title_ediDelete">edi file remove</string>
     <string name="client_name">client</string>
     <string name="maker_name">maker</string>
+    <string name="logout_desc">logout</string>
+    <string name="last_login_desc">login date</string>
+    <string name="cso_report_desc">cso report</string>
+    <string name="marketing_contract_desc">marketing contract</string>
+    <string name="password_change_desc">password change</string>
+    <string name="own_hospital_list_desc">own hospital list</string>
+    <string name="own_pharma_list_desc">own pharma list</string>
 </resources>

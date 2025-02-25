@@ -25,4 +25,12 @@ data class UserDataModel(
     var hosList: MutableList<HospitalModel> = mutableListOf(),
     var fileList: MutableList<UserFileModel> = mutableListOf(),
 ) {
+    val taxPayerUrl: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.blobUrl
+    val taxPayerMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
+    val bankAccountUrl: String? get() = fileList.find { it.userFileType == UserFileType.BankAccount }?.blobUrl
+    val bankAccountMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
+    val csoReportUrl: String? get() = fileList.find { it.userFileType == UserFileType.CsoReport }?.blobUrl
+    val csoReportMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
+    val marketingContractUrl: String? get() = fileList.find { it.userFileType == UserFileType.MarketingContract }?.blobUrl
+    val marketingContractMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
 }

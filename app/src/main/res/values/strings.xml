@@ -77,4 +77,11 @@
     <string name="price_unit" translatable="false">원</string>
     <string name="client_name">발주처</string>
     <string name="maker_name">제조사</string>
+    <string name="logout_desc">로그아웃</string>
+    <string name="last_login_desc">마지막 로그인일</string>
+    <string name="cso_report_desc">CSO 신고증</string>
+    <string name="marketing_contract_desc">마케팅 계약서</string>
+    <string name="password_change_desc">비밀번호변경</string>
+    <string name="own_hospital_list_desc">보유병원목록</string>
+    <string name="own_pharma_list_desc">보유제약사목록</string>
 </resources>

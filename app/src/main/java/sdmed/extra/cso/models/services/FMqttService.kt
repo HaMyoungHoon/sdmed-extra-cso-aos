@@ -103,7 +103,6 @@ class FMqttService(context: Context): Service(), KodeinAware {
                 .build()
             client?.toAsync()?.subscribe(mqtt5Subscribe) { x -> parsePublish(x) }
         } catch (e: Exception) {
-            FLog.debug("mqtt", e.toString())
         }
     }
     fun parsePublish(data: Mqtt5Publish) {
@@ -134,8 +133,7 @@ class FMqttService(context: Context): Service(), KodeinAware {
                 MqttContentType.EDI_FILE_ADD -> { }
                 MqttContentType.EDI_FILE_DELETE -> notificationService.sendNotify(context, NotifyIndex.EDI_FILE_REMOVE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, thisPK = mqttContentModel.targetItemPK)
             }
-        } catch (e: Exception) {
-            FLog.debug("mqtt", e.toString())
+        } catch (_: Exception) {
         }
     }
 }

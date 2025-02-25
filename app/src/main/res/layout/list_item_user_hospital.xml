@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.retrofit.hospitals.HospitalModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.hospitals.HospitalModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_org_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{dataContext.orgName}"
+            android:fontFamily="@font/goyang"
+            android:textColor="@color/def_foreground"
+            android:textSize="24sp"
+            android:maxLines="1"
+            android:ellipsize="middle"
+            android:visibility="@{dataContext.orgName.length() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="서울시 서울구 서울병원 서울점" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@{dataContext.address}"
+            android:fontFamily="@font/goyang"
+            android:textColor="@color/def_foreground"
+            android:textColorHint="@color/def_foreground"
+            android:textSize="24sp"
+            android:maxLines="1"
+            android:ellipsize="middle"
+            android:visibility="@{dataContext.address.length() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/tv_org_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="서울로 1길 1-1 1동 1호 미낭러마ㅣㄴ얼미ㅏㄴ얾미나얼마ㅣㄴ얼" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

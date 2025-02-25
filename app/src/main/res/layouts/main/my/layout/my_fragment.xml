@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View" />
         <import type="sdmed.extra.cso.views.main.my.MyFragmentVM.ClickEvent" />
         <variable
             name="dataContext"
@@ -11,13 +12,296 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.appcompat.widget.AppCompatTextView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="my fragment"
-            android:fontFamily="@font/goyang"
-            android:textColor="@color/def_foreground" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.thisData.id}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="24sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="idid" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.thisData.name}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="24sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="이름이름" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:text="@string/logout_desc"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.LOGOUT)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/vw_top_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_gray"
+            app:layout_constraintTop_toBottomOf="@id/cl_top_container" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:paddingBottom="55dp"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toBottomOf="@id/vw_top_line">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_middle_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/password_change_desc"
+                        android:padding="5dp"
+                        android:fontFamily="@font/goyang"
+                        android:textColor="@color/def_foreground"
+                        android:textSize="16sp"
+                        android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.PASSWORD_CHANGE)}"
+                        android:background="@drawable/shape_rounded_box_able_5dp" />
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="@string/last_login_desc"
+                            android:fontFamily="@font/goyang"
+                            android:textColor="@color/def_foreground"
+                            android:textSize="16sp" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{dataContext.thisData.lastLoginDate.toLocaleString()}"
+                            android:fontFamily="@font/goyang"
+                            android:textColor="@color/def_foreground"
+                            android:textSize="16sp"
+                            tools:text="2025-02-24 16:58:36"/>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_TAXPAYER)}"
+                            android:layout_marginTop="10dp">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_taxpayer"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                app:layout_constraintDimensionRatio="1:1"
+                                app:glideBlobUrl="@{dataContext.thisData.taxPayerUrl}"
+                                app:glideBlobMimeType="@{dataContext.thisData.taxPayerMimeType}"
+                                tools:src="@drawable/buff_image"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_company_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{dataContext.thisData.companyName}"
+                                android:fontFamily="@font/goyang"
+                                android:textColor="@color/def_foreground"
+                                android:textSize="16sp"
+                                app:layout_constraintTop_toBottomOf="@id/iv_taxpayer"
+                                app:layout_constraintStart_toStartOf="@id/iv_taxpayer"
+                                app:layout_constraintEnd_toEndOf="@id/iv_taxpayer"
+                                tools:text="뿅뿅 주식회사" />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{dataContext.thisData.companyNumber}"
+                                android:fontFamily="@font/goyang"
+                                android:textColor="@color/def_foreground"
+                                android:textSize="16sp"
+                                app:layout_constraintTop_toBottomOf="@id/tv_company_name"
+                                app:layout_constraintStart_toStartOf="@id/iv_taxpayer"
+                                app:layout_constraintEnd_toEndOf="@id/iv_taxpayer"
+                                tools:text="12-1345-567" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_BANK_ACCOUNT)}"
+                            android:layout_marginTop="10dp">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_bank_account"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                app:layout_constraintDimensionRatio="1:1"
+                                app:glideBlobUrl="@{dataContext.thisData.bankAccountUrl}"
+                                app:glideBlobMimeType="@{dataContext.thisData.bankAccountMimeType}"
+                                tools:src="@drawable/buff_image"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{dataContext.thisData.bankAccount}"
+                                android:fontFamily="@font/goyang"
+                                android:textColor="@color/def_foreground"
+                                android:textSize="16sp"
+                                app:layout_constraintTop_toBottomOf="@id/iv_bank_account"
+                                app:layout_constraintStart_toStartOf="@id/iv_bank_account"
+                                app:layout_constraintEnd_toEndOf="@id/iv_bank_account"
+                                tools:text="뿅뿅 주식회사" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_CSO_REPORT)}"
+                            android:layout_marginTop="10dp">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_cso_report"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                app:layout_constraintDimensionRatio="1:1"
+                                app:glideBlobUrl="@{dataContext.thisData.csoReportUrl}"
+                                app:glideBlobMimeType="@{dataContext.thisData.csoReportMimeType}"
+                                tools:src="@drawable/buff_image"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/cso_report_desc"
+                                android:fontFamily="@font/goyang"
+                                android:textColor="@color/def_foreground"
+                                android:textSize="16sp"
+                                app:layout_constraintTop_toBottomOf="@id/iv_cso_report"
+                                app:layout_constraintStart_toStartOf="@id/iv_cso_report"
+                                app:layout_constraintEnd_toEndOf="@id/iv_cso_report" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_MARKETING_CONTRACT)}"
+                            android:layout_marginTop="10dp">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_marketing_contract"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                app:layout_constraintDimensionRatio="1:1"
+                                app:glideBlobUrl="@{dataContext.thisData.marketingContractUrl}"
+                                app:glideBlobMimeType="@{dataContext.thisData.marketingContractMimeType}"
+                                tools:src="@drawable/buff_image"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/marketing_contract_desc"
+                                android:fontFamily="@font/goyang"
+                                android:textColor="@color/def_foreground"
+                                android:textSize="16sp"
+                                app:layout_constraintTop_toBottomOf="@id/iv_marketing_contract"
+                                app:layout_constraintStart_toStartOf="@id/iv_marketing_contract"
+                                app:layout_constraintEnd_toEndOf="@id/iv_marketing_contract" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <View
+                    android:id="@+id/vw_hospital_top_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/divider_gray"
+                    app:layout_constraintTop_toBottomOf="@id/ll_middle_container" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_own_hospital_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/own_hospital_list_desc"
+                    android:fontFamily="@font/goyang"
+                    android:textColor="@color/def_foreground"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/vw_hospital_top_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_user_hospital"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="300dp"
+                    app:recyclerUserHospitalList="@{dataContext.hosList}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/tv_own_hospital_list"
+                    app:layout_constraintBottom_toTopOf="@id/rv_user_pharma"/>
+                <View
+                    android:id="@+id/vw_pharma_top_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="5dp"
+                    android:background="@color/divider_gray"
+                    app:layout_constraintTop_toBottomOf="@id/rv_user_hospital" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_own_pharma_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/own_pharma_list_desc"
+                    android:fontFamily="@font/goyang"
+                    android:textColor="@color/def_foreground"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/vw_pharma_top_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_user_pharma"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:maxHeight="300dp"
+                    app:recyclerUserPharmaList="@{dataContext.pharmaList}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/tv_own_pharma_list"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

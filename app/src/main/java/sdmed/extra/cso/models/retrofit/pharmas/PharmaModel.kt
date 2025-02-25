@@ -1,5 +1,6 @@
 package sdmed.extra.cso.models.retrofit.pharmas
 
+import sdmed.extra.cso.bases.FDataModelClass
 import sdmed.extra.cso.models.retrofit.common.BillType
 import sdmed.extra.cso.models.retrofit.common.ContractType
 import sdmed.extra.cso.models.retrofit.common.DeliveryDiv
@@ -38,5 +39,9 @@ data class PharmaModel(
     var inVisible: Boolean = false,
     var medicineList: MutableList<MedicineModel> = mutableListOf(),
     var relationMedicineList: MutableList<MedicineModel> = mutableListOf(),
-) {
+): FDataModelClass<PharmaModel.ClickEvent>() {
+
+    enum class ClickEvent(var index: Int) {
+        THIS(0)
+    }
 }
