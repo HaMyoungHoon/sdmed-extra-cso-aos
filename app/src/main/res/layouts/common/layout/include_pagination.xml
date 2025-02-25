@@ -57,6 +57,5 @@
                 tools:src="@drawable/vector_double_right_disable"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

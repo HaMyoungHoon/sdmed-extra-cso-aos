@@ -36,7 +36,7 @@ class PriceFragment: FBaseFragment<PriceFragmentBinding, PriceFragmentVM>() {
     }
 
     private fun setPriceAdapter() = binding?.rvPriceList?.adapter = PriceAdapter(dataContext.relayCommand)
-    private fun setPagination() = binding?.includePagination?.afterInit(viewLifecycleOwner, dataContext.paginationModel, dataContext.relayCommand)
+    private fun setPagination() = binding?.includePagination?.afterInit(dataContext.relayCommand)
     @OptIn(FlowPreview::class)
     private fun getSearch() {
         lifecycleScope.launch {

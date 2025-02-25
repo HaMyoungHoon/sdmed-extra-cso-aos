@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -17,20 +16,16 @@ import sdmed.extra.cso.models.common.PageNumberModel
 import sdmed.extra.cso.models.common.PaginationModel
 import sdmed.extra.cso.utils.FExtensions
 
-class PaginationAdapter @JvmOverloads constructor(context: Context,
-                        attrs: AttributeSet? = null,
-                        defStyleAttr: Int = 0): androidx.constraintlayout.widget.ConstraintLayout(context, attrs, defStyleAttr) {
+class PaginationAdapter
+@JvmOverloads constructor(context: Context,
+                          attrs: AttributeSet? = null,
+                          defStyleAttr: Int = 0
+): androidx.constraintlayout.widget.ConstraintLayout(context, attrs, defStyleAttr) {
     var binding: IncludePaginationBinding = IncludePaginationBinding.inflate(LayoutInflater.from(context), this, true)
-    fun afterInit(lifecycleOwner: LifecycleOwner, dataModel: StateFlow<PaginationModel>, relayCommand: ICommand) {
-        binding.lifecycleOwner = lifecycleOwner
+    var relayCommand: ICommand? = null
+    fun afterInit(relayCommand: ICommand) {
+        this.relayCommand = relayCommand
         binding.rvPage.adapter = PageNumberAdapter(relayCommand)
-        lifecycleOwner.lifecycleScope.launch {
-            dataModel.collectLatest {
-                it.relayCommand = relayCommand
-                binding.dataContext = it
-                updateSelect(0)
-            }
-        }
     }
     fun firstSelect() {
         updateSelect(0)
@@ -59,10 +54,18 @@ class PaginationAdapter @JvmOverloads constructor(context: Context,
         buff[position].selectThis()
         binding.dataContext?.pages?.value = buff
     }
-    fun getPageAdapter(): PageNumberAdapter? {
-        return binding.rvPage.adapter as? PageNumberAdapter
-    }
     companion object {
+        @JvmStatic
+        @BindingAdapter("paginationItem")
+        fun setPaginationItem(paginationAdapter: PaginationAdapter, item: StateFlow<PaginationModel>?) {
+            paginationAdapter.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+                item?.collectLatest {
+                    it.relayCommand = paginationAdapter.relayCommand
+                    paginationAdapter.binding.dataContext = it
+                    paginationAdapter.updateSelect(0)
+                }
+            }
+        }
         @JvmStatic
         @BindingAdapter("recyclerPageNumberItem")
         fun setRecyclerPageNumberItem(recyclerView: RecyclerView, listItem: StateFlow<MutableList<PageNumberModel>>?) {
