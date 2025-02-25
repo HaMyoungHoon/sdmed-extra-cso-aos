@@ -13,8 +13,8 @@ class PageNumberAdapter(val lifecycleOwner: LifecycleOwner, private val relayCom
         holder.binding?.let {
             val item = items.value[position]
             item.relayCommand = relayCommand
-            it.dataContext = item
             it.lifecycleOwner = lifecycleOwner
+            it.dataContext = item
         }
     }
 }

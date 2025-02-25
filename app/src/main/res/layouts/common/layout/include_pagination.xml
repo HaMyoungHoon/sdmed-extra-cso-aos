@@ -31,12 +31,14 @@
                 tools:src="@drawable/vector_double_left"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_page"
-                android:layout_width="240dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:maxWidth="240dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:orientation="horizontal"
                 app:recyclerPageNumberItem="@{dataContext.pages}"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

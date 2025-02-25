@@ -15,6 +15,7 @@ import sdmed.extra.cso.interfaces.command.ICommand
 import sdmed.extra.cso.models.common.PageNumberModel
 import sdmed.extra.cso.models.common.PaginationModel
 import sdmed.extra.cso.utils.FCoroutineUtil
+import sdmed.extra.cso.utils.FExtensions
 
 class PaginationAdapter @JvmOverloads constructor(context: Context,
                         attrs: AttributeSet? = null,
@@ -58,6 +59,13 @@ class PaginationAdapter @JvmOverloads constructor(context: Context,
             adapter.lifecycleOwner.lifecycleScope.launch {
                 listItem?.collectLatest {
                     adapter.updateItems(it)
+                    val layoutParams = recyclerView.layoutParams
+                    var count = it.size
+                    if (count > 5) {
+                        count = 5
+                    }
+                    layoutParams.width = FExtensions.dpToPx(recyclerView.context, count * 30)
+                    recyclerView.layoutParams = layoutParams
                 }
             }
         }
