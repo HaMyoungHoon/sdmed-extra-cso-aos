@@ -54,8 +54,11 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, layoutId)
-        binding?.lifecycleOwner = this
+        val bindingBuff: T1 = DataBindingUtil.setContentView(this, layoutId)
+        bindingBuff.lifecycleOwner = this
+        val method = bindingBuff::class.java.getMethod("setDataContext", dataContext::class.java)
+        method.invoke(bindingBuff, dataContext)
+        binding = bindingBuff
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }

@@ -8,14 +8,20 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.MutableStateFlow
+import sdmed.extra.cso.bases.FDataModelClass
+import sdmed.extra.cso.interfaces.command.ICommand
 
-abstract class FRecyclerAdapter<T1: ViewDataBinding, T2>: RecyclerView.Adapter<FRecyclerViewHolder<T1>>() {
+abstract class FRecyclerAdapter<T1: ViewDataBinding, T2: FDataModelClass<*>>(val relayCommand: ICommand): RecyclerView.Adapter<FRecyclerViewHolder<T1>>() {
     protected var items = MutableStateFlow(mutableListOf<T2>())
     protected abstract var layoutId: Int
-    protected abstract var lifecycle: Lifecycle
     override fun getItemCount() = items.value.size
     override fun onBindViewHolder(holder: FRecyclerViewHolder<T1>, position: Int) {
         holder.binding?.let {
+            val item = items.value[position]
+            item.relayCommand = relayCommand
+            val method = it::class.java.getMethod("setDataContext", item::class.java)
+            method.invoke(it, item)
+            onBindAfter(holder, position)
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FRecyclerViewHolder<T1> {
@@ -23,6 +29,8 @@ abstract class FRecyclerAdapter<T1: ViewDataBinding, T2>: RecyclerView.Adapter<F
         val viewHolder = FRecyclerViewHolder<T1>(inflater.inflate(layoutId, parent, false))
         viewHolder.binding?.lifecycleOwner = parent.findViewTreeLifecycleOwner()
         return viewHolder
+    }
+    open fun onBindAfter(holder: FRecyclerViewHolder<T1>, position: Int) {
     }
 
     fun clearItems() {

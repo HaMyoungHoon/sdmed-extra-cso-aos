@@ -12,7 +12,6 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         EDIRequestFragmentVM(multiDexApplication)
     }
     override fun viewInit() {
-        binding?.dataContext
         super.viewInit()
     }
     override fun setLayoutCommand(data: Any?) {

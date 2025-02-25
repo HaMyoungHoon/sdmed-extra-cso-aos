@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,6 @@ import sdmed.extra.cso.databinding.IncludePaginationBinding
 import sdmed.extra.cso.interfaces.command.ICommand
 import sdmed.extra.cso.models.common.PageNumberModel
 import sdmed.extra.cso.models.common.PaginationModel
-import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
 
 class PaginationAdapter @JvmOverloads constructor(context: Context,
@@ -23,7 +23,7 @@ class PaginationAdapter @JvmOverloads constructor(context: Context,
     var binding: IncludePaginationBinding = IncludePaginationBinding.inflate(LayoutInflater.from(context), this, true)
     fun afterInit(lifecycleOwner: LifecycleOwner, dataModel: StateFlow<PaginationModel>, relayCommand: ICommand) {
         binding.lifecycleOwner = lifecycleOwner
-        binding.rvPage.adapter = PageNumberAdapter(lifecycleOwner, relayCommand)
+        binding.rvPage.adapter = PageNumberAdapter(relayCommand)
         lifecycleOwner.lifecycleScope.launch {
             dataModel.collectLatest {
                 it.relayCommand = relayCommand
@@ -67,7 +67,7 @@ class PaginationAdapter @JvmOverloads constructor(context: Context,
         @BindingAdapter("recyclerPageNumberItem")
         fun setRecyclerPageNumberItem(recyclerView: RecyclerView, listItem: StateFlow<MutableList<PageNumberModel>>?) {
             val adapter = recyclerView.adapter as? PageNumberAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 listItem?.collectLatest {
                     adapter.updateItems(it)
                     val layoutParams = recyclerView.layoutParams

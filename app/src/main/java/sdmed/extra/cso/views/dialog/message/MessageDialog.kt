@@ -25,7 +25,6 @@ class MessageDialog(
     }
 
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
         dataContext.title.value = title
         dataContext.leftBtnText.value = leftBtnText

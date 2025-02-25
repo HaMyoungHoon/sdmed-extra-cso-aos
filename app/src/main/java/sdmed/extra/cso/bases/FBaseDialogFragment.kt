@@ -37,8 +37,11 @@ abstract class FBaseDialogFragment<T1: ViewDataBinding, T2: FBaseViewModel>: Dia
         onCreateAfter()
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        binding?.lifecycleOwner = viewLifecycleOwner
+        val bindingBuff: T1 = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        bindingBuff.lifecycleOwner = viewLifecycleOwner
+        val method = bindingBuff::class.java.getMethod("setDataContext", dataContext::class.java)
+        method.invoke(bindingBuff, dataContext)
+        binding = bindingBuff
         onBindAfter()
         return binding?.root
     }

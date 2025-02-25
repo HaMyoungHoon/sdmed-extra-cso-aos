@@ -18,7 +18,6 @@ class LoginActivity: FBaseActivity<LoginActivityBinding, LoginActivityVM>() {
         LoginActivityVM(multiDexApplication)
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
         observeText()
     }

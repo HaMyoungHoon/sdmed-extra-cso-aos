@@ -1,6 +1,7 @@
 package sdmed.extra.cso.views.dialog.select
 
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,6 @@ class SelectDialog(private val items: List<SelectListModel>, private val orienta
         SelectDialogVM(multiDexApplication)
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         dataContext.items.value = items.toMutableList()
         super.viewInit()
         setSelectAdapter()
@@ -30,7 +30,7 @@ class SelectDialog(private val items: List<SelectListModel>, private val orienta
     }
 
     private fun setSelectAdapter() {
-        binding?.rvSelectList?.adapter = SelectDialogAdapter(viewLifecycleOwner, dataContext.relayCommand)
+        binding?.rvSelectList?.adapter = SelectDialogAdapter(dataContext.relayCommand)
         binding?.rvSelectList?.layoutManager = LinearLayoutManager(contextBuff, orientation, false)
     }
 
@@ -39,7 +39,7 @@ class SelectDialog(private val items: List<SelectListModel>, private val orienta
         @BindingAdapter("recyclerSelectItem")
         fun setSelectItem(recyclerView: RecyclerView, listItems: StateFlow<MutableList<SelectListModel>>?) {
             val adapter = recyclerView.adapter as? SelectDialogAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 listItems?.collectLatest {
                     adapter.updateItems(it)
                 }

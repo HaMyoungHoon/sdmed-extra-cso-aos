@@ -16,7 +16,6 @@ class LoadingDialog(context: Context, private val msg: String = "", private val 
         setCancelable(false)
         window?.setDimAmount(alpha)
         window?.setBackgroundDrawable(getResColor(R.color.transparent).toDrawable())
-        binding?.dataContext = dataContext
         dataContext.msg.value = msg
     }
 }

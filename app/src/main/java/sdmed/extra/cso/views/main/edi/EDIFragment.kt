@@ -23,7 +23,6 @@ class EDIFragment: FBaseFragment<EdiFragmentBinding, EDIFragmentVM>(), AppBarLay
     }
     private var pagerAdapter: EDIFragmentAdapter? = null
     override fun viewInit() {
-        binding?.dataContext = dataContext
         setViewPager()
         setTabLayout()
         setAppBarLayout()

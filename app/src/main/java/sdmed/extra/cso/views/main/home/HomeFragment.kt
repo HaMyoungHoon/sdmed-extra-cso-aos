@@ -10,7 +10,6 @@ class HomeFragment: FBaseFragment<HomeFragmentBinding, HomeFragmentVM>() {
         HomeFragmentVM(multiDexApplication)
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
     }
     override fun setLayoutCommand(data: Any?) {

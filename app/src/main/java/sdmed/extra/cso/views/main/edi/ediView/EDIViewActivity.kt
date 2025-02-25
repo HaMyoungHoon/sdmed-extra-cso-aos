@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -60,7 +61,6 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         registerActivityResult()
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
         dataContext.thisPK = intent.getStringExtra("thisPK") ?: ""
         setEDIPharmaAdapter()
@@ -216,20 +216,20 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
 
     private fun setEDIPharmaAdapter() {
         val binding = super.binding ?: return
-        binding.rvPharmaList.adapter = EDIViewPharmaAdapter(this, dataContext.relayCommand)
+        binding.rvPharmaList.adapter = EDIViewPharmaAdapter(dataContext.relayCommand)
     }
     private fun setEDIFileAdapter() {
         val binding = super.binding ?: return
-        binding.vpEdiFileList.adapter = EDIViewFileAdapter(this, dataContext.relayCommand)
+        binding.vpEdiFileList.adapter = EDIViewFileAdapter(dataContext.relayCommand)
         binding.vpEdiFileList.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 updateEllipseList(position)
             }
         })
     }
-    private fun setEllipseAdapter() = binding?.rvEllipseList?.adapter = EllipseListAdapter(this, dataContext.relayCommand)
-    private fun setEDIResponseAdapter() = binding?.rvResponseList?.adapter = EDIViewResponseAdapter(this, dataContext.relayCommand)
-    private fun setUploadBuffAdapter() = binding?.rvUploadBuffList?.adapter = UploadBuffAdapter(this, dataContext.relayCommand)
+    private fun setEllipseAdapter() = binding?.rvEllipseList?.adapter = EllipseListAdapter(dataContext.relayCommand)
+    private fun setEDIResponseAdapter() = binding?.rvResponseList?.adapter = EDIViewResponseAdapter(dataContext.relayCommand)
+    private fun setUploadBuffAdapter() = binding?.rvUploadBuffList?.adapter = UploadBuffAdapter(dataContext.relayCommand)
     private fun updateEllipseList(position: Int) {
         val buff = dataContext.ellipseList.value
         if (position < 0 || position >= buff.size) {
@@ -373,7 +373,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         @BindingAdapter("viewPagerEDIFileList")
         fun setViewPagerEDIFileList(viewPager2: ViewPager2, item: StateFlow<EDIUploadModel>?) {
             val adapter = viewPager2.adapter as? EDIViewFileAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            viewPager2.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 item?.collectLatest {
                     adapter.updateItems(it.fileList)
                 }
@@ -383,7 +383,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         @BindingAdapter("recyclerEDIPharmaList")
         fun setEDIPharmaList(recyclerView: RecyclerView, item: StateFlow<EDIUploadModel>?) {
             val adapter = recyclerView.adapter as? EDIViewPharmaAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 item?.collectLatest {
                     adapter.updateItems(it.pharmaList)
                 }
@@ -393,7 +393,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         @BindingAdapter("recyclerEDIResponseList")
         fun setEDIResponseList(recyclerView: RecyclerView, item: StateFlow<EDIUploadModel>?) {
             val adapter = recyclerView.adapter as? EDIViewResponseAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 item?.collectLatest {
                     adapter.updateItems(it.responseList)
                 }

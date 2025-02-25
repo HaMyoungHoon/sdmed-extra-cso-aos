@@ -1,6 +1,7 @@
 package sdmed.extra.cso.views.main.price
 
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.FlowPreview
@@ -23,7 +24,6 @@ class PriceFragment: FBaseFragment<PriceFragmentBinding, PriceFragmentVM>() {
         PriceFragmentVM(multiDexApplication)
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
         setPriceAdapter()
         setPagination()
@@ -35,7 +35,7 @@ class PriceFragment: FBaseFragment<PriceFragmentBinding, PriceFragmentVM>() {
         setPageNumberCommand(data)
     }
 
-    private fun setPriceAdapter() = binding?.rvPriceList?.adapter = PriceAdapter(viewLifecycleOwner, dataContext.relayCommand)
+    private fun setPriceAdapter() = binding?.rvPriceList?.adapter = PriceAdapter(dataContext.relayCommand)
     private fun setPagination() = binding?.includePagination?.afterInit(viewLifecycleOwner, dataContext.paginationModel, dataContext.relayCommand)
     @OptIn(FlowPreview::class)
     private fun getSearch() {
@@ -130,7 +130,7 @@ class PriceFragment: FBaseFragment<PriceFragmentBinding, PriceFragmentVM>() {
         @BindingAdapter("recyclerPriceList")
         fun setRecyclerPrice(recyclerView: RecyclerView, listItems: StateFlow<MutableList<MedicineModel>>?) {
             val adapter = recyclerView.adapter as? PriceAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 listItems?.collectLatest {
                     adapter.updateItems(it)
                 }

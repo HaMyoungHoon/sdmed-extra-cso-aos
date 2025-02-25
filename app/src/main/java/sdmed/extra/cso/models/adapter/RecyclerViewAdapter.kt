@@ -1,6 +1,7 @@
 package sdmed.extra.cso.models.adapter
 
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,7 @@ class RecyclerViewAdapter {
         @BindingAdapter("recyclerEllipseList")
         fun setRecyclerViewEllipseList(recyclerView: RecyclerView, listItems: StateFlow<MutableList<EllipseItemModel>>?) {
             val adapter = recyclerView.adapter as? EllipseListAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 listItems?.collectLatest {
                     adapter.updateItems(it)
                 }

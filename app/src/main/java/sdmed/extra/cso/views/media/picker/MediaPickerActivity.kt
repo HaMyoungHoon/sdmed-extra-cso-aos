@@ -54,10 +54,9 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
     }
 
     override fun viewInit() {
-        binding?.dataContext = dataContext
         getPermission()
         super.viewInit()
-        binding?.rvMediaList?.adapter = MediaPickerActivityAdapter(this, dataContext.relayCommand)
+        binding?.rvMediaList?.adapter = MediaPickerActivityAdapter(dataContext.relayCommand)
         lifecycleScope.launch {
             dataContext.boxesPosition.collectLatest {
                 dataContext.selectItem(it - 1)
@@ -444,7 +443,7 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
         @BindingAdapter("recyclerMediaPickerItems")
         fun setMediaRecyclerItems(recyclerView: RecyclerView, recyclerMediaPickerItems: StateFlow<MutableList<MediaPickerSourceModel>>?) {
             val adapter = recyclerView.adapter as? MediaPickerActivityAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 recyclerMediaPickerItems?.collectLatest {
                     adapter.updateItems(it)
                 }

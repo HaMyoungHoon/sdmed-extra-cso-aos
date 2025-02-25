@@ -1,6 +1,7 @@
 package sdmed.extra.cso.views.main.my
 
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,6 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
         MyFragmentVM(multiDexApplication)
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
         setHospitalAdapter()
         setPharmaAdapter()
@@ -63,8 +63,8 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
             }
         }
     }
-    private fun setHospitalAdapter() = binding?.rvUserHospital?.adapter = UserHospitalAdapter(viewLifecycleOwner, dataContext.relayCommand)
-    private fun setPharmaAdapter() = binding?.rvUserPharma?.adapter = UserPharmaAdapter(viewLifecycleOwner, dataContext.relayCommand)
+    private fun setHospitalAdapter() = binding?.rvUserHospital?.adapter = UserHospitalAdapter(dataContext.relayCommand)
+    private fun setPharmaAdapter() = binding?.rvUserPharma?.adapter = UserPharmaAdapter(dataContext.relayCommand)
     private fun observeData() {
         lifecycleScope.launch {
             dataContext.selectedHos.collectLatest {
@@ -83,7 +83,7 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
         @BindingAdapter("recyclerUserHospitalList")
         fun setRecyclerUserHospitalList(recyclerView: RecyclerView, listItem: StateFlow<MutableList<HospitalModel>>?) {
             val adapter = recyclerView.adapter as? UserHospitalAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 listItem?.collectLatest {
                     adapter.updateItems(it)
                 }
@@ -93,7 +93,7 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
         @BindingAdapter("recyclerUserPharmaList")
         fun setRecyclerUserPharmaList(recyclerView: RecyclerView, listItem: StateFlow<MutableList<PharmaModel>>?) {
             val adapter = recyclerView.adapter as? UserPharmaAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 listItem?.collectLatest {
                     adapter.updateItems(it)
                 }

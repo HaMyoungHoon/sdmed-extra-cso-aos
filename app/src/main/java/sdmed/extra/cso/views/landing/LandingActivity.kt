@@ -21,7 +21,6 @@ class LandingActivity: FBaseActivity<LandingActivityBinding, LandingActivityVM>(
     }
 
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
         if (intent.getBooleanExtra("expired", false)) {
             toast(R.string.expired_token)

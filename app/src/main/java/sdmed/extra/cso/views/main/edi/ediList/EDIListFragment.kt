@@ -6,6 +6,7 @@ import android.os.Environment
 import android.provider.Settings
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +36,6 @@ class EDIListFragment: FBaseFragment<EdiListFragmentBinding, EDIListFragmentVM>(
         EDIListFragmentVM(multiDexApplication)
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         setRecyclerView()
         super.viewInit()
         searchItem()
@@ -63,7 +63,7 @@ class EDIListFragment: FBaseFragment<EdiListFragmentBinding, EDIListFragmentVM>(
     }
     private fun setRecyclerView() {
         val binding = super.binding ?: return
-        binding.rvEdiList.adapter = EDIListItemAdapter(viewLifecycleOwner, dataContext.relayCommand)
+        binding.rvEdiList.adapter = EDIListItemAdapter(dataContext.relayCommand)
     }
 
     private fun openStartDate() {
@@ -128,7 +128,7 @@ class EDIListFragment: FBaseFragment<EdiListFragmentBinding, EDIListFragmentVM>(
         @BindingAdapter("recyclerEDIListItems")
         fun setEDIListItems(recyclerView: RecyclerView, listItems: StateFlow<MutableList<EDIUploadModel>>?) {
             val adapter = recyclerView.adapter as? EDIListItemAdapter ?: return
-            adapter.lifecycleOwner.lifecycleScope.launch {
+            recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
                 listItems?.collectLatest {
                     adapter.updateItems(it)
                 }

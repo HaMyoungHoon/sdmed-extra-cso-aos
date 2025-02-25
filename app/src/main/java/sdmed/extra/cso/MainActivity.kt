@@ -28,7 +28,6 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
         super.onDestroy()
     }
     override fun viewInit() {
-        binding?.dataContext = dataContext
         super.viewInit()
         setBackPressed()
         openEDIFragment(MainActivityVM.ClickEvent.EDI)

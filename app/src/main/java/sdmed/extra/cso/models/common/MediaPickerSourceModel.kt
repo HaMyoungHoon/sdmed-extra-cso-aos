@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Parcelable
 import android.view.View
 import kotlinx.parcelize.Parcelize
+import sdmed.extra.cso.bases.FDataModelClass
 import sdmed.extra.cso.interfaces.command.ICommand
 import sdmed.extra.cso.utils.FExtensions
 
@@ -21,25 +22,16 @@ data class MediaPickerSourceModel(
     var stroke: Int? = null,
     var lastClick: Boolean = false,
     var durationString: String = "",
-): Parcelable {
+): FDataModelClass<MediaPickerSourceModel.ClickEvent>(), Parcelable {
     fun generateData(): MediaPickerSourceModel {
         durationString = FExtensions.getDurationToTime(duration)
         return this
     }
-    var relayCommand: ICommand? = null
-    fun onClick(eventName: ClickEvent) {
-        relayCommand?.execute(arrayListOf(eventName, this))
-    }
     fun onVideoClick(view: View) {
         relayCommand?.execute(arrayListOf(view, this))
     }
-    fun onLongClick(eventName: ClickEvent): Boolean {
-        relayCommand?.execute(arrayListOf(eventName, this))
-        return true
-    }
-
-    enum class ClickEvent {
-        SELECT,
-        SELECT_LONG,
+    enum class ClickEvent(var index: Int) {
+        SELECT(0),
+        SELECT_LONG(1),
     }
 }
