@@ -129,7 +129,7 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
         }
     }
     private fun setMediaItemCommand(data: Any?) {
-        if (data !is ArrayList<*> || data.size < 1) return
+        if (data !is ArrayList<*> || data.size <= 1) return
         val eventName = data[0] as? MediaPickerSourceModel.ClickEvent ?: return
         val dataBuff = data[1] as? MediaPickerSourceModel ?: return
         when (eventName) {
@@ -186,7 +186,7 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
         }
     }
     private fun setVideoCommand(data: Any?) {
-        if (data !is ArrayList<*> || data.size < 1) return
+        if (data !is ArrayList<*> || data.size <= 1) return
         val view = data[0] as? PlayerView ?: return
         val dataBuff = data[1] as? MediaPickerSourceModel ?: return
         dataBuff.clickState = !dataBuff.clickState
