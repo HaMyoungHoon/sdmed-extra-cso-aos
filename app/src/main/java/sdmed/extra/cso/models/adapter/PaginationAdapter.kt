@@ -24,13 +24,26 @@ class PaginationAdapter @JvmOverloads constructor(context: Context,
     fun afterInit(lifecycleOwner: LifecycleOwner, dataModel: StateFlow<PaginationModel>, relayCommand: ICommand) {
         binding.lifecycleOwner = lifecycleOwner
         binding.rvPage.adapter = PageNumberAdapter(lifecycleOwner, relayCommand)
-        FCoroutineUtil.coroutineScope({
+        lifecycleOwner.lifecycleScope.launch {
             dataModel.collectLatest {
                 it.relayCommand = relayCommand
                 binding.dataContext = it
                 updateSelect(0)
             }
-        })
+        }
+    }
+    fun firstSelect() {
+        updateSelect(0)
+        binding.rvPage.post {
+            binding.rvPage.scrollToPosition(0)
+        }
+    }
+    fun lastSelect() {
+        val position = (binding.dataContext?.pages?.value?.toMutableList()?.size ?: return) - 1
+        updateSelect(position)
+        binding.rvPage.post {
+            binding.rvPage.scrollToPosition(position)
+        }
     }
     fun updateSelect(position: Int) {
         val buff = binding.dataContext?.pages?.value?.toMutableList() ?: return
@@ -39,14 +52,12 @@ class PaginationAdapter @JvmOverloads constructor(context: Context,
         }
         binding.dataContext?.first?.value = position == 0
         binding.dataContext?.last?.value = position == buff.size - 1
-        val findIndex = buff.indexOfFirst { it.isSelect }
+        val findIndex = buff.indexOfFirst { it.isSelect.value }
         if (findIndex >= 0) {
             buff[findIndex].unSelectThis()
         }
         buff[position].selectThis()
         binding.dataContext?.pages?.value = buff
-        getPageAdapter()?.notifyItemChanged(findIndex)
-        getPageAdapter()?.notifyItemChanged(position)
     }
     fun getPageAdapter(): PageNumberAdapter? {
         return binding.rvPage.adapter as? PageNumberAdapter
