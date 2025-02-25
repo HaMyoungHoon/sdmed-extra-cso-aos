@@ -101,7 +101,6 @@ class FGlideSupport {
                         }
                     })
             } catch (e: Exception) {
-                Log.d("FHexagonMaskView imageLoad", e.message ?: "")
             }
         }
         fun imageResizedLoad(url: String, imageView: ImageView, width: Int?, height: Int?) {

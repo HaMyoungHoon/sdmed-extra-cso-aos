@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
@@ -32,110 +33,66 @@ import sdmed.extra.cso.utils.view.FAppCompatImageView
 
 object FGlideBindingAdapters {
     @JvmStatic
-    @BindingAdapter(value = ["glideEdiSrc", "glideEdiMimeType", "glideDefImage", "glideEdiLoopCount", "animationStartListener", "animationEndListener"], requireAll = false)
-    fun setGlideEdiSrc(imageView: FAppCompatImageView, glideEdiSrc: String?, glideEdiMimeType: String?, glideDefImage: Int?, glideEdiLoopCount: Int?, animationStartListener: IEventListener?, animationEndListener: IEventListener?) {
-        if (!FImageUtils.isImage(FContentsType.getExtMimeType(glideEdiMimeType)) || glideEdiSrc.isNullOrEmpty()) {
-            if (glideDefImage != null && glideDefImage != 0) {
-                glideDefImage.let {
-                    glideLoad(imageView, it)
-                        .apply(defaultImageRequestOptions())
-                        .skipMemoryCache(false)
-                        .optionalCenterCrop()
-                        .into(imageView)
-                }
-            } else {
-                glideLoad(imageView, FImageUtils.getDefaultImage(glideEdiMimeType))
+    @BindingAdapter(value = ["glideBlobUrl", "glideBlobMimeType", "glideBlobDefImage", "glideBlobLoopCount", "animationStartListener", "animationEndListener"], requireAll = false)
+    fun setGlideBlobSrc(imageView: AppCompatImageView, glideBlobUrl: String?, glideBlobMimeType: String?, @DrawableRes glideBlobDefImage: Int?,
+                        glideBlobLoopCount: Int?, animationStartListener: IEventListener?, animationEndListener: IEventListener?) {
+        val mimeType = FContentsType.getExtMimeType(glideBlobMimeType)
+        if (!FImageUtils.isImage(mimeType) || glideBlobUrl.isNullOrEmpty()) {
+            if (glideBlobDefImage != null && glideBlobDefImage != 0) {
+                glideLoad(imageView, glideBlobDefImage)
                     .apply(defaultImageRequestOptions())
-                    .skipMemoryCache(false)
-                    .optionalCenterCrop()
+                    .into(imageView)
+            } else {
+                glideLoad(imageView, FImageUtils.getDefaultImage(glideBlobMimeType))
+                    .apply(defaultImageRequestOptions())
                     .into(imageView)
             }
             return
         }
-        if (glideEdiSrc.endsWith("webp", ignoreCase = true)) {
-            glideLoad(imageView, glideEdiSrc)
-                .into(object: CustomViewTarget<AppCompatImageView, Drawable>(imageView) {
-                override fun onResourceCleared(placeholder: Drawable?) {
-                }
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    imageView.setImageResource(FImageUtils.getDefaultImage(glideEdiMimeType))
-                }
-                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                    imageView.setImageDrawable(resource)
-                    if (resource is Animatable) {
-                        resource.start()
-                    }
-                }
-            })
-//            val fitCenter = FitCenter()
-//            Glide.with(imageView.context).load(glideEdiSrc)
-//                .optionalTransform(fitCenter)
-//                .optionalTransform(WebpDrawable::class.java, WebpDrawableTransformation(fitCenter))
-//                .listener(object: RequestListener<Drawable> {
-//                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-//                        return false
-//                    }
-//                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-//                        return false
-//                    }
-//                })
-//                .into(imageView)
-        } else if (glideEdiSrc.endsWith("gif", ignoreCase = true)) {
-            Glide.with(imageView.context).asGif().load(glideEdiSrc)
-                .apply(RequestOptions()
-                    .disallowHardwareConfig()
-                    .fitCenter()
-                    .override(imageView.width, imageView.height)
-                )
-                .listener(object: RequestListener<GifDrawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean ): Boolean {
-                        return false
-                    }
-
-                    override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        resource?.setLoopCount(glideEdiLoopCount ?: 2)
-                        resource?.registerAnimationCallback(object: Animatable2Compat.AnimationCallback() {
-                            override fun onAnimationEnd(drawable: Drawable?) {
-                                animationEndListener?.onEvent(imageView)
-                            }
-                            override fun onAnimationStart(drawable: Drawable?) {
-                                animationStartListener?.onEvent(imageView)
-                            }
-                        })
-                        resource?.start()
-                        return false
-                    }
-                }).into(imageView)
-        } else {
-            glideLoad(imageView, glideEdiSrc)
-                .apply(defaultImageRequestOptions())
-                .skipMemoryCache(false)
-                .optionalCenterCrop()
-                .into(imageView)
+        if (mimeType == "webp") {
+            glideAddWebp(imageView, glideBlobUrl, glideBlobMimeType)
+            return
         }
+        if (mimeType == "gif") {
+            glideAddGif(imageView, glideBlobUrl, glideBlobLoopCount, animationStartListener, animationEndListener)
+            return
+        }
+        glideLoad(imageView, glideBlobUrl)
+            .apply(defaultImageRequestOptions())
+            .into(imageView)
     }
     @JvmStatic
-    @BindingAdapter(value = ["glideSrc", "glideSrcNullRemove", "glideSrcCenter"], requireAll = false)
-    fun setGlideSrc(imageView: AppCompatImageView, glideSrc: String?, glideSrcNullRemove: Boolean?, glideSrcCenter: Boolean?) {
-        if (glideSrc.isNullOrEmpty()) {
-            if (glideSrcNullRemove == true) {
-                imageView.setImageDrawable(null)
+    @BindingAdapter(value = ["glideBlobUrl", "glideBlobMimeType", "glideBlobDefImage", "glideBlobLoopCount", "animationStartListener", "animationEndListener"], requireAll = false)
+    fun setGlideBlobSrc(imageView: FAppCompatImageView, glideBlobUrl: String?, glideBlobMimeType: String?, @DrawableRes glideBlobDefImage: Int?,
+                        glideBlobLoopCount: Int?, animationStartListener: IEventListener?, animationEndListener: IEventListener?) {
+        val mimeType = FContentsType.getExtMimeType(glideBlobMimeType)
+        if (!FImageUtils.isImage(mimeType) || glideBlobUrl.isNullOrEmpty()) {
+            if (glideBlobDefImage != null && glideBlobDefImage != 0) {
+                glideLoad(imageView, glideBlobDefImage)
+                    .apply(defaultImageRequestOptions())
+                    .into(imageView)
+            } else {
+                glideLoad(imageView, FImageUtils.getDefaultImage(glideBlobMimeType))
+                    .apply(defaultImageRequestOptions())
+                    .into(imageView)
             }
             return
         }
-        if (glideSrcCenter == true) {
-            imageView.scaleType = ImageView.ScaleType.CENTER
+        if (mimeType == "webp") {
+            glideAddWebp(imageView, glideBlobUrl, glideBlobMimeType)
+            return
         }
-        glideLoad(imageView, glideSrc)
+        if (mimeType == "gif") {
+            glideAddGif(imageView, glideBlobUrl, glideBlobLoopCount, animationStartListener, animationEndListener)
+            return
+        }
+        glideLoad(imageView, glideBlobUrl)
             .apply(defaultImageRequestOptions())
-            .skipMemoryCache(false)
-            .optionalCenterCrop()
             .into(imageView)
-        return
     }
     @JvmStatic
     @BindingAdapter(value = ["glideResSrc", "glideResSrcNullRemove", "glideResSrcCenter"], requireAll = false)
-    fun setGlideResSrc(imageView: AppCompatImageView, glideResSrc: Int?, glideResSrcNullRemove: Boolean?, glideResSrcCenter: Boolean?) {
+    fun setGlideResSrc(imageView: AppCompatImageView, @DrawableRes glideResSrc: Int?, glideResSrcNullRemove: Boolean?, glideResSrcCenter: Boolean?) {
         if (glideResSrc == null || glideResSrc == 0) {
             if (glideResSrcNullRemove == true) {
                 imageView.setImageDrawable(null)
@@ -147,7 +104,23 @@ object FGlideBindingAdapters {
         }
         glideLoad(imageView, glideResSrc)
             .apply(defaultImageRequestOptions())
-            .skipMemoryCache(false)
+            .into(imageView)
+        return
+    }
+    @JvmStatic
+    @BindingAdapter(value = ["glideResSrc", "glideResSrcNullRemove", "glideResSrcCenter"], requireAll = false)
+    fun setGlideResSrc(imageView: FAppCompatImageView, @DrawableRes glideResSrc: Int?, glideResSrcNullRemove: Boolean?, glideResSrcCenter: Boolean?) {
+        if (glideResSrc == null || glideResSrc == 0) {
+            if (glideResSrcNullRemove == true) {
+                imageView.setImageDrawable(null)
+            }
+            return
+        }
+        if (glideResSrcCenter == true) {
+            imageView.scaleType = ImageView.ScaleType.CENTER
+        }
+        glideLoad(imageView, glideResSrc)
+            .apply(defaultImageRequestOptions())
             .into(imageView)
         return
     }
@@ -163,7 +136,6 @@ object FGlideBindingAdapters {
                 .apply(RequestOptions.circleCropTransform())
                 .into(imageView)
         } catch (_: Exception) {
-            Log.d("test mhha setGlideCircleSrc", "catch")
         }
     }
     @JvmStatic
@@ -177,19 +149,6 @@ object FGlideBindingAdapters {
         glideBuilder(imageView, glideRoundSrc)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(glideCorners ?: 0)))
-            .into(imageView)
-    }
-    @JvmStatic
-    @BindingAdapter("glideSrcUri")
-    fun setGlideSrcUri(imageView: AppCompatImageView, glideSrcUri: Uri?) {
-        if (glideSrcUri == null) {
-            imageView.setImageDrawable(null)
-            return
-        }
-        glideUriLoad(imageView, glideSrcUri)
-            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop())
-            .skipMemoryCache(false)
-            .optionalCenterCrop()
             .into(imageView)
     }
 
@@ -226,7 +185,6 @@ object FGlideBindingAdapters {
                     .override(glideSrcUriWidth ?: Target.SIZE_ORIGINAL, glideSrcUriHeight ?: Target.SIZE_ORIGINAL)
                     .optionalCenterCrop()
                     .priority(Priority.IMMEDIATE)
-//                .encodeFormat(Bitmap.CompressFormat.PNG)
                     .format(DecodeFormat.DEFAULT)
                     .into(imageView)
                 return
@@ -238,7 +196,6 @@ object FGlideBindingAdapters {
                     .override(glideSrcUriWidth ?: Target.SIZE_ORIGINAL, glideSrcUriHeight ?: Target.SIZE_ORIGINAL)
                     .optionalCenterCrop()
                     .priority(Priority.IMMEDIATE)
-//                .encodeFormat(Bitmap.CompressFormat.PNG)
                     .format(DecodeFormat.DEFAULT)
                     .into(imageView)
                 return
@@ -250,7 +207,6 @@ object FGlideBindingAdapters {
                     .override(glideSrcUriWidth ?: Target.SIZE_ORIGINAL, glideSrcUriHeight ?: Target.SIZE_ORIGINAL)
                     .optionalCenterCrop()
                     .priority(Priority.IMMEDIATE)
-//                .encodeFormat(Bitmap.CompressFormat.PNG)
                     .format(DecodeFormat.DEFAULT)
                     .into(imageView)
                 return
@@ -262,7 +218,6 @@ object FGlideBindingAdapters {
                     .override(glideSrcUriWidth ?: Target.SIZE_ORIGINAL, glideSrcUriHeight ?: Target.SIZE_ORIGINAL)
                     .optionalCenterCrop()
                     .priority(Priority.IMMEDIATE)
-//                .encodeFormat(Bitmap.CompressFormat.PNG)
                     .format(DecodeFormat.DEFAULT)
                     .into(imageView)
                 return
@@ -280,7 +235,6 @@ object FGlideBindingAdapters {
             .override(glideSrcUriWidth ?: Target.SIZE_ORIGINAL, glideSrcUriHeight ?: Target.SIZE_ORIGINAL)
             .optionalCenterCrop()
             .priority(Priority.IMMEDIATE)
-//                .encodeFormat(Bitmap.CompressFormat.PNG)
             .format(DecodeFormat.DEFAULT)
             .into(imageView)
     }
@@ -394,7 +348,6 @@ object FGlideBindingAdapters {
         try {
             imageView.setImageDrawable(null)
         } catch (_: Exception) {
-            Log.d("test mhha setGlideRoundSrcUri", "catch setImageDrawable null")
         }
     }
     @JvmStatic
@@ -417,8 +370,94 @@ object FGlideBindingAdapters {
                     }
                 }).into(imageView)
         } catch (e: Exception) {
-            Log.d("test mhha setGifSrcAsset", e.message ?: "")
         }
+    }
+
+    fun glideAddWebp(imageView: AppCompatImageView, url: String, mimeType: String?) {
+        glideLoad(imageView, url)
+            .into(object: CustomViewTarget<AppCompatImageView, Drawable>(imageView) {
+                override fun onResourceCleared(placeholder: Drawable?) {
+                }
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    imageView.setImageResource(FImageUtils.getDefaultImage(mimeType))
+                }
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    imageView.setImageDrawable(resource)
+                    if (resource is Animatable) {
+                        resource.start()
+                    }
+                }
+            })
+    }
+    fun glideAddWebp(imageView: FAppCompatImageView, url: String, mimeType: String?) {
+        glideLoad(imageView, url)
+            .into(object: CustomViewTarget<AppCompatImageView, Drawable>(imageView) {
+                override fun onResourceCleared(placeholder: Drawable?) {
+                }
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    imageView.setImageResource(FImageUtils.getDefaultImage(mimeType))
+                }
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    imageView.setImageDrawable(resource)
+                    if (resource is Animatable) {
+                        resource.start()
+                    }
+                }
+            })
+    }
+    fun glideAddGif(imageView: AppCompatImageView, url: String, gifLoopCount: Int? = null, animationStartListener: IEventListener? = null, animationEndListener: IEventListener? = null) {
+        Glide.with(imageView.context).asGif().load(url)
+            .apply(RequestOptions()
+                .disallowHardwareConfig()
+                .fitCenter()
+                .override(imageView.width, imageView.height)
+            )
+            .listener(object: RequestListener<GifDrawable> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    resource?.setLoopCount(gifLoopCount ?: -1)
+                    resource?.registerAnimationCallback(object: Animatable2Compat.AnimationCallback() {
+                        override fun onAnimationEnd(drawable: Drawable?) {
+                            animationEndListener?.onEvent(imageView)
+                        }
+                        override fun onAnimationStart(drawable: Drawable?) {
+                            animationStartListener?.onEvent(imageView)
+                        }
+                    })
+                    resource?.start()
+                    return false
+                }
+            }).into(imageView)
+    }
+    fun glideAddGif(imageView: FAppCompatImageView, url: String, gifLoopCount: Int? = null, animationStartListener: IEventListener? = null, animationEndListener: IEventListener? = null) {
+        Glide.with(imageView.context).asGif().load(url)
+            .apply(RequestOptions()
+                .disallowHardwareConfig()
+                .fitCenter()
+                .override(imageView.width, imageView.height)
+            )
+            .listener(object: RequestListener<GifDrawable> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    resource?.setLoopCount(gifLoopCount ?: -1)
+                    resource?.registerAnimationCallback(object: Animatable2Compat.AnimationCallback() {
+                        override fun onAnimationEnd(drawable: Drawable?) {
+                            animationEndListener?.onEvent(imageView)
+                        }
+                        override fun onAnimationStart(drawable: Drawable?) {
+                            animationStartListener?.onEvent(imageView)
+                        }
+                    })
+                    resource?.start()
+                    return false
+                }
+            }).into(imageView)
     }
     private fun glideLoad(imageView: AppCompatImageView, url: String) = Glide.with(imageView.context).load(url)
     private fun glideLoad(imageView: AppCompatImageView, resId: Int) = Glide.with(imageView.context).load(resId)
@@ -427,7 +466,7 @@ object FGlideBindingAdapters {
     private fun glideBuilder(imageView: AppCompatImageView, url: String) = Glide.with(imageView.context).asDrawable().load(url)
     private fun glideUriLoad(imageView: AppCompatImageView, uri: Uri) = Glide.with(imageView.context).load(uri)
     private fun defaultImageRequestOptions() = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().priority(
-        Priority.IMMEDIATE).format(DecodeFormat.PREFER_ARGB_8888)
+        Priority.IMMEDIATE).format(DecodeFormat.PREFER_ARGB_8888).skipMemoryCache(false).optionalCenterCrop()
     private fun fitCenterImageRequestOptions() = RequestOptions().diskCacheStrategy(
         DiskCacheStrategy.ALL).fitCenter().priority(Priority.IMMEDIATE).format(DecodeFormat.PREFER_ARGB_8888)
 }
