@@ -19,6 +19,13 @@ enum class EDIState(var index: Int, var desc: String) {
         Pending -> R.color.edi_state_pending
         Partial -> R.color.edi_state_partial
     }
+    fun parseEDIBackColor() = when (this) {
+        None -> R.color.edi_back_state_none
+        OK -> R.color.edi_back_state_ok
+        Reject -> R.color.edi_back_state_reject
+        Pending -> R.color.edi_back_state_pending
+        Partial -> R.color.edi_back_state_partial
+    }
     companion object {
         fun parseEDIState(index: Int?) = when (index) {
             1 -> OK

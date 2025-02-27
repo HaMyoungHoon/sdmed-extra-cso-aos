@@ -18,6 +18,7 @@ data class EDIUploadResponseModel(
 
     fun getResponseDate() = FDateTime().setThis(regDate).toString("yyyy-MM")
     fun getEdiColor() = ediState.parseEDIColor()
+    fun getEdiBackColor() = ediState.parseEDIBackColor()
 
     enum class ClickEvent(var index: Int) {
         OPEN(0)

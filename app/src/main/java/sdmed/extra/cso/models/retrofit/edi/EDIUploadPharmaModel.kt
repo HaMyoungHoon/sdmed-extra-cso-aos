@@ -17,6 +17,7 @@ data class EDIUploadPharmaModel(
 
     fun getYearMonth() = "${year}-${month}"
     fun getEdiColor() = ediState.parseEDIColor()
+    fun getEdiBackColor() = ediState.parseEDIBackColor()
     enum class ClickEvent(var index: Int) {
     }
 }

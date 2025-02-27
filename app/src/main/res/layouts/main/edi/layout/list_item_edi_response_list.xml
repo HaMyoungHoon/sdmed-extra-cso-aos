@@ -45,10 +45,13 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:text="@{dataContext.ediState.desc}"
                 android:fontFamily="@font/goyang"
                 android:textSize="24sp"
                 app:textColorResId="@{dataContext.ediColor}"
+                app:backgroundTintResId="@{dataContext.ediBackColor}"
+                android:background="@drawable/shape_rounded_box_able_5dp"
                 android:drawablePadding="4dp"
                 android:drawableEnd="@{dataContext.open ? @drawable/vector_arrow_down : @drawable/vector_arrow_up}"
                 tools:text="반려"

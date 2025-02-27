@@ -13,6 +13,7 @@ data class QnAHeaderModel(
     var qnaState: QnAState = QnAState.None,
 ): FDataModelClass<QnAHeaderModel.ClickEvent>() {
     val qnaColor: Int get() = qnaState.parseQnAColor()
+    val qnaBackColor: Int get() = qnaState.parseQnABackColor()
 
     enum class ClickEvent(var index: Int) {
         THIS(0)

@@ -17,4 +17,10 @@ enum class QnAState(var index: Int, var desc: String) {
         Recep -> R.color.qna_state_recep
         Reply -> R.color.qna_state_reply
     }
+    fun parseQnABackColor() = when (this) {
+        None -> R.color.qna_back_state_none
+        OK -> R.color.qna_back_state_ok
+        Recep -> R.color.qna_back_state_recep
+        Reply -> R.color.qna_back_state_reply
+    }
 }

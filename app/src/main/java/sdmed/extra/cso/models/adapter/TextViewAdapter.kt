@@ -1,5 +1,6 @@
 package sdmed.extra.cso.models.adapter
 
+import android.content.res.ColorStateList
 import sdmed.extra.cso.R
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
@@ -66,6 +67,21 @@ class TextViewAdapter {
             }
             shape.setStroke(1, shapeStroke)
             textView.background = shape
+        }
+        @JvmStatic
+        @BindingAdapter("backgroundTintResId")
+        fun textViewBackgroundTintResId(textView: AppCompatTextView, @ColorRes backgroundTintResId: Int?) {
+            backgroundTintResId ?: return
+            var colorBuff = backgroundTintResId
+            if (colorBuff == 0) {
+                colorBuff = R.color.def_foreground
+            }
+            val color = try {
+                textView.context.getColor(colorBuff)
+            } catch (_: Exception) {
+                textView.textColors.defaultColor
+            }
+            textView.backgroundTintList = ColorStateList.valueOf(color)
         }
     }
 }
