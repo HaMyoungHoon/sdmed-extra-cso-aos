@@ -77,8 +77,9 @@ class QnAFragment: FBaseFragment<QnaFragmentBinding, QnAFragmentVM>() {
     private fun getSearch() {
         lifecycleScope.launch {
             dataContext.searchBuff.debounce(1000).collectLatest {
+                it ?: return@collectLatest
                 if (dataContext.searchString != it) {
-                    dataContext.searchString = it ?: ""
+                    dataContext.searchString = it
                     getList()
                 }
                 dataContext.searchLoading.value = false
@@ -86,7 +87,7 @@ class QnAFragment: FBaseFragment<QnaFragmentBinding, QnAFragmentVM>() {
         }
         lifecycleScope.launch {
             dataContext.searchBuff.collectLatest {
-                dataContext.searchBuff.value ?: return@collectLatest
+                it ?: return@collectLatest
                 dataContext.searchLoading.value = true
             }
         }
