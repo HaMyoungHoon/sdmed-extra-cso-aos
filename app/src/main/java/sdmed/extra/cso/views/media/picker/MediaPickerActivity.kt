@@ -75,30 +75,11 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
         binding?.playerView?.player = ExoPlayer.Builder(this).build()
     }
     private fun init() {
-        val pdfList = test()
         val mediaList = getImageList()
 //        getVideoList(mediaList)
         getFileList(mediaList)
         dataContext.setItems(mediaList)
         dataContext.selectItem(0)
-    }
-    private fun test(): List<String> {
-        val uri = MediaStore.Files.getContentUri("external")
-        val projection = arrayOf(MediaStore.Files.FileColumns.DATA, MediaStore.Files.FileColumns.DISPLAY_NAME)
-        val selection = "${MediaStore.Files.FileColumns.MIME_TYPE} = ?"
-        val selectionArgs = arrayOf("application/pdf")
-        val sortOrder = null
-
-        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, sortOrder)
-
-        val pdfList = mutableListOf<String>()
-        cursor?.use {
-            while (it.moveToNext()) {
-                val filePath = it.getString(it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA))
-                pdfList.add(filePath)
-            }
-        }
-        return pdfList
     }
 
     override fun setLayoutCommand(data: Any?) {
