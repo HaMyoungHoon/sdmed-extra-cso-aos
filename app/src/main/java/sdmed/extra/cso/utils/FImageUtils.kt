@@ -138,15 +138,18 @@ object FImageUtils {
         false
     }
     fun isImage(ext: String): Boolean {
-        if (ext == "jpeg") return true;
-        if (ext == "jpg") return true;
-        if (ext == "png") return true;
-        if (ext == "bmp") return true;
-        if (ext == "webp") return true;
-        if (ext == "heic") return true;
-        if (ext == "gif") return true;
+        if (ext == "jpeg") return true
+        if (ext == "jpg") return true
+        if (ext == "png") return true
+        if (ext == "bmp") return true
+        if (ext == "webp") return true
+        if (ext == "heic") return true
+        if (ext == "gif") return true
 
         return false;
+    }
+    fun isGif(ext: String): Boolean {
+        return ext == "gif"
     }
     fun getDefaultImage(mimeType: String?): Int {
         val ext = FContentsType.getExtMimeType(mimeType)
@@ -231,7 +234,10 @@ object FImageUtils {
         if (!isImage(fileExt)) {
             return fileUri.toFile()
         }
-        val fileStream = FileInputStream(fileDescriptor?.fileDescriptor)
+        if (isGif(fileExt)) {
+            return uriToGifFile(context, fileUri, fileName)
+        }
+        val fileStream = FileInputStream(fileDescriptor.fileDescriptor)
         val inputStream = ByteArrayInputStream(fileStream.readBytes())
         val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
         var rootDir = File(documentsDir, FConstants.SHARED_FILE_NAME)
@@ -264,7 +270,42 @@ object FImageUtils {
             }
         }
         inputStream.close()
-        fileDescriptor?.close()
+        fileDescriptor.close()
+        return file
+    }
+    fun uriToGifFile(context: Context, fileUri: Uri, fileName: String): File {
+        if (isLocalFile(context, fileUri)) return fileUri.toFile()
+
+        val fileDescriptor = try {
+            context.contentResolver.openFileDescriptor(fileUri, "r") ?: return fileUri.toFile()
+        } catch (_: Exception) {
+            return File(fileUri.toString())
+        }
+        val fileExt = FContentsType.getExtMimeType(context.contentResolver.getType(fileUri))
+        if (!isImage(fileExt)) {
+            return fileUri.toFile()
+        }
+        val fileStream = FileInputStream(fileDescriptor.fileDescriptor)
+        val inputStream = ByteArrayInputStream(fileStream.readBytes())
+        val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        var rootDir = File(documentsDir, FConstants.SHARED_FILE_NAME)
+        if (!rootDir.exists()) {
+            if (!rootDir.mkdirs()) {
+                rootDir = ContextWrapper(context).getDir("Documents", Context.MODE_PRIVATE)
+            }
+        }
+
+        val extension = fileExt
+
+        val file = File(rootDir, "${fileName}.$extension")
+        if (!file.exists()) {
+            inputStream.mark(inputStream.available())
+            val outputStream = FileOutputStream(file)
+            inputStream.copyTo(outputStream)
+            outputStream.close()
+        }
+        inputStream.close()
+        fileDescriptor.close()
         return file
     }
     fun createImageFile(context: Context): File {
