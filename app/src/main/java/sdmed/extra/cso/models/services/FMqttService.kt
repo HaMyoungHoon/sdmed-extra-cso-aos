@@ -125,13 +125,13 @@ class FMqttService(context: Context): Service(), KodeinAware {
             when (mqttContentModel.contentType) {
                 MqttContentType.None -> notificationService.sendNotify(context, title, mqttContentModel.content, NotifyType.WITH_VIBRATE)
                 MqttContentType.QNA_REQUEST -> { }
-                MqttContentType.QNA_REPLY -> notificationService.sendNotify(context, NotifyIndex.QNA_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, thisPK = mqttContentModel.targetItemPK)
+                MqttContentType.QNA_REPLY -> notificationService.sendNotify(context, NotifyIndex.QNA_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true, thisPK = mqttContentModel.targetItemPK)
                 MqttContentType.EDI_REQUEST -> { }
-                MqttContentType.EDI_REJECT -> notificationService.sendNotify(context, NotifyIndex.EDI_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, thisPK = mqttContentModel.targetItemPK)
-                MqttContentType.EDI_OK -> notificationService.sendNotify(context, NotifyIndex.EDI_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, thisPK = mqttContentModel.targetItemPK)
-                MqttContentType.EDI_RECEP -> notificationService.sendNotify(context, NotifyIndex.EDI_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, thisPK = mqttContentModel.targetItemPK)
+                MqttContentType.EDI_REJECT -> notificationService.sendNotify(context, NotifyIndex.EDI_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true, thisPK = mqttContentModel.targetItemPK)
+                MqttContentType.EDI_OK -> notificationService.sendNotify(context, NotifyIndex.EDI_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true, thisPK = mqttContentModel.targetItemPK)
+                MqttContentType.EDI_RECEP -> notificationService.sendNotify(context, NotifyIndex.EDI_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true, thisPK = mqttContentModel.targetItemPK)
                 MqttContentType.EDI_FILE_ADD -> { }
-                MqttContentType.EDI_FILE_DELETE -> notificationService.sendNotify(context, NotifyIndex.EDI_FILE_REMOVE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, thisPK = mqttContentModel.targetItemPK)
+                MqttContentType.EDI_FILE_DELETE -> notificationService.sendNotify(context, NotifyIndex.EDI_FILE_REMOVE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true, thisPK = mqttContentModel.targetItemPK)
             }
         } catch (_: Exception) {
         }
