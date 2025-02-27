@@ -14,11 +14,11 @@ import sdmed.extra.cso.R
 import sdmed.extra.cso.interfaces.repository.IAzureBlobRepository
 import sdmed.extra.cso.interfaces.repository.ICommonRepository
 import sdmed.extra.cso.interfaces.repository.IEDIListRepository
-import sdmed.extra.cso.models.common.AzureQueueModel
+import sdmed.extra.cso.models.common.EDIAzureQueueModel
 import sdmed.extra.cso.models.common.NotifyIndex
 import sdmed.extra.cso.models.common.QueueLockModel
 import sdmed.extra.cso.models.common.EDIFileResultQueueModel
-import sdmed.extra.cso.models.common.SASKeyQueueModel
+import sdmed.extra.cso.models.common.EDISASKeyQueueModel
 import sdmed.extra.cso.models.eventbus.EDIUploadEvent
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
@@ -37,14 +37,14 @@ class FBackgroundEDIFileUpload(context: Context): Service(), KodeinAware  {
     private val azureBlobRepository: IAzureBlobRepository by kodein.instance(IAzureBlobRepository::class)
     private val ediListRepository: IEDIListRepository by kodein.instance(IEDIListRepository::class)
 
-    private val sasKeyQ = QueueLockModel<SASKeyQueueModel>("sasQ ${FExtensions.getToday().toString("yyyyMMdd_HHmmss")}")
-    private val azureQ = QueueLockModel<AzureQueueModel>("azureQ ${FExtensions.getToday().toString("yyyyMMdd_HHmmss")}")
+    private val sasKeyQ = QueueLockModel<EDISASKeyQueueModel>("sasQ ${FExtensions.getToday().toString("yyyyMMdd_HHmmss")}")
+    private val azureQ = QueueLockModel<EDIAzureQueueModel>("azureQ ${FExtensions.getToday().toString("yyyyMMdd_HHmmss")}")
     private val resultQ = QueueLockModel<EDIFileResultQueueModel>("resultQ ${FExtensions.getToday().toString("yyyyMMdd_HHmmss")}")
 
     private var resultQRun = false
 
-    fun sasKeyEnqueue(data: SASKeyQueueModel) = sasKeyQ.enqueue(data, true, { sasKeyThreadStart() })
-    private fun azureEnqueue(data: AzureQueueModel) = azureQ.enqueue(data, true, { azureThreadStart() })
+    fun sasKeyEnqueue(data: EDISASKeyQueueModel) = sasKeyQ.enqueue(data, true, { sasKeyThreadStart() })
+    private fun azureEnqueue(data: EDIAzureQueueModel) = azureQ.enqueue(data, true, { azureThreadStart() })
     private fun resultEnqueue(data: EDIFileResultQueueModel) {
         resultQ.locking()
         val findBuff = resultQ.findQ(false, { it.uuid == data.uuid })
@@ -87,7 +87,7 @@ class FBackgroundEDIFileUpload(context: Context): Service(), KodeinAware  {
         this.resultQRun = false
     }, resultQRun)
 
-    private fun checkSASKeyQ(data: SASKeyQueueModel) {
+    private fun checkSASKeyQ(data: EDISASKeyQueueModel) {
         FCoroutineUtil.coroutineScope({
             val blobName = data.blobName(context)
             val ret = commonRepository.postGenerateSasList(blobName.map { it.second })
@@ -99,13 +99,13 @@ class FBackgroundEDIFileUpload(context: Context): Service(), KodeinAware  {
             val uuid = UUID.randomUUID().toString()
             resultEnqueue(EDIFileResultQueueModel(uuid, data.ediPK, itemIndex = -1, itemCount = data.medias.size, ediUploadModel = data.ediUploadModel))
             ret.data?.forEachIndexed { index, x ->
-                val queue = AzureQueueModel(uuid, data.ediPK, mediaIndex = index).parse(data, blobName, x) ?: return@forEachIndexed
+                val queue = EDIAzureQueueModel(uuid, data.ediPK, mediaIndex = index).parse(data, blobName, x) ?: return@forEachIndexed
                 azureEnqueue(queue)
             }
             progressNotificationCall(uuid)
         })
     }
-    private fun checkAzureQ(data: AzureQueueModel) {
+    private fun checkAzureQ(data: EDIAzureQueueModel) {
         FCoroutineUtil.coroutineScope({
             data.media.mediaPath?.let { uri ->
                 try {

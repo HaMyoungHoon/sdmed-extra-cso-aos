@@ -7,7 +7,7 @@ import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FExtensions
 import java.util.UUID
 
-data class SASKeyQueueModel(
+data class EDISASKeyQueueModel(
     var ediPK: String = "",
     var medias: MutableList<MediaPickerSourceModel> = mutableListOf(),
     var ediUploadModel: EDIUploadModel = EDIUploadModel(),

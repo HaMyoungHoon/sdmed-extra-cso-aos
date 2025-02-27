@@ -4,14 +4,14 @@ import sdmed.extra.cso.models.retrofit.common.BlobStorageInfoModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.utils.FExtensions
 
-data class AzureQueueModel(
+data class EDIAzureQueueModel(
     var uuid: String = "",
     var ediPK: String = "",
     var media: MediaPickerSourceModel = MediaPickerSourceModel(),
     var ediFileUploadModel: EDIUploadFileModel = EDIUploadFileModel(),
     var mediaIndex: Int = 0,
 ) {
-    fun parse(keyQueue: SASKeyQueueModel, blobName: List<Pair<String, String>>, blobInfo: BlobStorageInfoModel): AzureQueueModel? {
+    fun parse(keyQueue: EDISASKeyQueueModel, blobName: List<Pair<String, String>>, blobInfo: BlobStorageInfoModel): EDIAzureQueueModel? {
         val blobMediaName = blobName.find { y -> y.second == blobInfo.blobName }?.first
         val media = keyQueue.medias.find { y -> y.mediaName == blobMediaName }
         this.media = media ?: return null

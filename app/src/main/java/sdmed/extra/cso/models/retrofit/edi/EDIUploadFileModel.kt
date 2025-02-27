@@ -17,6 +17,7 @@ data class EDIUploadFileModel(
         this.thisPK = rhs.thisPK
         this.ediPK = rhs.ediPK
         this.blobUrl = rhs.blobUrl
+        this.sasKey = rhs.sasKey
         this.blobName = rhs.blobName
         this.originalFilename = rhs.originalFilename
         this.mimeType = rhs.mimeType

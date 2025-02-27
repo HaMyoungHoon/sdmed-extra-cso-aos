@@ -1,6 +1,5 @@
 package sdmed.extra.cso.views.main.edi.ediView
 
-import android.net.Uri
 import androidx.core.net.toUri
 import androidx.multidex.MultiDexApplication
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,12 +10,10 @@ import sdmed.extra.cso.models.RestResultT
 import sdmed.extra.cso.models.common.EllipseItemModel
 import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel
-import sdmed.extra.cso.models.common.SASKeyQueueModel
+import sdmed.extra.cso.models.common.EDISASKeyQueueModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
 import sdmed.extra.cso.models.services.FBackgroundEDIFileUpload
-import sdmed.extra.cso.models.services.FNotificationService
-import sdmed.extra.cso.utils.FExtensions
 
 class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
     private val ediListRepository: IEDIListRepository by kodein.instance(IEDIListRepository::class)
@@ -84,7 +81,7 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
 
     fun startBackgroundService() {
         val uploadFile = this.uploadItems.value.toMutableList()
-        val data = SASKeyQueueModel().apply {
+        val data = EDISASKeyQueueModel().apply {
             ediPK = thisPK
             medias = uploadFile
             ediUploadModel = item.value
