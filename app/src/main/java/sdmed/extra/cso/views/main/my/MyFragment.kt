@@ -1,5 +1,6 @@
 package sdmed.extra.cso.views.main.my
 
+import android.content.Intent
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +13,9 @@ import sdmed.extra.cso.bases.FBaseFragment
 import sdmed.extra.cso.databinding.MyFragmentBinding
 import sdmed.extra.cso.models.retrofit.hospitals.HospitalModel
 import sdmed.extra.cso.models.retrofit.pharmas.PharmaModel
+import sdmed.extra.cso.utils.FAmhohwa
 import sdmed.extra.cso.utils.FCoroutineUtil
+import sdmed.extra.cso.views.login.PasswordChangeActivity
 import java.util.ArrayList
 
 class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
@@ -45,8 +48,8 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
     private fun setThisCommand(data: Any?) {
         val eventName = data as? MyFragmentVM.ClickEvent ?: return
         when (eventName) {
-            MyFragmentVM.ClickEvent.LOGOUT -> { }
-            MyFragmentVM.ClickEvent.PASSWORD_CHANGE -> { }
+            MyFragmentVM.ClickEvent.LOGOUT -> FAmhohwa.logout(contextBuff)
+            MyFragmentVM.ClickEvent.PASSWORD_CHANGE -> startActivity(Intent(contextBuff, PasswordChangeActivity::class.java))
             MyFragmentVM.ClickEvent.IMAGE_TAXPAYER -> { }
             MyFragmentVM.ClickEvent.IMAGE_BANK_ACCOUNT -> { }
             MyFragmentVM.ClickEvent.IMAGE_CSO_REPORT -> { }

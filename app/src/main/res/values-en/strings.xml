@@ -91,4 +91,11 @@
     <string name="qna_upload_comp">qna upload complete</string>
     <string name="qna_upload">qna upload</string>
     <string name="qna_add_title_hint_desc">title</string>
+    <string name="pw_hint_desc">number+charactor 8~20</string>
+    <string name="current_pw_desc">current password</string>
+    <string name="after_pw_desc">after password</string>
+    <string name="confirm_pw_desc">confrim password</string>
+    <string name="after_pw_rule_check_desc">after password format check</string>
+    <string name="confirm_pw_rule_check_desc">confirm password format check</string>
+    <string name="after_confirm_unmatch_desc">after and confirm unmatch</string>
 </resources>

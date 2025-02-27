@@ -49,7 +49,8 @@ object FAmhohwa {
             true
         }
     }
-    fun logout(context: Context, expired: Boolean = false) {
+    fun logout(context: Context?, expired: Boolean = false) {
+        context ?: return
         removeLoginData(context)
         moveToLandingActivity(context, expired)
     }

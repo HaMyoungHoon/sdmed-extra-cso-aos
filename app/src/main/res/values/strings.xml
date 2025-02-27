@@ -92,4 +92,11 @@
     <string name="qna_upload_comp">QnA 업로드 완료</string>
     <string name="qna_upload">QnA 업로드</string>
     <string name="qna_add_title_hint_desc">제목</string>
+    <string name="pw_hint_desc">숫자+문자(영문 또는 한글) 8~20</string>
+    <string name="current_pw_desc">현재 비밀번호</string>
+    <string name="after_pw_desc">바꿀 비밀번호</string>
+    <string name="confirm_pw_desc">비밀번호 확인</string>
+    <string name="after_pw_rule_check_desc">바꿀 비밀번호가 형식에 맞지 않습니다.</string>
+    <string name="confirm_pw_rule_check_desc">비밀번호 확인이 형식에 맞지 않습니다.</string>
+    <string name="after_confirm_unmatch_desc">바꿀 비밀번호와 확인 비밀번호가 다릅니다.</string>
 </resources>

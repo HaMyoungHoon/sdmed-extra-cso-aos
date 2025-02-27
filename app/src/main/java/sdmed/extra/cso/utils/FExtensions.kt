@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.net.toFile
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.fDate.FDateTime
 import sdmed.extra.cso.fDate.FLocalize
 import sdmed.extra.cso.interfaces.IRestResult
@@ -163,4 +164,6 @@ object FExtensions {
             RestResult().setFail(DataExceptionHandler.handleException(e))
         }
     }
+
+    fun regexPasswordCheck(data: String?) = data?.let { Regex(FConstants.REGEX_CHECK_PASSWORD_0).matches(it) }
 }

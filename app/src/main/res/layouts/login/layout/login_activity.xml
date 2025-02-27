@@ -56,7 +56,6 @@
                 android:hint="@string/login_pw_edit_desc"
                 android:inputType="textPassword"
                 android:text="@={dataContext.loginPW}"
-                android:fontFamily="@font/goyang"
                 android:textColor="@color/def_foreground"
                 android:textColorHint="@color/disable_fore_gray"
                 android:maxLines="1"
@@ -66,7 +65,8 @@
                 tools:background="@drawable/shape_rounded_box_able_5dp"/>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

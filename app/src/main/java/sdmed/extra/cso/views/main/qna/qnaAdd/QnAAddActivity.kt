@@ -229,8 +229,10 @@ class QnAAddActivity: FBaseActivity<QnaAddActivityBinding, QnAAddActivityVM>(Use
     }
     private fun observeText() {
         lifecycleScope.launch {
-            async { dataContext.content.collectLatest { savableCheck() } }.await()
-            async { dataContext.postTitle.collectLatest { savableCheck() } }.await()
+            val ret1 = async { dataContext.content.collectLatest { savableCheck() } }
+            val ret2 = async { dataContext.postTitle.collectLatest { savableCheck() } }
+            ret1.await()
+            ret2.await()
         }
     }
 }

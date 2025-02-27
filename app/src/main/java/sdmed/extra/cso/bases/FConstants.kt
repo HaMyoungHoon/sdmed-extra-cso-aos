@@ -39,6 +39,13 @@ object FConstants {
     const val CLAIMS_NAME = "name"
     const val CLAIMS_EXP = "exp"
 
+    // 숫자, 문자(영대소한글)
+    const val REGEX_CHECK_PASSWORD_0 = "^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ!@#\$%^&*()])(?=.*\\d)[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ\\d@\$!@#\$%^&*()]{8,20}\$"
+    // 숫자, 특수문자, 문자(영대소한글)
+    const val REGEX_CHECK_PASSWORD_1 = "^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ!@#\$%^&*()])(?=.*\\d)(?=.*[@\$!@#\$%^&*()])[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ\\d@\$!@#\$%^&*()]{8,20}\$"
+    // 숫자, 대문자, 소문자
+    const val REGEX_CHECK_PASSWORD_2 = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,20}\$"
+
     val LOCATION_PERMISSION = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     val ALARM_PERMISSION = arrayOf(Manifest.permission.SCHEDULE_EXACT_ALARM)
     val NOTIFICATION_PERMISSION = arrayOf(Manifest.permission.POST_NOTIFICATIONS)
