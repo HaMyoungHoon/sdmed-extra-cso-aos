@@ -7,14 +7,17 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import sdmed.extra.cso.bases.FConstants
+import sdmed.extra.cso.models.RestPage
 import sdmed.extra.cso.models.RestResultT
 import sdmed.extra.cso.models.retrofit.qna.QnAContentModel
 import sdmed.extra.cso.models.retrofit.qna.QnAHeaderModel
 import sdmed.extra.cso.models.retrofit.qna.QnAReplyModel
 
 interface IQnAListService {
-    @GET("${FConstants.REST_API_QNA_LIST}/list")
-    suspend fun getList(): RestResultT<List<QnAHeaderModel>>
+    @GET("${FConstants.REST_API_QNA_LIST}/list/paging")
+    suspend fun getList(@Query("page") page: Int = 0, @Query("size") size: Int = 20): RestResultT<RestPage<MutableList<QnAHeaderModel>>>
+    @GET("${FConstants.REST_API_QNA_LIST}/like/paging")
+    suspend fun getLike(@Query("searchString") searchString: String, @Query("page") page: Int = 0, @Query("size") size: Int = 20): RestResultT<RestPage<MutableList<QnAHeaderModel>>>
     @GET("${FConstants.REST_API_QNA_LIST}/data/header/{thisPK}")
     suspend fun getHeaderData(@Path("thisPK") thisPK: String): RestResultT<QnAHeaderModel>
     @GET("${FConstants.REST_API_QNA_LIST}/data/content/{thisPK}")

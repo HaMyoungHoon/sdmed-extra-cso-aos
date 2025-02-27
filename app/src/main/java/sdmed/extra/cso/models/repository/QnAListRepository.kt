@@ -9,7 +9,8 @@ import sdmed.extra.cso.models.retrofit.qna.QnAReplyModel
 import sdmed.extra.cso.utils.FExtensions
 
 class QnAListRepository(private val _service: IQnAListService): IQnAListRepository {
-    override suspend fun getList() = FExtensions.restTryT { _service.getList() }
+    override suspend fun getList(page: Int, size: Int) = FExtensions.restTryT { _service.getList(page, size) }
+    override suspend fun getLike(searchString: String, page: Int, size: Int) = FExtensions.restTryT { _service.getLike(searchString, page, size) }
     override suspend fun getHeaderData(thisPK: String) = FExtensions.restTryT { _service.getHeaderData(thisPK) }
     override suspend fun getContentData(thisPK: String) = FExtensions.restTryT { _service.getContentData(thisPK) }
     override suspend fun postData(title: String, qnaContentModel: QnAContentModel) = FExtensions.restTryT { _service.postData(title, qnaContentModel) }

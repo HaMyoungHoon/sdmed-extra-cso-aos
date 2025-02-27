@@ -83,4 +83,7 @@
     <string name="password_change_desc">password change</string>
     <string name="own_hospital_list_desc">own hospital list</string>
     <string name="own_pharma_list_desc">own pharma list</string>
+    <string name="qna_desc">QnA</string>
+    <string name="qna_add_desc">add</string>
+    <string name="qna_comp_desc">compleate</string>
 </resources>

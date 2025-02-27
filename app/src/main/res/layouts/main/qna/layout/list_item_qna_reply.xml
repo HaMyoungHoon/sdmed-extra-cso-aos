@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.retrofit.qna.QnAReplyModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.qna.QnAReplyModel" />
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.OPEN)}"
+        android:background="@drawable/shape_rounded_box_able_5dp"
+        android:animateLayoutChanges="true">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.regDate.toLocaleString()}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="24sp"
+                tools:text="2025-01-01"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.name}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="24sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:ellipsize="middle"
+                tools:text="작성자" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/goyang"
+                android:textSize="24sp"
+                android:drawablePadding="4dp"
+                android:drawableEnd="@{dataContext.open ? @drawable/vector_arrow_up : @drawable/vector_arrow_down}"
+                tools:textColor="@color/edi_state_reject"
+                tools:drawableEnd="@drawable/vector_arrow_up"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{dataContext.open ? View.VISIBLE : View.GONE}"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.htmlContentString}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                tools:text="12301293oasjdflaskdjfalsdfj alsdkfjasldfjlkasdjflkdjsafksdjflasldkfjasldkfjasdfjalsdkjf"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_reply_file"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:visibility="@{dataContext.fileList.size() > 0 ? View.VISIBLE : View.GONE}"
+                app:viewPagerQnAReplyFileList="@{dataContext}"
+                app:layout_constraintTop_toBottomOf="@id/tv_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_ellipse_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:recyclerEllipseList="@{dataContext.ellipseList}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/vp_reply_file"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

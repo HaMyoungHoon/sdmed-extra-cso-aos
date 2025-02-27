@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="sdmed.extra.cso.models.retrofit.qna.QnAHeaderModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.qna.QnAHeaderModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{dataContext.qnaState.desc}"
+            android:fontFamily="@font/goyang"
+            android:textSize="24sp"
+            app:textColorResId="@{dataContext.qnaColor}"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_title"
+            tools:text="접수"
+            tools:textColor="@color/qna_state_recep"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@{dataContext.title}"
+            android:fontFamily="@font/goyang"
+            android:textColor="@color/def_foreground"
+            android:textSize="24sp"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_state"
+            app:layout_constraintEnd_toStartOf="@id/tv_reg"
+            tools:text="제목"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{dataContext.regDate.toLocaleString()}"
+            android:fontFamily="@font/goyang"
+            android:textColor="@color/def_foreground"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="2025-01-01 01:02:03" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
