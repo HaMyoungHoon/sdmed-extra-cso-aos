@@ -3,7 +3,6 @@ package sdmed.extra.cso.models.adapter
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -16,7 +15,6 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
@@ -94,6 +92,23 @@ object FGlideBindingAdapters {
     @BindingAdapter(value = ["glideResSrc", "glideResSrcNullRemove", "glideResSrcCenter"], requireAll = false)
     fun setGlideResSrc(imageView: AppCompatImageView, @DrawableRes glideResSrc: Int?, glideResSrcNullRemove: Boolean?, glideResSrcCenter: Boolean?) {
         if (glideResSrc == null || glideResSrc == 0) {
+            if (glideResSrcNullRemove == true) {
+                imageView.setImageDrawable(null)
+            }
+            return
+        }
+        if (glideResSrcCenter == true) {
+            imageView.scaleType = ImageView.ScaleType.CENTER
+        }
+        glideLoad(imageView, glideResSrc)
+            .apply(defaultImageRequestOptions())
+            .into(imageView)
+        return
+    }
+    @JvmStatic
+    @BindingAdapter(value = ["glideResSrc", "glideResSrcNullRemove", "glideResSrcCenter"], requireAll = false)
+    fun setGlideResSrc(imageView: AppCompatImageView, glideResSrc: Drawable?, glideResSrcNullRemove: Boolean?, glideResSrcCenter: Boolean?) {
+        if (glideResSrc == null) {
             if (glideResSrcNullRemove == true) {
                 imageView.setImageDrawable(null)
             }
@@ -461,6 +476,8 @@ object FGlideBindingAdapters {
     }
     private fun glideLoad(imageView: AppCompatImageView, url: String) = Glide.with(imageView.context).load(url)
     private fun glideLoad(imageView: AppCompatImageView, resId: Int) = Glide.with(imageView.context).load(resId)
+    private fun glideLoad(imageView: AppCompatImageView, drawable: Drawable) = Glide.with(imageView.context).load(drawable)
+    private fun glideLoad(imageView: FAppCompatImageView, drawable: Drawable) = Glide.with(imageView.context).load(drawable)
     private fun glideLoad(imageView: FAppCompatImageView, url: String) = Glide.with(imageView.context).load(url)
     private fun glideLoad(imageView: FAppCompatImageView, resId: Int) = Glide.with(imageView.context).load(resId)
     private fun glideBuilder(imageView: AppCompatImageView, url: String) = Glide.with(imageView.context).asDrawable().load(url)

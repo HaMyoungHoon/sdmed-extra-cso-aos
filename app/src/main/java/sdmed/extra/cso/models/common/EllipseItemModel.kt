@@ -1,36 +1,33 @@
 package sdmed.extra.cso.models.common
 
-import sdmed.extra.cso.R
+import kotlinx.coroutines.flow.MutableStateFlow
 import sdmed.extra.cso.bases.FDataModelClass
 
 data class EllipseItemModel(
-    var isVisible: Boolean = false,
-    var isSelect: Boolean = false,
-    var isTiny: Boolean = false,
+    var showItem: MutableStateFlow<Boolean> = MutableStateFlow(true),
+    var isSelect: MutableStateFlow<Boolean> = MutableStateFlow(false),
+    var isTiny: MutableStateFlow<Boolean> = MutableStateFlow(false),
 ): FDataModelClass<EllipseItemModel.ClickEvent>() {
     fun selectThis() {
-        isVisible = true
-        isSelect = true
-        isTiny = false
+        showItem.value = true
+        isSelect.value = true
+        isTiny.value = false
     }
     fun visibleThis() {
-        isVisible = true
-        isSelect = false
-        isTiny = false
+        showItem.value = true
+        isSelect.value = false
+        isTiny.value = false
     }
     fun tinyThis() {
-        isVisible = true
-        isSelect = false
-        isTiny = true
+        showItem.value = true
+        isSelect.value = false
+        isTiny.value = true
     }
     fun initThis() {
-        isVisible = false
-        isSelect = false
-        isTiny = false
+        showItem.value = false
+        isSelect.value = false
+        isTiny.value = true
     }
-    fun getWidthSize() = if (isTiny) 3 else 5
-    fun getHeightSize() = if (isTiny) 3 else 5
-    fun getThisSrc() = if (isSelect) R.drawable.vector_ellipse_primary else R.drawable.vector_ellipse_disable
 
     enum class ClickEvent(var index: Int) {
 

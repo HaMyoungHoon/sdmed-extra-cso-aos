@@ -243,12 +243,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         buff.getOrNull(position + 1)?.visibleThis()
         buff.getOrNull(position + 2)?.visibleThis()
         buff.getOrNull(position + 3)?.tinyThis()
-        FCoroutineUtil.coroutineScope({
-            dataContext.ellipseList.emit(buff)
-            getEllipseAdapter()?.notifyItemRangeChanged(0, buff.size)
-        })
     }
-
 
     private fun getData() {
         loading()
@@ -259,7 +254,6 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
                 toast(ret.msg)
                 return@coroutineScope
             }
-//            getFileViewAdapter()?.updateItems(dataContext.item.value.fileList)
             binding?.vpEdiFileList?.isUserInputEnabled = dataContext.item.value.fileList.size > 1
             updateEllipseList(0)
         })
@@ -313,12 +307,6 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
 //        })
     }
 
-    private fun getFileViewAdapter(): EDIViewFileAdapter? {
-        return (binding?.vpEdiFileList?.adapter as? EDIViewFileAdapter)
-    }
-    private fun getEllipseAdapter(): EllipseListAdapter? {
-        return (binding?.rvEllipseList?.adapter as? EllipseListAdapter)
-    }
     private fun getResponseAdapter(): EDIViewResponseAdapter? {
         return (binding?.rvResponseList?.adapter as? EDIViewResponseAdapter)
     }

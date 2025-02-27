@@ -41,7 +41,7 @@ class PaginationAdapter
         }
     }
     fun updateSelect(position: Int) {
-        val buff = binding.dataContext?.pages?.value?.toMutableList() ?: return
+        val buff = binding.dataContext?.pages?.value ?: return
         if (position < 0 || position >= buff.size) {
             return
         }
@@ -52,7 +52,6 @@ class PaginationAdapter
             buff[findIndex].unSelectThis()
         }
         buff[position].selectThis()
-        binding.dataContext?.pages?.value = buff
     }
     companion object {
         @JvmStatic

@@ -8,15 +8,21 @@
             name="dataContext"
             type="sdmed.extra.cso.models.common.EllipseItemModel" />
     </data>
-    <androidx.appcompat.widget.AppCompatImageView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="1dp"
-        android:visibility="@{dataContext.visible ? View.VISIBLE : View.GONE}"
-        app:glideResSrc="@{dataContext.thisSrc}"
-        app:imageViewWidth="@{dataContext.widthSize}"
-        app:imageViewHeight="@{dataContext.heightSize}"
-        tools:src="@drawable/vector_ellipse_disable"
-        tools:layout_width="5dp"
-        tools:layout_height="5dp" />
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:visibility="@{dataContext.showItem ? View.VISIBLE : View.GONE}"
+            app:glideResSrc="@{dataContext.select ? @drawable/vector_ellipse_primary : @drawable/vector_ellipse_disable}"
+            app:imageViewWidth="@{dataContext.tiny ? 3 : 5}"
+            app:imageViewHeight="@{dataContext.tiny ? 3 : 5}"
+            tools:src="@drawable/vector_ellipse_disable"
+            tools:layout_width="5dp"
+            tools:layout_height="5dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
