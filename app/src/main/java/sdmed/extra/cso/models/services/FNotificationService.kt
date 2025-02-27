@@ -31,6 +31,7 @@ import sdmed.extra.cso.MainActivity
 import sdmed.extra.cso.models.common.NotifyIndex
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.views.main.edi.ediView.EDIViewActivity
+import java.util.UUID
 
 class FNotificationService(context: Context): Service(), KodeinAware {
     override val kodein: Kodein by kodein(context)
@@ -130,9 +131,9 @@ class FNotificationService(context: Context): Service(), KodeinAware {
         return when (notifyIndex) {
             NotifyIndex.UNKNOWN -> MainActivity::class.java
             NotifyIndex.EDI_UPLOAD -> MainActivity::class.java
-            NotifyIndex.EDI_FILE_UPLOAD -> EDIViewActivity::class.java
-            NotifyIndex.EDI_FILE_REMOVE -> EDIViewActivity::class.java
-            NotifyIndex.EDI_RESPONSE -> EDIViewActivity::class.java
+            NotifyIndex.EDI_FILE_UPLOAD -> MainActivity::class.java
+            NotifyIndex.EDI_FILE_REMOVE -> MainActivity::class.java
+            NotifyIndex.EDI_RESPONSE -> MainActivity::class.java
             NotifyIndex.QNA_UPLOAD -> MainActivity::class.java
             NotifyIndex.QNA_FILE_UPLOAD -> MainActivity::class.java
             NotifyIndex.QNA_RESPONSE -> MainActivity::class.java
@@ -143,11 +144,10 @@ class FNotificationService(context: Context): Service(), KodeinAware {
             return
         }
         val intent = Intent(context, indexToActivity(notifyIndex)).apply {
-            putExtras(Bundle().apply {
-                putExtra("notifyIndex", notifyIndex.index)
-                putExtra("thisPK", thisPK)
-            })
+            putExtra("notifyIndex", notifyIndex.index)
+            putExtra("thisPK", thisPK)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            action = UUID.randomUUID().toString()
         }
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         _notificationManager.notify(notificationId++, notificationCompatBuild(context, title, content, pendingIntent, notifyType, true, !isCancel).build())

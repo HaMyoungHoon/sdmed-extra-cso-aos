@@ -1,19 +1,23 @@
 package sdmed.extra.cso
 
+import android.content.Intent
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.databinding.MainActivityBinding
+import sdmed.extra.cso.models.common.NotifyIndex
 import sdmed.extra.cso.models.mqtt.MqttContentModel
 import sdmed.extra.cso.models.mqtt.MqttContentType
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.views.main.edi.EDIFragment
+import sdmed.extra.cso.views.main.edi.ediView.EDIViewActivity
 import sdmed.extra.cso.views.main.home.HomeFragment
 import sdmed.extra.cso.views.main.my.MyFragment
 import sdmed.extra.cso.views.main.price.PriceFragment
 import sdmed.extra.cso.views.main.qna.QnAFragment
+import sdmed.extra.cso.views.main.qna.qnaView.QnAViewActivity
 
 class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles.of(UserRole.None)) {
     override var layoutId = R.layout.main_activity
@@ -30,10 +34,9 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
     override fun viewInit() {
         super.viewInit()
         setBackPressed()
-        openEDIFragment(MainActivityVM.ClickEvent.EDI)
+        openPage()
         mqttInit()
     }
-
     override fun setLayoutCommand(data: Any?) {
         val eventName = data as? MainActivityVM.ClickEvent ?: return
         when (eventName) {
@@ -44,7 +47,6 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
             MainActivityVM.ClickEvent.MY -> openMyFragment(eventName)
         }
     }
-
     private fun openEDIFragment(eventName: MainActivityVM.ClickEvent) {
         allMenuUnSelect(eventName)
         replaceFragment(EDIFragment())
@@ -72,15 +74,12 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
             .setReorderingAllowed(true)
             .commitAllowingStateLoss()
     }
-
     private fun allMenuUnSelect(eventName: MainActivityVM.ClickEvent) {
         dataContext.ediMenuState.value = eventName == MainActivityVM.ClickEvent.EDI
         dataContext.priceMenuState.value = eventName == MainActivityVM.ClickEvent.PRICE
         dataContext.qnaMenuState.value = eventName == MainActivityVM.ClickEvent.QNA
         dataContext.myMenuState.value = eventName == MainActivityVM.ClickEvent.MY
     }
-
-
     private fun setBackPressed() {
         _backPressed = object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -91,8 +90,32 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
         }
         this.onBackPressedDispatcher.addCallback(this, _backPressed!!)
     }
-
-
+    private fun openPage() {
+        val notifyIndex = NotifyIndex.parseIndex(intent.getIntExtra("notifyIndex", 0))
+        val thisPK = intent.getStringExtra("thisPK") ?: ""
+        when (notifyIndex) {
+            NotifyIndex.UNKNOWN -> openEDIFragment(MainActivityVM.ClickEvent.EDI)
+            NotifyIndex.EDI_UPLOAD -> openEDIFragment(MainActivityVM.ClickEvent.EDI)
+            NotifyIndex.EDI_FILE_UPLOAD -> openEDIFragment(MainActivityVM.ClickEvent.EDI)
+            NotifyIndex.EDI_FILE_REMOVE -> openEDIFragment(MainActivityVM.ClickEvent.EDI)
+            NotifyIndex.EDI_RESPONSE -> openEDIFragment(MainActivityVM.ClickEvent.EDI)
+            NotifyIndex.QNA_UPLOAD -> openQnAFragment(MainActivityVM.ClickEvent.QNA)
+            NotifyIndex.QNA_FILE_UPLOAD -> openQnAFragment(MainActivityVM.ClickEvent.QNA)
+            NotifyIndex.QNA_RESPONSE -> openQnAFragment(MainActivityVM.ClickEvent.QNA)
+        }
+        if (thisPK.isNotEmpty()) {
+            when (notifyIndex) {
+                NotifyIndex.EDI_UPLOAD -> startActivity(Intent(this, EDIViewActivity::class.java).apply { putExtra("thisPK", thisPK) })
+                NotifyIndex.EDI_FILE_UPLOAD -> startActivity(Intent(this, EDIViewActivity::class.java).apply { putExtra("thisPK", thisPK) })
+                NotifyIndex.EDI_FILE_REMOVE -> startActivity(Intent(this, EDIViewActivity::class.java).apply { putExtra("thisPK", thisPK) })
+                NotifyIndex.EDI_RESPONSE -> startActivity(Intent(this, EDIViewActivity::class.java).apply { putExtra("thisPK", thisPK) })
+                NotifyIndex.QNA_UPLOAD -> startActivity(Intent(this, QnAViewActivity::class.java).apply { putExtra("thisPK", thisPK) })
+                NotifyIndex.QNA_FILE_UPLOAD -> startActivity(Intent(this, QnAViewActivity::class.java).apply { putExtra("thisPK", thisPK) })
+                NotifyIndex.QNA_RESPONSE -> startActivity(Intent(this, QnAViewActivity::class.java).apply { putExtra("thisPK", thisPK) })
+                else -> { }
+            }
+        }
+    }
     private fun mqttInit() {
         FCoroutineUtil.coroutineScope({
             dataContext.mqttService.mqttInit()
