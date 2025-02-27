@@ -17,7 +17,6 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 import sdmed.extra.cso.interfaces.repository.IAzureBlobRepository
 import sdmed.extra.cso.interfaces.repository.ICommonRepository
@@ -47,6 +46,7 @@ import sdmed.extra.cso.models.repository.MqttRepository
 import sdmed.extra.cso.models.repository.MyInfoRepository
 import sdmed.extra.cso.models.repository.QnAListRepository
 import sdmed.extra.cso.models.services.FBackgroundEDIFileUpload
+import sdmed.extra.cso.models.services.FBackgroundQnAUpload
 import sdmed.extra.cso.models.services.FMqttService
 import sdmed.extra.cso.models.services.FNotificationService
 import sdmed.extra.cso.models.services.ForcedTerminationService
@@ -69,6 +69,7 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
 
         bind<FNotificationService>(FNotificationService::class) with singleton { FNotificationService(applicationContext) }
         bind<FBackgroundEDIFileUpload>(FBackgroundEDIFileUpload::class) with singleton { FBackgroundEDIFileUpload(applicationContext) }
+        bind<FBackgroundQnAUpload>(FBackgroundQnAUpload::class) with singleton { FBackgroundQnAUpload(applicationContext) }
         bind<FMqttService>(FMqttService::class) with singleton { FMqttService(applicationContext) }
 
         bind<IAzureBlobRepository>(IAzureBlobRepository::class) with singleton { AzureBlobRepository(RetrofitService.create(IAzureBlobService::class.java)) }

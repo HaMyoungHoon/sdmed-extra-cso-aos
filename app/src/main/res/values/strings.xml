@@ -87,4 +87,9 @@
     <string name="qna_desc">QnA</string>
     <string name="qna_add_desc">추가</string>
     <string name="qna_comp_desc">완료</string>
+    <string name="qna_add_content_hint_desc">문의 사항을 적어주세요</string>
+    <string name="qna_upload_fail">QnA 업로드 실패</string>
+    <string name="qna_upload_comp">QnA 업로드 완료</string>
+    <string name="qna_upload">QnA 업로드</string>
+    <string name="qna_add_title_hint_desc">제목</string>
 </resources>

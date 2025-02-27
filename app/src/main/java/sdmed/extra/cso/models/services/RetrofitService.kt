@@ -33,6 +33,7 @@ object RetrofitService {
         .registerTypeAdapter(Int::class.javaPrimitiveType, EmptyStringToNumberTypeAdapter())
         .registerTypeAdapter(Double::class.java, EmptyStringToNumberTypeAdapter())
         .registerTypeAdapter(Double::class.javaPrimitiveType, EmptyStringToNumberTypeAdapter())
+        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
         .create()
     private fun getOkHttpClient() = OkHttpClient.Builder()
         .addNetworkInterceptor(leveled())

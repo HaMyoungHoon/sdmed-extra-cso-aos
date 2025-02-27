@@ -10,13 +10,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseFragment
 import sdmed.extra.cso.databinding.QnaFragmentBinding
 import sdmed.extra.cso.models.common.PageNumberModel
 import sdmed.extra.cso.models.common.PaginationModel
+import sdmed.extra.cso.models.eventbus.QnAUploadEvent
 import sdmed.extra.cso.models.retrofit.qna.QnAHeaderModel
 import sdmed.extra.cso.utils.FCoroutineUtil
+import sdmed.extra.cso.views.main.qna.qnaAdd.QnAAddActivity
 import sdmed.extra.cso.views.main.qna.qnaView.QnAViewActivity
 import java.util.ArrayList
 
@@ -85,11 +90,15 @@ class QnAFragment: FBaseFragment<QnaFragmentBinding, QnAFragmentVM>() {
                 dataContext.searchLoading.value = true
             }
         }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
     }
     private fun setThisCommand(data: Any?) {
         val eventName = data as? QnAFragmentVM.ClickEvent ?: return
         when (eventName) {
             QnAFragmentVM.ClickEvent.ADD -> {
+                startActivity(Intent(contextBuff, QnAAddActivity::class.java))
             }
         }
     }
@@ -145,6 +154,10 @@ class QnAFragment: FBaseFragment<QnaFragmentBinding, QnAFragmentVM>() {
                 addList()
             }
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun qnaUploadEvent(qnaUploadEvent: QnAUploadEvent) {
+        getList()
     }
 
     companion object {

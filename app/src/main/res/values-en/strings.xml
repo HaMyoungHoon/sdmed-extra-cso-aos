@@ -86,4 +86,9 @@
     <string name="qna_desc">QnA</string>
     <string name="qna_add_desc">add</string>
     <string name="qna_comp_desc">compleate</string>
+    <string name="qna_add_content_hint_desc">write down qna</string>
+    <string name="qna_upload_fail">qna upload fail</string>
+    <string name="qna_upload_comp">qna upload complete</string>
+    <string name="qna_upload">qna upload</string>
+    <string name="qna_add_title_hint_desc">title</string>
 </resources>

@@ -4,7 +4,6 @@ import android.text.Html
 import kotlinx.coroutines.flow.MutableStateFlow
 import sdmed.extra.cso.bases.FDataModelClass
 import sdmed.extra.cso.models.common.EllipseItemModel
-import java.sql.Timestamp
 import java.util.Date
 
 data class QnAReplyModel(
@@ -13,7 +12,7 @@ data class QnAReplyModel(
     var userPK: String = "",
     var name: String = "",
     var content: String = "",
-    var regDate: Timestamp = Timestamp(Date().time),
+    var regDate: Date = Date(),
     var fileList: MutableList<QnAReplyFileModel> = mutableListOf()
 ): FDataModelClass<QnAReplyModel.ClickEvent>() {
     var open = MutableStateFlow(false)

@@ -143,6 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:visibility="@{dataContext.headerModel.qnaState.editable ? View.VISIBLE : View.GONE}"
                     app:layout_constraintTop_toBottomOf="@id/ll_reply"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -155,7 +156,6 @@
                         android:fontFamily="@font/goyang"
                         android:textColor="@color/def_foreground"
                         android:textSize="24sp"
-                        android:visibility="@{dataContext.headerModel.qnaState.editable ? View.VISIBLE : View.GONE}"
                         android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.ADD)}"
                         android:background="@drawable/shape_rounded_box_able_5dp" />
                     <androidx.appcompat.widget.AppCompatTextView
