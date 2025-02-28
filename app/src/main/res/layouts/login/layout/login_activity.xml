@@ -36,14 +36,13 @@
                 android:paddingEnd="10dp"
                 android:background="@{dataContext.loginID.length() == 0 ? @drawable/shape_rounded_box_disable_5dp : @drawable/shape_rounded_box_able_5dp}"
                 android:hint="@string/login_id_edit_desc"
-                android:inputType="textFilter"
+                android:inputType="text"
                 android:text="@={dataContext.loginID}"
                 android:fontFamily="@font/goyang"
                 android:textColor="@color/def_foreground"
                 android:textColorHint="@color/disable_fore_gray"
                 android:maxLines="1"
                 android:drawableStart="@drawable/vector_person"
-                app:inputFilterPattern="@{dataContext.idInputFilter}"
                 app:inputFilterMaxLength="@{20}"
                 tools:background="@drawable/shape_rounded_box_disable_5dp" />
             <androidx.appcompat.widget.AppCompatEditText
@@ -60,7 +59,6 @@
                 android:textColorHint="@color/disable_fore_gray"
                 android:maxLines="1"
                 android:drawableStart="@drawable/vector_lock"
-                app:inputFilterPattern="@{dataContext.pwInputFilter}"
                 app:inputFilterMaxLength="@{20}"
                 tools:background="@drawable/shape_rounded_box_able_5dp"/>
             <androidx.constraintlayout.widget.ConstraintLayout
