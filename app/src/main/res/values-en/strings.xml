@@ -105,4 +105,5 @@
     <string name="edi_new_desc">new place</string>
     <string name="edi_hospital_select_desc">edi hospital select</string>
     <string name="edi_pharma_select_desc">edi pharma select</string>
+    <string name="edi_due_date_desc">due date</string>
 </resources>

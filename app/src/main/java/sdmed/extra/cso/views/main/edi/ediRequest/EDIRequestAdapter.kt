@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import sdmed.extra.cso.models.adapter.FViewPagerFragmentAdapter
+import sdmed.extra.cso.views.main.edi.ediDueDate.EDIDueDateFragment
 
 class EDIRequestAdapter(fragmentManager: FragmentManager, lifecycleOwner: LifecycleOwner): FViewPagerFragmentAdapter(fragmentManager, lifecycleOwner.lifecycle) {
     override val items = mutableListOf<Fragment>()
@@ -13,6 +14,7 @@ class EDIRequestAdapter(fragmentManager: FragmentManager, lifecycleOwner: Lifecy
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         items.add(EDIRequestFragment())
         items.add(EDIRequestNewFragment())
+        items.add(EDIDueDateFragment())
         super.onAttachedToRecyclerView(recyclerView)
     }
 }

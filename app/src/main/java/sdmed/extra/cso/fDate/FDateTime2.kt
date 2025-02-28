@@ -537,8 +537,8 @@ open class FDateTime2 {
         FRIDAY("금", 5),
         SATURDAY("토", 6);
         companion object {
-            fun fromString(value: String) = DayOfTheWeek.values().firstOrNull { it.dayOfKorea == value }
-            fun fromInt(value: Int) = DayOfTheWeek.values().firstOrNull { it.dayOfIndex == value }
+            fun fromString(value: String) = entries.firstOrNull { it.dayOfKorea == value }
+            fun fromInt(value: Int) = entries.firstOrNull { it.dayOfIndex == value }
             fun next(value: DayOfTheWeek): DayOfTheWeek {
                 return if (value.dayOfIndex + 1 > 6) {
                     SUNDAY

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.views.main.edi.ediDueDate.EDIDueDateFragmentVM.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.views.main.edi.ediDueDate.EDIDueDateFragmentVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_header_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:text="@{dataContext.startDate}"
+                android:fontFamily="@font/goyang"
+                android:textSize="20sp"
+                android:textColor="@color/def_foreground"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.START_DATE)}"
+                tools:text="2025-01-01" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:text="@{dataContext.endDate}"
+                android:fontFamily="@font/goyang"
+                android:textSize="20sp"
+                android:textColor="@color/def_foreground"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.END_DATE)}"
+                tools:text="2025-02-01" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/refresh_desc"
+                android:fontFamily="@font/goyang"
+                android:textSize="20sp"
+                android:textColor="@color/def_foreground"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SEARCH)}" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:id="@+id/vw_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_gray"
+            app:layout_constraintTop_toBottomOf="@id/ll_header_container" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_edi_due_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/vw_line"
+            app:recyclerViewEDIDueDate="@{dataContext.dateModel}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

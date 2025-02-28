@@ -57,6 +57,7 @@ class EDIRequestActivity: FBaseActivity<EdiRequestActivityBinding, EDIRequestAct
             when (position) {
                 0 -> getTabView(tab, getString(R.string.edi_request_desc), true)
                 1 -> getTabView(tab, getString(R.string.edi_new_desc), false)
+                2 -> getTabView(tab, getString(R.string.edi_due_date_desc), false)
             }
         }.attach()
         binding.tlContent.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
