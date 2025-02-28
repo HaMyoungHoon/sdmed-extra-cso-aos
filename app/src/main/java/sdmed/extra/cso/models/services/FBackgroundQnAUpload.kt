@@ -162,7 +162,7 @@ class FBackgroundQnAUpload(context: Context): Service(), KodeinAware {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-        notificationService.sendNotify(context, NotifyIndex.QNA_UPLOAD, title, message, isCancel = true, thisPK = qnaPK)
+        notificationService.sendNotify(context, NotifyIndex.QNA_UPLOAD, title, message, FNotificationService.NotifyType.WITH_VIBRATE, true, qnaPK)
     }
     private fun progressNotificationCall(uuid: String, isCancel: Boolean = false) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
