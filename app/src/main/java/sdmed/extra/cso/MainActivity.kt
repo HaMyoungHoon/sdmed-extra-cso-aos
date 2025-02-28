@@ -1,21 +1,20 @@
 package sdmed.extra.cso
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.databinding.MainActivityBinding
 import sdmed.extra.cso.models.common.NotifyIndex
-import sdmed.extra.cso.models.mqtt.MqttContentModel
-import sdmed.extra.cso.models.mqtt.MqttContentType
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.views.main.edi.EDIFragment
 import sdmed.extra.cso.views.main.edi.ediRequest.EDIRequestActivity
 import sdmed.extra.cso.views.main.edi.ediView.EDIViewActivity
-import sdmed.extra.cso.views.main.home.HomeFragment
 import sdmed.extra.cso.views.main.my.MyFragment
 import sdmed.extra.cso.views.main.price.PriceFragment
 import sdmed.extra.cso.views.main.qna.QnAFragment
@@ -89,6 +88,10 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
             override fun handleOnBackPressed() {
                 if (!finishConfirmed) {
                     toast(R.string.back_btn_close_desc)
+                    finishConfirmed = true
+                    Handler(Looper.getMainLooper()).postDelayed({ finishConfirmed = false }, 3000L)
+                } else {
+                    finishAffinity()
                 }
             }
         }
