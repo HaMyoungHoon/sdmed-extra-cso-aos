@@ -326,23 +326,15 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         return hasPermissionsGranted(permissions)
     }
     private fun requestCameraPermissions() {
-        if (shouldShowRequestPermissionRationale(FConstants.CAMERA_PERMISSION)) {
-            requestPermissions(FConstants.CAMERA_PERMISSION, FConstants.Permit.CAMERA.index)
-        }
+        requestPermissions(FConstants.CAMERA_PERMISSION, FConstants.Permit.CAMERA.index)
     }
     private fun requestReadExternalPermissions() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            if (shouldShowRequestPermissionRationale(FConstants.READ_EXTERNAL_PERMISSION_32)) {
-                requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_32, FConstants.Permit.READ_EXTERNAL.index)
-            }
+            requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_32, FConstants.Permit.READ_EXTERNAL.index)
         } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
-            if (shouldShowRequestPermissionRationale(FConstants.READ_EXTERNAL_PERMISSION_33)) {
-                requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_33, FConstants.Permit.READ_EXTERNAL.index)
-            }
+            requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_33, FConstants.Permit.READ_EXTERNAL.index)
         } else {
-            if (shouldShowRequestPermissionRationale(FConstants.READ_EXTERNAL_PERMISSION_34)) {
-                requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_34, FConstants.Permit.READ_EXTERNAL.index)
-            }
+            requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_34, FConstants.Permit.READ_EXTERNAL.index)
         }
     }
 
