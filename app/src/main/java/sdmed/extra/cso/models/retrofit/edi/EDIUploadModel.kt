@@ -19,7 +19,7 @@ data class EDIUploadModel(
     var fileList: MutableList<EDIUploadFileModel> = arrayListOf(),
     var responseList: MutableList<EDIUploadResponseModel> = arrayListOf()
 ): FDataModelClass<EDIUploadModel.ClickEvent>() {
-
+    val orgViewName get() = if (etc.isBlank()) orgName else etc
     fun getYearMonth() = "${year}-$month"
     fun getRegDateString() = FDateTime().setThis(regDate).toString("yyyy-MM")
     fun getEdiColor() = ediState.parseEDIColor()

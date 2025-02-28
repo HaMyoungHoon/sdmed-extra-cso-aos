@@ -36,7 +36,6 @@
                 android:contentDescription="@string/menu_home_desc"
                 android:src="@drawable/menu_home"
                 android:elevation="0dp"
-                android:visibility="gone"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOME)}"
                 style="@style/FloatingActionButtonStyle"
                 app:tint="@null"
@@ -90,7 +89,7 @@
                     android:layout_height="55dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOME)}"
                     android:orientation="vertical">
                     <androidx.appcompat.widget.AppCompatImageView

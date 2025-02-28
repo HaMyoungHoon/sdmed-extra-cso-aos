@@ -46,6 +46,8 @@ import sdmed.extra.cso.models.repository.MqttRepository
 import sdmed.extra.cso.models.repository.MyInfoRepository
 import sdmed.extra.cso.models.repository.QnAListRepository
 import sdmed.extra.cso.models.services.FBackgroundEDIFileUpload
+import sdmed.extra.cso.models.services.FBackgroundEDIRequestNewUpload
+import sdmed.extra.cso.models.services.FBackgroundEDIRequestUpload
 import sdmed.extra.cso.models.services.FBackgroundQnAUpload
 import sdmed.extra.cso.models.services.FMqttService
 import sdmed.extra.cso.models.services.FNotificationService
@@ -68,6 +70,8 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
         import(androidXModule(this@FMainApplication))
 
         bind<FNotificationService>(FNotificationService::class) with singleton { FNotificationService(applicationContext) }
+        bind<FBackgroundEDIRequestUpload>(FBackgroundEDIRequestUpload::class) with singleton { FBackgroundEDIRequestUpload(applicationContext) }
+        bind<FBackgroundEDIRequestNewUpload>(FBackgroundEDIRequestNewUpload::class) with singleton { FBackgroundEDIRequestNewUpload(applicationContext) }
         bind<FBackgroundEDIFileUpload>(FBackgroundEDIFileUpload::class) with singleton { FBackgroundEDIFileUpload(applicationContext) }
         bind<FBackgroundQnAUpload>(FBackgroundQnAUpload::class) with singleton { FBackgroundQnAUpload(applicationContext) }
         bind<FMqttService>(FMqttService::class) with singleton { FMqttService(applicationContext) }

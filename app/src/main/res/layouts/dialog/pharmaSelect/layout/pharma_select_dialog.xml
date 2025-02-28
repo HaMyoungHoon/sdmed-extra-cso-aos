@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.views.dialog.pharmaSelect.PharmaSelectDialogVM.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.views.dialog.pharmaSelect.PharmaSelectDialogVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/tv_search"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:hint="@string/search_desc"
+                android:inputType="textFilter"
+                android:text="@={dataContext.searchString}"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textColorHint="@color/disable_fore_gray"
+                android:maxLines="1"
+                android:drawableStart="@drawable/vector_search_def"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_middle_container"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/shape_rounded_box_able_5dp"
+            app:layout_constraintTop_toBottomOf="@id/cl_top_container" >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_pharma"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:recyclerPharmaSelect="@{dataContext.viewItems}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_bottom_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cl_middle_container">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAlignment="center"
+                android:padding="5dp"
+                android:text="@string/cancel_desc"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="24sp"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.CANCEL)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_ok"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_ok"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAlignment="center"
+                android:padding="5dp"
+                android:text="@string/confirm_desc"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="24sp"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/secondary2"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.CONFIRM)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_cancel"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

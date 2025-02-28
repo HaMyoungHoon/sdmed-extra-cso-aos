@@ -99,4 +99,11 @@
     <string name="after_pw_rule_check_desc">바꿀 비밀번호가 형식에 맞지 않습니다.</string>
     <string name="confirm_pw_rule_check_desc">비밀번호 확인이 형식에 맞지 않습니다.</string>
     <string name="after_confirm_unmatch_desc">바꿀 비밀번호와 확인 비밀번호가 다릅니다.</string>
+    <string name="refresh_desc">새로고침</string>
+    <string name="hospital_name_desc">병원명</string>
+    <string name="add_file_desc">파일추가</string>
+    <string name="edi_date_select_desc">EDI 날짜 선택</string>
+    <string name="edi_new_desc">신규처</string>
+    <string name="edi_hospital_select_desc">EDI 병원 선택</string>
+    <string name="edi_pharma_select_desc">EDI 제약사 선택</string>
 </resources>

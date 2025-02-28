@@ -12,6 +12,7 @@ import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.views.main.edi.EDIFragment
+import sdmed.extra.cso.views.main.edi.ediRequest.EDIRequestActivity
 import sdmed.extra.cso.views.main.edi.ediView.EDIViewActivity
 import sdmed.extra.cso.views.main.home.HomeFragment
 import sdmed.extra.cso.views.main.my.MyFragment
@@ -56,8 +57,9 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
         replaceFragment(PriceFragment())
     }
     private fun openHomeFragment(eventName: MainActivityVM.ClickEvent) {
-        allMenuUnSelect(eventName)
-        replaceFragment(HomeFragment())
+        startActivity(Intent(this, EDIRequestActivity::class.java))
+//        allMenuUnSelect(eventName)
+//        replaceFragment(HomeFragment())
     }
     private fun openQnAFragment(eventName: MainActivityVM.ClickEvent) {
         allMenuUnSelect(eventName)

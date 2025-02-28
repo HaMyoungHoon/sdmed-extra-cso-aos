@@ -92,7 +92,7 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
 
     enum class ClickEvent(var index: Int) {
         CLOSE(0),
-        ADD_IMAGE(1),
+        ADD(1),
         SAVE(2),
     }
 }

@@ -43,6 +43,7 @@ android {
                 "src/main/res/layouts/dialog/message",
                 "src/main/res/layouts/dialog/calendar",
                 "src/main/res/layouts/dialog/select",
+                "src/main/res/layouts/dialog/pharmaSelect",
 
                 "src/main/res/drawables",
                 "src/main/res/drawables/shape",

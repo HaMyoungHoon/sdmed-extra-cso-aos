@@ -71,6 +71,7 @@
         <activity android:name=".MainActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.login.LoginActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.main.edi.ediView.EDIViewActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
+        <activity android:name=".views.main.edi.ediRequest.EDIRequestActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.main.qna.qnaView.QnAViewActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.main.qna.qnaAdd.QnAAddActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.login.PasswordChangeActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />

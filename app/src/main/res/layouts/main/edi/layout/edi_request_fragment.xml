@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View" />
         <import type="sdmed.extra.cso.views.main.edi.ediRequest.EDIRequestFragmentVM.ClickEvent" />
         <variable
             name="dataContext"
@@ -11,7 +12,151 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="@{dataContext.applyDateModel.size() > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_edi_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edi_date_select_desc"
+                android:fontFamily="@font/goyang"
+                android:textColor="@color/def_foreground"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_apply_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:recyclerEDIRequestApplyDate="@{dataContext.applyDateModel}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_edi_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/cl_top_container"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_hospital_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_rounded_box_able_5dp"
+                    android:visibility="@{dataContext.hospitalModel.size() > 0 ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_hospital"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/edi_hospital_select_desc"
+                        android:fontFamily="@font/goyang"
+                        android:textColor="@color/def_foreground"
+                        android:textSize="16sp"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_hospital"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:layout_marginBottom="5dp"
+                        app:recyclerEDIRequestHospital="@{dataContext.hospitalModel}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_pharma_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:visibility="@{dataContext.pharmaModel.size() > 0 ? View.VISIBLE : View.GONE}"
+                    android:background="@drawable/shape_rounded_box_able_5dp"
+                    app:layout_constraintTop_toBottomOf="@id/ll_hospital_container">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_select_pharma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:padding="5dp"
+                        android:text="@{dataContext.selectPharmaString}"
+                        android:fontFamily="@font/goyang"
+                        android:textColor="@color/absolute_white"
+                        android:textSize="16sp"
+                        android:hint="@string/edi_pharma_select_desc"
+                        android:textColorHint="@color/absolute_white"
+                        android:textAlignment="center"
+                        android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.PHARMA_SELECT)}"
+                        android:background="@drawable/shape_rounded_box_able_5dp"
+                        android:backgroundTint="@color/primary" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_upload_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/ll_pharma_container">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_upload_buff_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="@{dataContext.uploadItems.size() > 0 ? View.VISIBLE : View.GONE}"
+                        app:recyclerUploadBuffList="@{dataContext.uploadItems}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/ll_option"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal" >
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:padding="5dp"
+                            android:text="@string/add_file_desc"
+                            android:fontFamily="@font/goyang"
+                            android:textSize="24sp"
+                            android:textColor="@color/absolute_white"
+                            android:background="@drawable/selector_rounded_transparent"
+                            android:backgroundTint="@color/absolute_black"
+                            android:backgroundTintMode="screen"
+                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.ADD)}"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:padding="5dp"
+                            android:text="@string/save_desc"
+                            android:fontFamily="@font/goyang"
+                            android:textSize="24sp"
+                            android:textColor="@{dataContext.isSavable ? @color/absolute_white : @color/disable_fore_gray}"
+                            android:background="@drawable/selector_rounded_transparent"
+                            android:backgroundTint="@{dataContext.isSavable ? @color/secondary : @color/disable_back_gray}"
+                            android:backgroundTintMode="screen"
+                            tools:textColor="@color/disable_fore_gray"
+                            tools:backgroundTint="@color/disable_back_gray"
+                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SAVE)}"/>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

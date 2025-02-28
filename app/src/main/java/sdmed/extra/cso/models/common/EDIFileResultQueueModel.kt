@@ -19,4 +19,8 @@ data class EDIFileResultQueueModel(
         mediaIndexList.add(itemIndex)
         itemCount--
     }
+    fun parseEDIUploadModel(): EDIUploadModel {
+        ediUploadModel.fileList.addAll(medias)
+        return ediUploadModel
+    }
 }

@@ -12,65 +12,66 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/def_background">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_top_container"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_header_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:text="@{dataContext.startDate}"
+                android:fontFamily="@font/goyang"
+                android:textSize="20sp"
+                android:textColor="@color/def_foreground"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.START_DATE)}"
+                tools:text="2025-01-01" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:text="@{dataContext.endDate}"
+                android:fontFamily="@font/goyang"
+                android:textSize="20sp"
+                android:textColor="@color/def_foreground"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.END_DATE)}"
+                tools:text="2025-02-01" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/refresh_desc"
+                android:fontFamily="@font/goyang"
+                android:textSize="20sp"
+                android:textColor="@color/def_foreground"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SEARCH)}" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:id="@+id/vw_line"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/cl_top_container"
-            app:layout_constraintBottom_toBottomOf="parent">
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/def_background"
-                android:paddingTop="0dp">
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/al_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/def_background"
-                    android:fitsSystemWindows="true">
-                    <androidx.appcompat.widget.Toolbar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:orientation="vertical">
-                            <com.google.android.material.tabs.TabLayout
-                                android:id="@+id/tl_content"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:tabIndicatorFullWidth="false"
-                                app:tabIndicatorColor="@color/primary"
-                                app:tabPaddingBottom="0dp"
-                                app:tabTextAppearance="@style/tab_text"
-                                app:tabTextColor="@color/def_foreground"
-                                app:tabMaxWidth="150dp"
-                                app:tabMode="auto" />
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    </androidx.appcompat.widget.Toolbar>
-                </com.google.android.material.appbar.AppBarLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/divider_gray"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vp_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="1dp"
+            android:background="@color/divider_gray"
+            app:layout_constraintTop_toBottomOf="@id/ll_header_container" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_edi_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/vw_line"
+            app:recyclerEDIListItems="@{dataContext.ediUploadModel}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="sdmed.extra.cso.models.retrofit.edi.EDIApplyDateModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.edi.EDIApplyDateModel" />
+    </data>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@{dataContext.yearMonth}"
+            android:fontFamily="@font/goyang"
+            android:textSize="24sp"
+            android:textColor="@{dataContext.select ? @color/def_foreground : @color/disable_fore_gray}"
+            android:background="@drawable/shape_rounded_box_able_5dp"
+            android:backgroundTint="@{dataContext.select ? @color/secondary : @color/disable_back_gray}"
+            tools:text="2025-01"
+            tools:textColor="@color/def_foreground"
+            tools:backgroundTint="@color/secondary"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

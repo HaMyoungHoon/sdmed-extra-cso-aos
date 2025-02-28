@@ -1,5 +1,6 @@
 package sdmed.extra.cso.bases
 
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.multidex.MultiDexApplication
 import org.kodein.di.Kodein
@@ -19,6 +20,7 @@ import java.io.File
 
 abstract class FBaseViewModel(application: MultiDexApplication): AndroidViewModel(application), KodeinAware {
     final override val kodein: Kodein by kodein(application)
+    protected val context: Context by kodein.instance()
     protected val azureBlobRepository: IAzureBlobRepository by kodein.instance(IAzureBlobRepository::class)
     protected val commonRepository: ICommonRepository by kodein.instance(ICommonRepository::class)
 

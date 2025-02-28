@@ -134,7 +134,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         val eventName = data as? EDIViewActivityVM.ClickEvent ?: return
         when (eventName) {
             EDIViewActivityVM.ClickEvent.CLOSE -> close()
-            EDIViewActivityVM.ClickEvent.ADD_IMAGE -> addImage()
+            EDIViewActivityVM.ClickEvent.ADD -> addImage()
             EDIViewActivityVM.ClickEvent.SAVE -> save()
         }
     }
@@ -283,7 +283,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         if (!dataContext.item.value.ediState.isEditable()) {
             return
         }
-        if (dataContext.uploadItems.value.size <= 0) {
+        if (dataContext.uploadItems.value.isEmpty()) {
             return
         }
         if (!dataContext.isSavable.value) {
