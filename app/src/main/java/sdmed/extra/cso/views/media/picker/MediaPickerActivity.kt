@@ -124,11 +124,13 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                             dataContext.setLastClickedItem(lastItem)
                             dataContext.mediaPath.value = lastItem.mediaPath
                             dataContext.mediaFileType.value = lastItem.mediaFileType
+                            dataContext.mediaName.value = lastItem.mediaName
                         }
                     } else {
                         dataContext.setLastClickedItem(dataBuff)
                         dataContext.mediaPath.value = findItem.mediaPath
                         dataContext.mediaFileType.value = findItem.mediaFileType
+                        dataContext.mediaName.value = findItem.mediaName
                     }
                     playerPlay()
                     getMediaPickerAdapter()?.updateItem(dataBuff)
@@ -145,6 +147,7 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                 dataContext.appendClickedItem(dataBuff)
                 dataContext.mediaPath.value = dataBuff.mediaPath
                 dataContext.mediaFileType.value = dataBuff.mediaFileType
+                dataContext.mediaName.value = dataBuff.mediaName
                 playerPlay()
 
                 getMediaPickerAdapter()?.updateItem(dataBuff)

@@ -25,6 +25,7 @@ class MediaPickerActivityVM(application: MultiDexApplication): FBaseViewModel(ap
     val mediaFileType = MutableStateFlow(MediaFileType.UNKNOWN)
     val mediaPath = MutableStateFlow<Uri?>(null)
     val videoPath = MutableStateFlow<Uri?>(null)
+    val mediaName = MutableStateFlow<String>("")
 
     fun setPreviousMedia(mediaPathList: ArrayList<String>?, mediaNameList: ArrayList<String>?, mediaFileTypeList: ArrayList<Int>?, mediaMimeType: ArrayList<String>?) {
         mediaPathList?.forEachIndexed { index, x ->
