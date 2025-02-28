@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="home fragment"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             android:textColor="@color/def_foreground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

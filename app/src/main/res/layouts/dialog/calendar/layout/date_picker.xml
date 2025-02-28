@@ -51,7 +51,7 @@
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:text="@string/cancel_desc"
-                    android:fontFamily="@font/goyang"
+                    android:fontFamily="@font/nanum_gothic"
                     android:textColor="@color/gray"
                     android:textSize="16sp"
                     android:textStyle="normal"/>
@@ -69,7 +69,7 @@
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:text="@string/apply_desc"
-                    android:fontFamily="@font/goyang"
+                    android:fontFamily="@font/nanum_gothic"
                     android:textColor="@color/primary"
                     android:textSize="16sp"
                     android:textStyle="normal"/>

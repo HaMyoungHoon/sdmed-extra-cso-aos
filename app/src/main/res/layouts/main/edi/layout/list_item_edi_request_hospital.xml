@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@{dataContext.orgName}"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             android:textSize="24sp"
             android:textColor="@{dataContext.select ? @color/def_foreground : @color/disable_fore_gray}"
             android:background="@drawable/shape_rounded_box_able_5dp"

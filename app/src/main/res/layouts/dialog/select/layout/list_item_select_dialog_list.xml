@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             android:textSize="30sp"
             app:textResId="@{dataContext.stringResId}"
             app:textColorResId="@{dataContext.colorResId}"

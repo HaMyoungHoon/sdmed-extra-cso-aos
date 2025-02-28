@@ -22,7 +22,7 @@
             android:text="@string/carried_over_desc"
             android:textSize="24sp"
             android:textColor="@color/primary"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             tools:visibility="visible" />
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
             android:text="@{dataContext.yearMonth}"
             android:textSize="24sp"
             android:textColor="@color/def_foreground"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             tools:text="2025-01" />
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="0dp"
@@ -43,14 +43,14 @@
             android:text="@{dataContext.orgName}"
             android:textSize="24sp"
             android:textColor="@color/def_foreground"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             tools:text="떙떙떙 병원" />
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="@{dataContext.ediState.desc}"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             android:textSize="24sp"
             app:textColorResId="@{dataContext.ediColor}"
             app:backgroundTintResId="@{dataContext.ediBackColor}"

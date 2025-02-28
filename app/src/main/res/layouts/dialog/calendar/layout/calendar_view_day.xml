@@ -15,7 +15,7 @@
             android:layout_marginTop="4dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/goyang"
+            android:fontFamily="@font/nanum_gothic"
             android:textSize="12sp"
             android:textColor="@color/def_foreground"
             tools:text="10" />
