@@ -16,13 +16,11 @@ class PharmaSelectDialog(val items: List<EDIPharmaBuffModel>, val ret: (List<EDI
     }
 
     override fun viewInit() {
-        dataContext.items.value = items.toMutableList()
-        dataContext.viewItems.value = items.toMutableList()
+        init()
         super.viewInit()
         setPharmaAdapter()
         observeText()
     }
-
     override fun setLayoutCommand(data: Any?) {
         setThisCommand(data)
         setPharmaCommand(data)
@@ -30,7 +28,10 @@ class PharmaSelectDialog(val items: List<EDIPharmaBuffModel>, val ret: (List<EDI
     private fun setThisCommand(data: Any?) {
         val eventName = data as? PharmaSelectDialogVM.ClickEvent ?: return
         when (eventName) {
-            PharmaSelectDialogVM.ClickEvent.CANCEL -> { dismiss() }
+            PharmaSelectDialogVM.ClickEvent.CANCEL -> {
+                init()
+                dismiss()
+            }
             PharmaSelectDialogVM.ClickEvent.CONFIRM -> {
                 ret(dataContext.getSelectItems())
                 dismiss()
@@ -46,7 +47,7 @@ class PharmaSelectDialog(val items: List<EDIPharmaBuffModel>, val ret: (List<EDI
         }
     }
 
-    private fun setPharmaAdapter() = binding?.rvPharma?.adapter = PharmaSelectDialogAdapter(dataContext.relayCommand)
+    private fun setPharmaAdapter() = PharmaSelectDialogAdapter(dataContext.relayCommand).also { binding?.rvPharma?.adapter = it }
     private fun selectPharma(data: EDIPharmaBuffModel) {
         dataContext.selectPharma(data)
     }
@@ -56,5 +57,13 @@ class PharmaSelectDialog(val items: List<EDIPharmaBuffModel>, val ret: (List<EDI
                 dataContext.filterItem()
             }
         }
+    }
+    private fun init() {
+        val buff = mutableListOf<EDIPharmaBuffModel>()
+        items.forEach { x ->
+            buff.add(EDIPharmaBuffModel().lhsFromRhs(x))
+        }
+        dataContext.items.value = buff
+        dataContext.viewItems.value = buff
     }
 }

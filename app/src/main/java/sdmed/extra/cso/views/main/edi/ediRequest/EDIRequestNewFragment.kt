@@ -111,8 +111,8 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
             }
         }
     }
-    private fun setApplyDateAdapter() = binding?.rvApplyDate?.adapter = EDIRequestApplyDateAdapter(dataContext.relayCommand)
-    private fun setUploadBuffAdapter() = binding?.rvUploadBuffList?.adapter = UploadBuffAdapter(dataContext.relayCommand)
+    private fun setApplyDateAdapter() = EDIRequestApplyDateAdapter(dataContext.relayCommand).also { binding?.rvApplyDate?.adapter = it }
+    private fun setUploadBuffAdapter() = UploadBuffAdapter(dataContext.relayCommand).also { binding?.rvUploadBuffList?.adapter = it }
     private fun setThisCommand(data: Any?) {
         val eventName = data as? EDIRequestNewFragmentVM.ClickEvent ?: return
         when (eventName) {

@@ -115,9 +115,9 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
             }
         }
     }
-    private fun setApplyDateAdapter() = binding?.rvApplyDate?.adapter = EDIRequestApplyDateAdapter(dataContext.relayCommand)
-    private fun setHospitalAdapter() = binding?.rvHospital?.adapter = EDIRequestHospitalAdapter(dataContext.relayCommand)
-    private fun setUploadBuffAdapter() = binding?.rvUploadBuffList?.adapter = UploadBuffAdapter(dataContext.relayCommand)
+    private fun setApplyDateAdapter() = EDIRequestApplyDateAdapter(dataContext.relayCommand).also { binding?.rvApplyDate?.adapter = it }
+    private fun setHospitalAdapter() = EDIRequestHospitalAdapter(dataContext.relayCommand).also { binding?.rvHospital?.adapter = it }
+    private fun setUploadBuffAdapter() = UploadBuffAdapter(dataContext.relayCommand).also { binding?.rvUploadBuffList?.adapter = it }
     private fun setThisCommand(data: Any?) {
         val eventName = data as? EDIRequestFragmentVM.ClickEvent ?: return
         when (eventName) {
@@ -147,7 +147,14 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         val eventName = data[0] as? EDIHosBuffModel.ClickEvent ?: return
         val dataBuff = data[1] as? EDIHosBuffModel ?: return
         when (eventName) {
-            EDIHosBuffModel.ClickEvent.THIS -> dataContext.hospitalSelect(dataBuff)
+            EDIHosBuffModel.ClickEvent.THIS -> {
+                dataContext.hospitalSelect(dataBuff)
+                if (dataContext.selectHospital != null) {
+                    PharmaSelectDialog(dataContext.pharmaModel.value) {
+                        dataContext.pharmaSelect(it)
+                    }.show(childFragmentManager, "")
+                }
+            }
         }
     }
     private fun setUploadBuffCommand(data: Any?) {
@@ -237,6 +244,7 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         dataContext.selectApplyDate ?: return
         dataContext.selectHospital ?: return
         if (dataContext.selectPharma.isEmpty()) {
+            toast(R.string.warn_select_pharma)
             return
         }
 

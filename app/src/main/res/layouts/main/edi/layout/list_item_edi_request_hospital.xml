@@ -9,23 +9,22 @@
             type="sdmed.extra.cso.models.retrofit.edi.EDIHosBuffModel" />
     </data>
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}">
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:padding="5dp"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:text="@{dataContext.orgName}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="24sp"
             android:textColor="@{dataContext.select ? @color/def_foreground : @color/disable_fore_gray}"
             android:background="@drawable/shape_rounded_box_able_5dp"
             android:backgroundTint="@{dataContext.select ? @color/secondary : @color/disable_back_gray}"
-            tools:text="hospital name"
+            android:textAlignment="viewStart"
+            tools:text="hospital name "
             tools:textColor="@color/def_foreground"
             tools:backgroundTint="@color/secondary"/>
 

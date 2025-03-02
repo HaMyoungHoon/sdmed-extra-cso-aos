@@ -71,7 +71,7 @@ class QnAFragment: FBaseFragment<QnaFragmentBinding, QnAFragmentVM>() {
             }
         })
     }
-    private fun setQnaAdapter() = binding?.rvQnaHeader?.adapter = QnAHeaderAdapter(dataContext.relayCommand)
+    private fun setQnaAdapter() = QnAHeaderAdapter(dataContext.relayCommand).also { binding?.rvQnaHeader?.adapter = it }
     private fun setPagination() = binding?.includePagination?.afterInit(dataContext.relayCommand)
     @OptIn(FlowPreview::class)
     private fun getSearch() {

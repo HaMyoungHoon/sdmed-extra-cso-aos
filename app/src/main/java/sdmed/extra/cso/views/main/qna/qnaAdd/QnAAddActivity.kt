@@ -162,7 +162,7 @@ class QnAAddActivity: FBaseActivity<QnaAddActivityBinding, QnAAddActivityVM>(Use
         val contentCheck = dataContext.content.value.isNotEmpty()
         dataContext.isSavable.value = titleCheck && contentCheck
     }
-    private fun setUploadBuffAdapter() = binding?.rvUploadBuffList?.adapter = UploadBuffAdapter(dataContext.relayCommand)
+    private fun setUploadBuffAdapter() = UploadBuffAdapter(dataContext.relayCommand).also { binding?.rvUploadBuffList?.adapter = it }
     private fun close() {
         setResult(RESULT_CANCELED)
         finish()

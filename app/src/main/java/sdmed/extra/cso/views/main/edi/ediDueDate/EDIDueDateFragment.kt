@@ -48,7 +48,7 @@ class EDIDueDateFragment: FBaseFragment<EdiDueDateFragmentBinding, EDIDueDateFra
             }
         }
     }
-    private fun setRecyclerView() = binding?.rvEdiDueDate?.adapter = EDIDueDateAdapter(dataContext.relayCommand)
+    private fun setRecyclerView() = EDIDueDateAdapter(dataContext.relayCommand).also { binding?.rvEdiDueDate?.adapter = it }
     private fun openStartDate() {
         loading()
         FCoroutineUtil.coroutineScope({

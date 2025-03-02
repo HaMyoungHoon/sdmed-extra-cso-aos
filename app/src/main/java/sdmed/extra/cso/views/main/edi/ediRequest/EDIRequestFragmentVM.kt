@@ -151,6 +151,7 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
         } else {
             selectPharmaString.value = "${selectPharma.getOrNull(0)?.orgName}, (${selectPharma.size})"
         }
+        savableCheck()
     }
     fun pharmaSelect(data: EDIPharmaBuffModel?) {
         if (data == null) {
@@ -166,6 +167,7 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
             data.isSelect.value = false
             selectPharma.remove(data)
         }
+        savableCheck()
     }
     fun savableCheck() {
         if (selectPharma.isEmpty()) {

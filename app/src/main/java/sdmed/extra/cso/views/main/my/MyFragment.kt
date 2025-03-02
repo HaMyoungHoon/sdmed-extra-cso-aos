@@ -66,8 +66,8 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
             }
         }
     }
-    private fun setHospitalAdapter() = binding?.rvUserHospital?.adapter = UserHospitalAdapter(dataContext.relayCommand)
-    private fun setPharmaAdapter() = binding?.rvUserPharma?.adapter = UserPharmaAdapter(dataContext.relayCommand)
+    private fun setHospitalAdapter() = UserHospitalAdapter(dataContext.relayCommand).also { binding?.rvUserHospital?.adapter = it }
+    private fun setPharmaAdapter() = UserPharmaAdapter(dataContext.relayCommand).also { binding?.rvUserPharma?.adapter = it }
     private fun observeData() {
         lifecycleScope.launch {
             dataContext.selectedHos.collectLatest {

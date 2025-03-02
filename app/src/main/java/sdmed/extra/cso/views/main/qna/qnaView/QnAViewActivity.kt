@@ -95,8 +95,8 @@ class QnAViewActivity: FBaseActivity<QnaViewActivityBinding, QnAViewActivityVM>(
             }
         })
     }
-    private fun setEllipseAdapter() = binding?.rvEllipseList?.adapter = EllipseListAdapter(dataContext.relayCommand)
-    private fun setReplyAdapter() = binding?.rvReplyList?.adapter = QnAReplyAdapter(dataContext.relayCommand)
+    private fun setEllipseAdapter() = EllipseListAdapter(dataContext.relayCommand).also { binding?.rvEllipseList?.adapter = it }
+    private fun setReplyAdapter() = QnAReplyAdapter(dataContext.relayCommand).also { binding?.rvReplyList?.adapter = it }
     private fun updateEllipseList(position: Int) {
         val buff = dataContext.ellipseList.value
         if (position < 0 || position >= buff.size) {
