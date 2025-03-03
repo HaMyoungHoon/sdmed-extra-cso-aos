@@ -28,17 +28,27 @@ class LandingActivity: FBaseActivity<LandingActivityBinding, LandingActivityVM>(
             toast(R.string.do_logout)
         }
 
-        loading()
+        versionCheck()
+    }
+
+    override fun onResume() {
+        super.onResume()
         versionCheck()
     }
     private fun versionCheck() {
+        if (dataContext.checking) {
+            return
+        }
+        dataContext.checking = true
+        loading()
         dataContext.versionCheck {
+            dataContext.checking = false
+            loading(false)
             if (it.result != true) {
                 toast(it.msg)
                 return@versionCheck
             }
             setEventListener()
-            loading(false)
             if (!it.data.isNullOrEmpty()) {
                 val asyncEvent = dataContext.relayCommand.asyncEvent ?: return@versionCheck
                 val versionModel = it.data?.firstOrNull { it.able } ?: return@versionCheck

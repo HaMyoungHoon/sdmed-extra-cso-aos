@@ -9,6 +9,7 @@ import sdmed.extra.cso.models.retrofit.common.VersionCheckModel
 
 class LandingActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
     val startVisible = MutableStateFlow(false)
+    var checking = false
     fun versionCheck(ret: (RestResultT<List<VersionCheckModel>>) -> Unit) {
         FCoroutineUtil.coroutineScope({
             commonRepository.versionCheck()
