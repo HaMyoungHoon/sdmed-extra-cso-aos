@@ -43,7 +43,7 @@ object FExtensions {
     fun getTodayDateTimeString() = getToday().toString("yyyy-MM-dd hh:mm:ss")
     fun parseDateStringToDate(dateString: String, pattern: String = "yyyy-MM-dd"): Date {
         val ret = SimpleDateFormat(pattern, Locale.getDefault())
-        return ret.parse(dateString)
+        return ret.parse(dateString) ?: Date()
     }
     fun parseDateStringToCalendar(dateString: String, pattern: String = "yyyy-MM-dd"): Calendar {
         val ret = Calendar.getInstance()
