@@ -13,7 +13,7 @@ import sdmed.extra.cso.utils.FExtensions
 class EDIDueDateFragmentVM(application: MultiDexApplication): FBaseViewModel(application) {
     private val ediDueDateRepository: IEDIDueDateRepository by kodein.instance(IEDIDueDateRepository::class)
     val startDate = MutableStateFlow(FExtensions.getTodayString())
-    val endDate = MutableStateFlow(FCalendar2().setThis(startDate.value).getMonthLastFromCalendar().getDate())
+    val endDate = MutableStateFlow(FExtensions.getToday().getMonthOfLastDay().toString("yyyy-MM-dd"))
     val dateModel = MutableStateFlow(mutableListOf<EDIPharmaDueDateModel>())
 
     suspend fun getList(): RestResultT<List<EDIPharmaDueDateModel>> {
