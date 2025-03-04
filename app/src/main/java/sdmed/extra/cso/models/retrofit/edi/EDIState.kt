@@ -5,7 +5,7 @@ import sdmed.extra.cso.R
 enum class EDIState(var index: Int, var desc: String) {
     None(0, "미지정"),
     OK(1, "완료"),
-    Reject(2, "거부"),
+    Reject(2, "반려"),
     Pending(3, "보류"),
     Partial(4, "부분");
 
