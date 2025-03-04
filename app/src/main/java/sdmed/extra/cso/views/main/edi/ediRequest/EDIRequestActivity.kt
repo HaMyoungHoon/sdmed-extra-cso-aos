@@ -1,18 +1,23 @@
 package sdmed.extra.cso.views.main.edi.ediRequest
 
 import android.graphics.Typeface
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseActivity
+import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.databinding.EdiRequestActivityBinding
 import sdmed.extra.cso.databinding.EdiTabItemBinding
 import sdmed.extra.cso.models.common.WriteFontFamily
@@ -32,6 +37,7 @@ class EDIRequestActivity: FBaseActivity<EdiRequestActivityBinding, EDIRequestAct
         setViewPager()
         setTabLayout()
         setAppBarLayout()
+        permitCheck()
     }
     override fun setLayoutCommand(data: Any?) {
         val eventName = data as? EDIRequestActivityVM.ClickEvent ?: return
@@ -124,6 +130,36 @@ class EDIRequestActivity: FBaseActivity<EdiRequestActivityBinding, EDIRequestAct
         finish()
     }
     private fun getViewPager() = binding?.vpContent?.adapter as? EDIRequestAdapter
+    private fun permitCheck() {
+        if (!hasReadExternalGranted()) requestReadExternalPermissions()
+        if (!hasCameraGranted()) requestCameraPermissions()
+    }
+    private fun hasCameraGranted(): Boolean {
+        return hasPermissionsGranted(FConstants.CAMERA_PERMISSION)
+    }
+    private fun hasReadExternalGranted(): Boolean {
+        val permissions = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            FConstants.READ_EXTERNAL_PERMISSION_32
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+            FConstants.READ_EXTERNAL_PERMISSION_33
+        } else {
+            FConstants.READ_EXTERNAL_PERMISSION_34
+        }
+
+        return hasPermissionsGranted(permissions)
+    }
+    private fun requestCameraPermissions() {
+        requestPermissions(FConstants.CAMERA_PERMISSION, FConstants.Permit.CAMERA.index)
+    }
+    private fun requestReadExternalPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_32, FConstants.Permit.READ_EXTERNAL.index)
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_33, FConstants.Permit.READ_EXTERNAL.index)
+        } else {
+            requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_34, FConstants.Permit.READ_EXTERNAL.index)
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun ediUploadEvent(ediUploadEvent: EDIUploadEvent) {
