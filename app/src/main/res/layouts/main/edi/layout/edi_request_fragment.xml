@@ -97,7 +97,7 @@
                         android:text="@{dataContext.selectPharmaString}"
                         android:fontFamily="@font/nanum_gothic"
                         android:textColor="@color/absolute_white"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:hint="@string/edi_pharma_select_desc"
                         android:textColorHint="@color/absolute_white"
                         android:textAlignment="center"

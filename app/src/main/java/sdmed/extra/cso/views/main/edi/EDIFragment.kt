@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import sdmed.extra.cso.BuildConfig
@@ -41,6 +42,7 @@ class EDIFragment: FBaseFragment<EdiFragmentBinding, EDIFragmentVM>() {
         setRecyclerView()
         super.viewInit()
         searchItem()
+        eventReg()
     }
     override fun setLayoutCommand(data: Any?) {
         setThisCommand(data)
@@ -99,6 +101,11 @@ class EDIFragment: FBaseFragment<EdiFragmentBinding, EDIFragmentVM>() {
                 val uri = "package:${BuildConfig.APPLICATION_ID}".toUri()
                 startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
             }
+        }
+    }
+    private fun eventReg() {
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
         }
     }
     private fun openEDIView(data: EDIUploadModel) {

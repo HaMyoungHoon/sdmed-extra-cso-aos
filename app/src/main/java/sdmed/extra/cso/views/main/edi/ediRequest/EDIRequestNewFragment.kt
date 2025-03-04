@@ -30,6 +30,7 @@ import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FImageUtils
+import sdmed.extra.cso.views.dialog.pharmaSelect.PharmaSelectDialog
 import sdmed.extra.cso.views.dialog.select.SelectDialog
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
 import java.io.File
@@ -118,6 +119,11 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
         when (eventName) {
             EDIRequestNewFragmentVM.ClickEvent.ADD -> addImage()
             EDIRequestNewFragmentVM.ClickEvent.SAVE -> save()
+            EDIRequestNewFragmentVM.ClickEvent.PHARMA_SELECT -> {
+                PharmaSelectDialog(dataContext.pharmaModel.value) {
+                    dataContext.pharmaSelect(it)
+                }.show(childFragmentManager, "")
+            }
         }
     }
     private fun setApplyDateCommand(data: Any?) {
@@ -125,7 +131,10 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
         val eventName = data[0] as? EDIApplyDateModel.ClickEvent ?: return
         val dataBuff = data[1] as? EDIApplyDateModel ?: return
         when (eventName) {
-            EDIApplyDateModel.ClickEvent.THIS -> dataContext.applyDateSelect(dataBuff)
+            EDIApplyDateModel.ClickEvent.THIS -> {
+                dataContext.applyDateSelect(dataBuff)
+                getPharmaList()
+            }
         }
     }
     private fun setUploadBuffCommand(data: Any?) {
@@ -176,6 +185,17 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
         loading()
         FCoroutineUtil.coroutineScope({
             val ret = dataContext.getData()
+            loading(false)
+            if (ret.result != true) {
+                toast(ret.msg)
+                return@coroutineScope
+            }
+        })
+    }
+    private fun getPharmaList() {
+        loading()
+        FCoroutineUtil.coroutineScope({
+            val ret = dataContext.getPharmaList()
             loading(false)
             if (ret.result != true) {
                 toast(ret.msg)

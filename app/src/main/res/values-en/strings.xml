@@ -107,4 +107,6 @@
     <string name="edi_pharma_select_desc">edi pharma select</string>
     <string name="edi_due_date_desc">due date</string>
     <string name="warn_select_pharma">plz select pharma</string>
+    <string name="new_hospital_desc">hospital(new or exist or transfer)</string>
+    <string name="new_pharma_desc">pharma name</string>
 </resources>

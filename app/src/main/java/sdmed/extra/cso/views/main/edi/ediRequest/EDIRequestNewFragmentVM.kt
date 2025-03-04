@@ -11,7 +11,9 @@ import sdmed.extra.cso.models.common.EDISASKeyQueueModel
 import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.models.retrofit.edi.EDIApplyDateModel
+import sdmed.extra.cso.models.retrofit.edi.EDIPharmaBuffModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
+import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaModel
 import sdmed.extra.cso.models.services.FBackgroundEDIRequestNewUpload
 import sdmed.extra.cso.utils.FExtensions
 
@@ -21,6 +23,9 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
     val applyDateModel = MutableStateFlow(mutableListOf<EDIApplyDateModel>())
     var selectApplyDate: EDIApplyDateModel? = null
     val etc = MutableStateFlow<String>("")
+    val pharmaModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
+    val selectPharma = mutableListOf<EDIPharmaBuffModel>()
+    val selectPharmaString = MutableStateFlow<String>("")
     val uploadItems = MutableStateFlow(mutableListOf<MediaPickerSourceModel>())
     val isSavable = MutableStateFlow(false)
 
@@ -28,6 +33,14 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
         val ret = ediRequestRepository.getApplyDateList()
         if (ret.result == true) {
             applyDateModel.value = ret.data?.toMutableList() ?: mutableListOf()
+        }
+        return ret
+    }
+    suspend fun getPharmaList(): RestResultT<List<EDIPharmaBuffModel>> {
+        val yearMonthDay = selectApplyDate?.yearMonthDay ?: return RestResultT<List<EDIPharmaBuffModel>>().emptyResult()
+        val ret = ediRequestRepository.getPharmaList(yearMonthDay)
+        if (ret.result == true) {
+            pharmaModel.value = ret.data?.toMutableList() ?: mutableListOf()
         }
         return ret
     }
@@ -42,6 +55,11 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
             month = applyDate.month
             this.etc = this@EDIRequestNewFragmentVM.etc.value
             regDate = FExtensions.getTodayString()
+        }
+        selectPharma.forEach { x ->
+            ediUploadModel.pharmaList.add(EDIUploadPharmaModel().apply {
+                this.pharmaPK = x.thisPK
+            })
         }
         val data = EDISASKeyQueueModel().apply {
             medias = uploadFile
@@ -62,12 +80,45 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
         selectApplyDate?.isSelect?.value = true
         savableCheck()
     }
+    fun pharmaSelect(data: List<EDIPharmaBuffModel>) {
+        selectPharma.clear()
+        selectPharma.addAll(data)
+        pharmaModel.value.forEach { x -> x.isSelect.value = false }
+        pharmaModel.value.filter { x -> x.thisPK in data.map { it.thisPK } }.forEach { x -> x.isSelect.value = true }
+
+        if (selectPharma.isEmpty()) {
+            selectPharmaString.value = ""
+        } else {
+            selectPharmaString.value = "${selectPharma.getOrNull(0)?.orgName}, (${selectPharma.size})"
+        }
+        savableCheck()
+    }
+    fun pharmaSelect(data: EDIPharmaBuffModel?) {
+        if (data == null) {
+            pharmaModel.value = mutableListOf()
+            savableCheck()
+            return
+        }
+        val alreadyData = selectPharma.find { x -> x.thisPK == data.thisPK }
+        if (alreadyData == null) {
+            data.isSelect.value = true
+            selectPharma.add(data)
+        } else {
+            data.isSelect.value = false
+            selectPharma.remove(data)
+        }
+        savableCheck()
+    }
     fun savableCheck() {
         if (selectApplyDate == null) {
             isSavable.value = false
             return
         }
         if (etc.value.isBlank()) {
+            isSavable.value = false
+            return
+        }
+        if (selectPharma.isEmpty()) {
             isSavable.value = false
             return
         }
@@ -108,6 +159,7 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
 
     enum class ClickEvent(var index: Int) {
         ADD(0),
-        SAVE(1)
+        SAVE(1),
+        PHARMA_SELECT(2)
     }
 }

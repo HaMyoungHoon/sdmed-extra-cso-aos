@@ -108,4 +108,6 @@
     <string name="edi_pharma_select_desc">EDI 제약사 선택</string>
     <string name="edi_due_date_desc">마감일정</string>
     <string name="warn_select_pharma">제약사를 선택해주세요.</string>
+    <string name="new_hospital_desc">병원명(신규처 or 기존처 or 이관처)</string>
+    <string name="new_pharma_desc">제약사명</string>
 </resources>
