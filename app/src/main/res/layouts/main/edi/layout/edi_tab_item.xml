@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:textColor="@color/def_foreground"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:maxLines="1"
             android:ellipsize="end"
             android:visibility="gone"
