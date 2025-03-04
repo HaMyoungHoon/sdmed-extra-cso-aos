@@ -199,7 +199,11 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
             loading(false)
             if (ret.result != true) {
                 toast(ret.msg)
+                return@coroutineScope
             }
+            PharmaSelectDialog(dataContext.pharmaModel.value) {
+                dataContext.pharmaSelect(it)
+            }.show(childFragmentManager, "")
         })
     }
     private fun observeText() {
