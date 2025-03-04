@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{dataContext.responseDate}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textColor="@color/def_foreground"
                 tools:text="2025-01-01" />
             <androidx.appcompat.widget.AppCompatTextView
@@ -38,7 +38,7 @@
                 android:gravity="center"
                 android:text="@{dataContext.pharmaName}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textColor="@color/def_foreground"
                 android:ellipsize="middle"
                 tools:text="땡떙땡 병원" />
@@ -48,7 +48,7 @@
                 android:padding="5dp"
                 android:text="@{dataContext.ediState.desc}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:textColorResId="@{dataContext.ediColor}"
                 app:backgroundTintResId="@{dataContext.ediBackColor}"
                 android:background="@drawable/shape_rounded_box_able_5dp"

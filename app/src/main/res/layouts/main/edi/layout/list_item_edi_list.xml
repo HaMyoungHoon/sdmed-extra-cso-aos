@@ -27,7 +27,7 @@
                 android:layout_marginEnd="5dp"
                 android:text="@{dataContext.regDateString}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textColor="@color/def_foreground"
                 tools:text="2025-01" />
             <androidx.appcompat.widget.AppCompatTextView
@@ -36,7 +36,7 @@
                 android:layout_marginEnd="5dp"
                 android:text="@{dataContext.yearMonth}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textColor="@color/def_foreground"
                 android:visibility="gone"
                 tools:text="2025-01" />
@@ -49,7 +49,7 @@
                 android:text="@{dataContext.orgName}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textColor="@color/def_foreground"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:ellipsize="middle"
                 tools:text="땡땡땡 병원" />
             <androidx.appcompat.widget.AppCompatTextView
@@ -58,7 +58,7 @@
                 android:padding="5dp"
                 android:text="@{dataContext.ediState.desc}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 app:textColorResId="@{dataContext.ediColor}"
                 app:backgroundTintResId="@{dataContext.ediBackColor}"
                 android:background="@drawable/shape_rounded_box_able_5dp"
