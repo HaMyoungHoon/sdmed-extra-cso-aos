@@ -109,4 +109,5 @@
     <string name="warn_select_pharma">plz select pharma</string>
     <string name="new_hospital_desc">hospital(new or exist or transfer)</string>
     <string name="new_pharma_desc">pharma name</string>
+    <string name="search_range_desc">inquiry period (reg. date)</string>
 </resources>

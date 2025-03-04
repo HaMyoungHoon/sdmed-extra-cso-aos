@@ -110,4 +110,5 @@
     <string name="warn_select_pharma">제약사를 선택해주세요.</string>
     <string name="new_hospital_desc">병원명(신규처 or 기존처 or 이관처)</string>
     <string name="new_pharma_desc">제약사명</string>
+    <string name="search_range_desc">조회기간(등록일 기준)</string>
 </resources>
