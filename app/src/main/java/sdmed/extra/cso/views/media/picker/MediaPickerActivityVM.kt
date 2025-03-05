@@ -16,7 +16,7 @@ class MediaPickerActivityVM(application: MultiDexApplication): FBaseViewModel(ap
     val mediaMaxCount = MutableStateFlow(-1)
     var ableSelectCountStringSuffix = ""
     val boxesPosition = MutableStateFlow(0)
-    val boxes = MutableStateFlow(mutableListOf(""))
+    val boxes = MutableStateFlow(mutableListOf<String>())
     private val _selectBox = mutableListOf<Pair<String, MutableList<MediaPickerSourceModel>>>()
     val selectableCountString = MutableStateFlow("")
     val confirmEnable = MutableStateFlow(false)

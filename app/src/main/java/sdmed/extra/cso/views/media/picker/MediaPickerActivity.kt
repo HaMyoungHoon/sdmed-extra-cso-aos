@@ -56,23 +56,6 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
     override fun viewInit() {
         getPermission()
         super.viewInit()
-        binding?.rvMediaList?.adapter = MediaPickerActivityAdapter(dataContext.relayCommand)
-        lifecycleScope.launch {
-            dataContext.boxesPosition.collectLatest {
-                dataContext.selectItem(it - 1)
-            }
-        }
-        val mediaList =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableArrayListExtra("mediaList", MediaPickerSourceModel::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                intent.getParcelableArrayListExtra<MediaPickerSourceModel>("mediaList")
-            }
-        dataContext.ableSelectCountStringSuffix = getString(R.string.media_able_click_suffix_desc)
-        dataContext.setPreviousMedia(mediaList)
-        dataContext.setMediaMaxCount(intent.getIntExtra("mediaMaxCount", -1))
-        binding?.playerView?.player = ExoPlayer.Builder(this).build()
     }
     private fun init() {
         val mediaList = getImageList()
@@ -80,6 +63,23 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
         getFileList(mediaList)
         dataContext.setItems(mediaList)
         dataContext.selectItem(0)
+        binding?.rvMediaList?.adapter = MediaPickerActivityAdapter(dataContext.relayCommand)
+        lifecycleScope.launch {
+            dataContext.boxesPosition.collectLatest {
+                dataContext.selectItem(it - 1)
+            }
+        }
+        val buffList =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableArrayListExtra("mediaList", MediaPickerSourceModel::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                intent.getParcelableArrayListExtra<MediaPickerSourceModel>("mediaList")
+            }
+        dataContext.ableSelectCountStringSuffix = getString(R.string.media_able_click_suffix_desc)
+        dataContext.setPreviousMedia(buffList)
+        dataContext.setMediaMaxCount(intent.getIntExtra("mediaMaxCount", -1))
+        binding?.playerView?.player = ExoPlayer.Builder(this).build()
     }
 
     override fun setLayoutCommand(data: Any?) {
