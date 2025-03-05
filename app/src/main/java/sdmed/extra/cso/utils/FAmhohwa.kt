@@ -7,6 +7,7 @@ import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.models.retrofit.FRetrofitVariable
 import sdmed.extra.cso.utils.FExtensions.moveToLandingActivity
 import java.net.URLDecoder
+import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 object FAmhohwa {
@@ -90,5 +91,8 @@ object FAmhohwa {
         } catch (_: Exception) {
             null
         }
+    }
+    fun urlEncoder(data: String): String {
+        return URLEncoder.encode(data)
     }
 }

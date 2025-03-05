@@ -11,6 +11,7 @@ import sdmed.extra.cso.models.common.EllipseItemModel
 import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.models.common.EDISASKeyQueueModel
+import sdmed.extra.cso.models.common.MediaViewParcelModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
 import sdmed.extra.cso.models.services.FBackgroundEDIFileUpload
@@ -43,6 +44,13 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
         return ediListRepository.postFile(thisPK, ediUploadFileModel)
     }
 
+    fun getMediaViewFiles(): ArrayList<MediaViewParcelModel> {
+        val ret = arrayListOf<MediaViewParcelModel>()
+        item.value.fileList.forEach { x ->
+            ret.add(MediaViewParcelModel().parse(x))
+        }
+        return ret
+    }
     fun getMediaItems() = ArrayList(uploadItems.value.toMutableList())
     fun getMediaPathList() = ArrayList(uploadItems.value.map { it.mediaPath.toString() })
     fun getMediaNameList() = ArrayList(uploadItems.value.map { it.mediaName.toString() })

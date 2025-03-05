@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,9 +24,9 @@ import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.databinding.EdiViewActivityBinding
 import sdmed.extra.cso.models.adapter.UploadBuffAdapter
 import sdmed.extra.cso.models.adapter.EllipseListAdapter
-import sdmed.extra.cso.models.common.EllipseItemModel
 import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel
+import sdmed.extra.cso.models.common.MediaViewParcelModel
 import sdmed.extra.cso.models.common.SelectListModel
 import sdmed.extra.cso.models.eventbus.EDIUploadEvent
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
@@ -42,6 +41,8 @@ import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FImageUtils
 import sdmed.extra.cso.views.dialog.select.SelectDialog
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
+import sdmed.extra.cso.views.media.view.MediaListViewActivity
+import sdmed.extra.cso.views.media.view.MediaViewActivity
 import java.io.File
 import java.util.ArrayList
 
@@ -143,8 +144,15 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         val eventName = data[0] as? EDIUploadFileModel.ClickEvent ?: return
         val dataBuff = data[1] as? EDIUploadFileModel ?: return
         when (eventName) {
-            EDIUploadFileModel.ClickEvent.THIS -> {
-                toast("edi LongClick ${dataBuff.originalFilename}")
+            EDIUploadFileModel.ClickEvent.SHORT -> {
+                startActivity((Intent(this, MediaViewActivity::class.java).apply {
+                    putExtra("mediaItem", MediaViewParcelModel().parse(dataBuff))
+                }))
+            }
+            EDIUploadFileModel.ClickEvent.LONG -> {
+                startActivity((Intent(this, MediaListViewActivity::class.java).apply {
+                    putParcelableArrayListExtra("mediaList", dataContext.getMediaViewFiles())
+                }))
             }
         }
     }

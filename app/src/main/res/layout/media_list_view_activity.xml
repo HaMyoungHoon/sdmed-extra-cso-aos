@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.views.media.view.MediaListViewActivityVM.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.views.media.view.MediaListViewActivityVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@drawable/vector_arrow_left"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.CLOSE)}"
+                app:layout_constraintTop_toTopOf="@id/tv_name"
+                app:layout_constraintBottom_toBottomOf="@id/tv_name"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.title.length() > 0 ? dataContext.title : @string/media_list_view_title_desc}"
+                android:fontFamily="@font/nanum_gothic"
+                android:textSize="24sp"
+                android:textColor="@color/def_foreground"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_gray"
+                android:layout_marginTop="5dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_name"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <sdmed.extra.cso.utils.view.NestedScrollableHost
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/cl_top_container"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_media"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:viewPagerMediaView="@{dataContext.items}" />
+        </sdmed.extra.cso.utils.view.NestedScrollableHost>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

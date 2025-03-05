@@ -151,6 +151,15 @@ object FImageUtils {
     fun isGif(ext: String): Boolean {
         return ext == "gif"
     }
+    fun isPdf(ext: String): Boolean {
+        return ext == "pdf"
+    }
+    fun isExcel(ext: String): Boolean {
+        if (ext == "xls") return true
+        if (ext == "xlsx") return true
+
+        return false
+    }
     fun getDefaultImage(mimeType: String?): Int {
         val ext = FContentsType.getExtMimeType(mimeType)
         if (ext == "pdf") {

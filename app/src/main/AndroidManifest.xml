@@ -71,6 +71,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.media.picker.MediaPickerActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
+        <activity android:name=".views.media.view.MediaViewActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
+        <activity android:name=".views.media.view.MediaListViewActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".MainActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.login.LoginActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.main.edi.ediView.EDIViewActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />

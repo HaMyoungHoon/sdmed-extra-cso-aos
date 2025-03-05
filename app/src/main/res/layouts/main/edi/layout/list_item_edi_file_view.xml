@@ -13,25 +13,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="3dp"
-        android:onLongClick="@{()->dataContext.onLongClick(ClickEvent.THIS)}"
+        android:onClick="@{()->dataContext.onClick(ClickEvent.SHORT)}"
+        android:onLongClick="@{()->dataContext.onLongClick(ClickEvent.LONG)}"
         android:background="@color/def_background">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="0dp"
+        <sdmed.extra.cso.utils.FilenameTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="5dp"
-            android:text="@{dataContext.originalFilename}"
-            android:fontFamily="@font/nanum_gothic"
-            android:textSize="16sp"
-            android:textColor="@color/gray"
-            android:background="@color/disable_back_gray"
+            android:layout_margin="5dp"
             android:ellipsize="middle"
-            android:maxLines="1"
             android:translationZ="1dp"
+            android:breakStrategy="balanced"
+            android:hyphenationFrequency="full"
+            android:maxLines="2"
+            android:alpha="0.5"
+            app:filenameTextViewText="@{dataContext.originalFilename}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="파일 이름.xlsx" />
-        <sdmed.extra.cso.utils.view.FAppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="false"

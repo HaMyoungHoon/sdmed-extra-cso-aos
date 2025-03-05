@@ -74,6 +74,7 @@
     <string name="mqtt_title_ediRecep">edi recep</string>
     <string name="mqtt_title_ediFileAdd">edi file add</string>
     <string name="mqtt_title_ediDelete">edi file remove</string>
+    <string name="price_unit">won</string>
     <string name="client_name">client</string>
     <string name="maker_name">maker</string>
     <string name="logout_desc">logout</string>
@@ -110,4 +111,6 @@
     <string name="new_hospital_desc">hospital(new or exist or transfer)</string>
     <string name="new_pharma_desc">pharma name</string>
     <string name="search_range_desc">inquiry period (reg. date)</string>
+    <string name="media_view_title_desc">signle view</string>
+    <string name="media_list_view_title_desc">muli view</string>
 </resources>

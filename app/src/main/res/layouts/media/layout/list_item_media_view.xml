@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.common.MediaViewModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.common.MediaViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <sdmed.extra.cso.utils.view.FZoomLayout
+            android:id="@+id/zl_media_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{dataContext.image ? View.VISIBLE : View.GONE}"
+                app:glideBlobUrl="@{dataContext.blobUrl}"
+                app:glideBlobMimeType="@{dataContext.mimeType}" />
+            <WebView
+                android:id="@+id/wv_doc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{dataContext.pdf || dataContext.excel ? View.VISIBLE : View.GONE}"
+                app:webViewDoc="@{dataContext.blobUrl}"/>
+        </sdmed.extra.cso.utils.view.FZoomLayout>
+        <sdmed.extra.cso.utils.FilenameTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="middle"
+            android:translationZ="1dp"
+            android:breakStrategy="balanced"
+            android:hyphenationFrequency="full"
+            android:maxLines="2"
+            android:alpha="0.5"
+            app:filenameTextViewText="@{dataContext.originalFilename}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="파일 이름 asd lk fj aasadfsdf safssdasfsldfkjsdfkljlsdkfjslkdjasjdflkasd.xlsx" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

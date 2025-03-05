@@ -26,7 +26,8 @@ data class EDIUploadFileModel(
         return this
     }
     enum class ClickEvent(var index: Int) {
-        THIS(0)
+        LONG(0),
+        SHORT(1)
     }
 
     fun blobUrlKey(): String {

@@ -74,7 +74,7 @@
     <string name="mqtt_title_ediRecep">EDI 수신</string>
     <string name="mqtt_title_ediFileAdd">EDI 파일 추가</string>
     <string name="mqtt_title_ediDelete">EDI 파일 제거</string>
-    <string name="price_unit" translatable="false">원</string>
+    <string name="price_unit">원</string>
     <string name="client_name">발주처</string>
     <string name="maker_name">제조사</string>
     <string name="logout_desc">로그아웃</string>
@@ -111,4 +111,6 @@
     <string name="new_hospital_desc">병원명(신규처 or 기존처 or 이관처)</string>
     <string name="new_pharma_desc">제약사명</string>
     <string name="search_range_desc">조회기간(등록일 기준)</string>
+    <string name="media_view_title_desc">단일 자료</string>
+    <string name="media_list_view_title_desc">다중 자료</string>
 </resources>

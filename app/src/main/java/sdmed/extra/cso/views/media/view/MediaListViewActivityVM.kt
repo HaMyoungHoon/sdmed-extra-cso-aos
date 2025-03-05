@@ -6,13 +6,17 @@ import sdmed.extra.cso.bases.FBaseViewModel
 import sdmed.extra.cso.models.common.MediaViewModel
 import sdmed.extra.cso.models.common.MediaViewParcelModel
 
-class MediaViewActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
+class MediaListViewActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
     val title = MutableStateFlow<String>("")
-    val item = MutableStateFlow(MediaViewModel())
+    val items = MutableStateFlow(mutableListOf<MediaViewModel>())
 
-    fun setItemData(data: MediaViewParcelModel?) {
+    fun setItemData(data: ArrayList<MediaViewParcelModel>?) {
         data ?: return
-        item.value = MediaViewModel().parse(data)
+        val ret = mutableListOf<MediaViewModel>()
+        data.toMutableList().forEach {
+            ret.add(MediaViewModel().parse(it))
+        }
+        items.value = ret
     }
 
     enum class ClickEvent(var index: Int) {
