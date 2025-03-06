@@ -88,7 +88,6 @@ open class FDateTime2 {
             else -> throw Exception("getDoomsDay error year: $year")
         }
     }
-    fun isBefore(dateTime: FDateTime2) = isBefore(dateTime.getDate(), dateTime.getSplitChar())
     /**
      * FDateTime().isBefore
      * - 자신이 dateString 보다 작냐고 묻는 거.
@@ -98,11 +97,10 @@ open class FDateTime2 {
      */
     fun isBefore(dateString: String, splitChar: String = "-"): Boolean {
         val target = FDateTime2().setThis(dateString, splitChar)
-        if (this.getYear() < target.getYear()) return true
-        if (this.getMonth() < target.getMonth()) return true
-        if (this.getDay() < target.getDay()) return true
-
-        return false
+        return isBefore(target)
+    }
+    fun isBefore(target: FDateTime2): Boolean {
+        return getDaysBetween(target) > 0
     }
     fun isLeapYear() = try {
         isLeapYear(getYear())
@@ -144,7 +142,9 @@ open class FDateTime2 {
      */
     fun getDaysBetween(dateString: String, splitChar: String = "-"): Int {
         val target = FDateTime2().setThis(dateString, splitChar)
-
+        return getDaysBetween(target)
+    }
+    fun getDaysBetween(target: FDateTime2): Int {
         var targetYearDay = 0
         var thisYearDay = 0
         var diffYear = target.getYear() - this.getYear()
