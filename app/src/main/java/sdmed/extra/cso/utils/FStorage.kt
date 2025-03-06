@@ -9,6 +9,8 @@ import android.os.Parcelable
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import sdmed.extra.cso.bases.FConstants
 
 object FStorage {
@@ -32,6 +34,13 @@ object FStorage {
     fun getHomeMenuIndex(context: Context) = getInt(context, FConstants.HOME_MENU_INDEX)
     fun setHomeMenuIndex(context: Context, data: Int?) = data?.let { putInt(context, FConstants.HOME_MENU_INDEX, it) }
 
+    inline fun <reified T: Parcelable> getParcel(intent: Intent, key: String): T? {
+        return intent.parcelable(key)
+    }
+    inline fun <reified T: Parcelable> getParcelArray(intent: Intent, key: String): ArrayList<T>? {
+        return intent.parcelableList(key)
+    }
+
     private fun getBool(context: Context, keyName: String, defData: Boolean = false) = cryptoSharedPreferences(context).getBoolean(keyName, defData)
     private fun putBool(context: Context, keyName: String, data: Boolean) = cryptoSharedPreferences(context).apply { edit { putBoolean(keyName, data) } }
     private fun getInt(context: Context, keyName: String, defData: Int = -1) = cryptoSharedPreferences(context).getInt(keyName, defData)
@@ -40,6 +49,26 @@ object FStorage {
     private fun putFloat(context: Context, keyName: String, data: Float) = cryptoSharedPreferences(context).apply { edit { putFloat(keyName, data) } }
     private fun getString(context: Context, keyName: String, defData: String = "") = cryptoSharedPreferences(context).getString(keyName, defData)
     private fun putString(context: Context, keyName: String, data: String) = cryptoSharedPreferences(context).apply { edit { putString(keyName, data) } }
+    inline fun <reified T> getModel(context: Context, keyName: String): T = try {
+        Gson().fromJson(cryptoSharedPreferences(context).getString(keyName, ""), (object: TypeToken<T>() { }).type)
+    } catch (_: Exception) {
+        cryptoSharedPreferences(context).apply { edit { remove(keyName) } }
+        T::class.java.getDeclaredConstructor().newInstance()
+    }
+    inline fun <reified T> putModel(context: Context, keyName: String, data: T) = try {
+        val buff = Gson().toJson(data, (object: TypeToken<T>() { }).type)
+        cryptoSharedPreferences(context).apply { edit { putString(keyName, buff) } }
+    } catch (_: Exception) { }
+    inline fun <reified T> getList(context: Context, keyName: String): List<T> = try {
+        Gson().fromJson(cryptoSharedPreferences(context).getString(keyName, ""), (object: TypeToken<List<T>>() { }).type)
+    } catch (_: Exception) {
+        cryptoSharedPreferences(context).apply { edit { remove(keyName) } }
+        arrayListOf()
+    }
+    inline fun <reified T> putList(context: Context, keyName: String, data: List<T>) = try {
+        val buff = Gson().toJson(data, (object: TypeToken<MutableList<T>>() { }).type)
+        cryptoSharedPreferences(context).apply { edit { putString(keyName, buff) } }
+    } catch (_: Exception) { }
     private fun removeData(context: Context, keyName: String) = cryptoSharedPreferences(context).apply { edit { remove(keyName) } }
     inline fun <reified T: Parcelable> Intent.parcelable(key: String): T? = when {
         Build.VERSION.SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
@@ -48,5 +77,13 @@ object FStorage {
     inline fun <reified T: Parcelable> Bundle.parcelable(intent: Intent, key: String): T? = when {
         Build.VERSION.SDK_INT >= 33 -> intent.getParcelableExtra(key, T::class.java)
         else -> @Suppress("DEPRECATION") intent.getParcelableExtra(key)
+    }
+    inline fun <reified T: Parcelable> Intent.parcelableList(key: String): ArrayList<T>? = when {
+        Build.VERSION.SDK_INT >= 33 -> getParcelableArrayListExtra(key, T::class.java)
+        else -> @Suppress("DEPRECATION") getParcelableArrayListExtra(key)
+    }
+    inline fun <reified T: Parcelable> Bundle.parcelableList(intent: Intent, key: String): List<T>? = when {
+        Build.VERSION.SDK_INT >= 33 -> intent.getParcelableArrayListExtra(key, T::class.java)
+        else -> @Suppress("DEPRECATION") intent.getParcelableArrayListExtra(key)
     }
 }

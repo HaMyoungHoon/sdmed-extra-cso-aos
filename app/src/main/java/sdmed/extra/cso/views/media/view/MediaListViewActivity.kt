@@ -1,6 +1,5 @@
 package sdmed.extra.cso.views.media.view
 
-import android.os.Build
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +12,7 @@ import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.databinding.MediaListViewActivityBinding
 import sdmed.extra.cso.models.common.MediaViewModel
 import sdmed.extra.cso.models.common.MediaViewParcelModel
+import sdmed.extra.cso.utils.FStorage
 
 class MediaListViewActivity: FBaseActivity<MediaListViewActivityBinding, MediaListViewActivityVM>() {
     override var layoutId = R.layout.media_list_view_activity
@@ -23,12 +23,7 @@ class MediaListViewActivity: FBaseActivity<MediaListViewActivityBinding, MediaLi
     override fun viewInit() {
         super.viewInit()
         setMediaAdapter()
-        val buffList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableArrayListExtra("mediaList", MediaViewParcelModel::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableArrayListExtra<MediaViewParcelModel>("mediaList")
-        }
+        val buffList = FStorage.getParcelArray<MediaViewParcelModel>(intent, "mediaList")
         dataContext.setItemData(buffList)
     }
     override fun setLayoutCommand(data: Any?) {

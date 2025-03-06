@@ -1,7 +1,6 @@
 package sdmed.extra.cso.views.media.view
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -10,6 +9,7 @@ import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.databinding.MediaViewActivityBinding
 import sdmed.extra.cso.models.common.MediaViewModel
 import sdmed.extra.cso.models.common.MediaViewParcelModel
+import sdmed.extra.cso.utils.FStorage
 
 class MediaViewActivity: FBaseActivity<MediaViewActivityBinding, MediaViewActivityVM>() {
     override var layoutId = R.layout.media_view_activity
@@ -19,12 +19,7 @@ class MediaViewActivity: FBaseActivity<MediaViewActivityBinding, MediaViewActivi
 
     override fun viewInit() {
         super.viewInit()
-        val buffItem = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("mediaItem", MediaViewParcelModel::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra<MediaViewParcelModel>("mediaItem")
-        }
+        val buffItem = FStorage.getParcel<MediaViewParcelModel>(intent, "mediaItem")
         dataContext.setItemData(buffItem)
         setWebView()
     }

@@ -6,7 +6,6 @@ import android.os.Build
 import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -28,8 +27,8 @@ import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.models.common.SelectListModel
 import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FCoroutineUtil
-import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FImageUtils
+import sdmed.extra.cso.utils.FStorage
 import sdmed.extra.cso.views.dialog.select.SelectDialog
 
 class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPickerActivityVM>() {
@@ -69,13 +68,7 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                 dataContext.selectItem(it)
             }
         }
-        val buffList =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableArrayListExtra("mediaList", MediaPickerSourceModel::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                intent.getParcelableArrayListExtra<MediaPickerSourceModel>("mediaList")
-            }
+        val buffList = FStorage.getParcelArray<MediaPickerSourceModel>(intent, "mediaList")
         dataContext.ableSelectCountStringSuffix = getString(R.string.media_able_click_suffix_desc)
         dataContext.setPreviousMedia(buffList)
         dataContext.setMediaMaxCount(intent.getIntExtra("mediaMaxCount", -1))
