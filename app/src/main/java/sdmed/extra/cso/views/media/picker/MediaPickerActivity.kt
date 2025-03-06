@@ -66,7 +66,7 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
         binding?.rvMediaList?.adapter = MediaPickerActivityAdapter(dataContext.relayCommand)
         lifecycleScope.launch {
             dataContext.boxesPosition.collectLatest {
-                dataContext.selectItem(it - 1)
+                dataContext.selectItem(it)
             }
         }
         val buffList =
