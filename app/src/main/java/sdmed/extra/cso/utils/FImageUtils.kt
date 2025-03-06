@@ -110,9 +110,13 @@ object FImageUtils {
         canvas.clipPath(hexagonPath)
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
     }
-    fun fileDelete(context: Context, uri: Uri) {
+    fun fileDelete(context: Context, uri: Uri?) {
+        uri ?: return
         if (ableDeleteFile(context, uri)) {
-            context.contentResolver.delete(uri, null, null)
+            try {
+                context.contentResolver.delete(uri, null, null)
+            } catch (_: Exception) {
+            }
         }
     }
     fun ableDeleteFile(context: Context, uri: Uri) = try {
@@ -257,17 +261,15 @@ object FImageUtils {
         }
 
         var extension = fileExt
-        var needConverter = false
         if (extension.lowercase() != "webp") {
             extension = "webp"
-            needConverter = true
         }
 
         val file = File(rootDir, "${fileName}.$extension")
         if (!file.exists()) {
             inputStream.mark(inputStream.available())
             if (fileExt != "webp") {
-                if (!imageResize(inputStream, file, needConverter)) {
+                if (!imageResize(inputStream, file)) {
                     val outputStream = FileOutputStream(file)
                     inputStream.copyTo(outputStream)
                     outputStream.close()
@@ -339,7 +341,7 @@ object FImageUtils {
                 options.inPreferredConfig = Bitmap.Config.ARGB_8888
             }
             inputStream.reset()
-            val resize = 1F //calcResize(options)
+            val resize = calcResize(options)
 //            if (resize <= 1F) {
 //                return false
 //            }
@@ -357,7 +359,7 @@ object FImageUtils {
             resizedBitmap.recycle()
             outputStream.close()
             return true
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return false
         }
     }
