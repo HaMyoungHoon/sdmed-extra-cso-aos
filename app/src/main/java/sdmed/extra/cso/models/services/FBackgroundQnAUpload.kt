@@ -110,6 +110,7 @@ class FBackgroundQnAUpload(context: Context): Service(), KodeinAware {
                 try {
                     val cachedFile = FImageUtils.uriToFile(context, uri, data.media.mediaName)
                     val ret = azureBlobRepository.upload(data.qnaFileModel.blobUrlKey(), cachedFile, data.qnaFileModel.mimeType)
+                    FImageUtils.fileDelete(context, cachedFile)
                     if (ret.isSuccessful) {
                         resultEnqueue(QnAResultQueueModel(data.uuid, data.qnaPK, data.qnaFileModel, data.mediaIndex))
                     } else {

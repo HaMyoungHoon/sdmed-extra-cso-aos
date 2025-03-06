@@ -113,6 +113,7 @@ class FBackgroundEDIRequestNewUpload(context: Context): Service(), KodeinAware  
                 try {
                     val cachedFile = FImageUtils.uriToFile(context, uri, data.media.mediaName)
                     val ret = azureBlobRepository.upload(data.ediFileUploadModel.blobUrlKey(), cachedFile, data.ediFileUploadModel.mimeType)
+                    FImageUtils.fileDelete(context, cachedFile)
                     if (ret.isSuccessful) {
                         resultEnqueue(EDIFileResultQueueModel(data.uuid, data.ediPK, data.ediFileUploadModel, data.mediaIndex))
                     } else {

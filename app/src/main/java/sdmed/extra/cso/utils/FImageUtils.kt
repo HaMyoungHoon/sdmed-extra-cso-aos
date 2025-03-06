@@ -110,6 +110,12 @@ object FImageUtils {
         canvas.clipPath(hexagonPath)
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
     }
+    fun fileDelete(context: Context, file: File) {
+        try {
+            file.delete()
+        } catch (_: Exception) {
+        }
+    }
     fun fileDelete(context: Context, uri: Uri?) {
         uri ?: return
         if (ableDeleteFile(context, uri)) {
