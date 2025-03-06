@@ -33,6 +33,46 @@ object FStorage {
     fun setRefreshing(context: Context, data: Boolean?) = data?.let { putBool(context, FConstants.TOKEN_REFRESHING, it) }
     fun getHomeMenuIndex(context: Context) = getInt(context, FConstants.HOME_MENU_INDEX)
     fun setHomeMenuIndex(context: Context, data: Int?) = data?.let { putInt(context, FConstants.HOME_MENU_INDEX, it) }
+    fun getMultiLoginToken(context: Context): List<String> = getList(context, FConstants.MULTI_LOGIN_TOKEN)
+    fun setMultiLoginToken(context: Context, data: List<String>) = putList(context, FConstants.MULTI_LOGIN_TOKEN, data)
+    fun addMultiLoginToken(context: Context, data: String?) {
+        data ?: return
+        try {
+            val ret = mutableListOf<String>().apply {
+                val pastData = getMultiLoginToken(context)
+                if (pastData.isNotEmpty()) {
+                    addAll(pastData)
+                }
+            }.distinctBy { it }.toMutableList()
+            val findBuff = ret.find { it == data }
+            if (findBuff == null) {
+                ret.add(data)
+            }
+            removeMultiLoginToken(context)
+            setMultiLoginToken(context, ret)
+        } catch (_: Exception) {
+            removeMultiLoginToken(context)
+        }
+    }
+    fun delMultiLoginToken(context: Context, data: String?) {
+        try {
+            val ret = mutableListOf<String>().apply {
+                val pastData = getMultiLoginToken(context)
+                if (pastData.isNotEmpty()) {
+                    addAll(pastData)
+                }
+            }.distinctBy { it }.toMutableList()
+            val findBuff = ret.find { it == data }
+            if (findBuff != null) {
+                ret.remove(findBuff)
+            }
+            removeMultiLoginToken(context)
+            setMultiLoginToken(context, ret)
+        } catch (_: Exception) {
+            removeMultiLoginToken(context)
+        }
+    }
+    fun removeMultiLoginToken(context: Context) = removeData(context, FConstants.MULTI_LOGIN_TOKEN)
 
     inline fun <reified T: Parcelable> getParcel(intent: Intent, key: String): T? {
         return intent.parcelable(key)

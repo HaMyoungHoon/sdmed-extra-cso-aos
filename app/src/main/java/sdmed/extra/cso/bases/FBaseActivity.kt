@@ -197,9 +197,11 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
                 val newToken = x.data ?: ""
                 if (FAmhohwa.rhsTokenIsMost(newToken)) {
                     FStorage.setAuthToken(this, newToken)
+                    FStorage.addMultiLoginToken(this, newToken)
                 }
                 FRetrofitVariable.token = FStorage.getAuthToken(this)
             } else {
+                FStorage.delMultiLoginToken(this, FStorage.getAuthToken(this))
                 FStorage.removeAuthToken(this)
                 goToLogin(true)
             }

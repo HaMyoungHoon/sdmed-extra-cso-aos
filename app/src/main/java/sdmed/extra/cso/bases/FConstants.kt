@@ -16,6 +16,7 @@ object FConstants {
     const val AUTH_TOKEN = "token"
     const val TOKEN_REFRESHING = "tokenRefreshing"
     const val HOME_MENU_INDEX = "homeMenuIndex"
+    const val MULTI_LOGIN_TOKEN = "multiLoginToken"
 
     const val REST_API_DEBUG_RUL = "https://back-cso.sdmed.co.kr"
     const val REST_API_URL = "https://back-cso.sdmed.co.kr"

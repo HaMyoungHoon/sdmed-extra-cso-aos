@@ -4,8 +4,8 @@ import android.content.Context
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import sdmed.extra.cso.bases.FConstants
+import sdmed.extra.cso.fDate.FDateTime2
 import sdmed.extra.cso.models.retrofit.FRetrofitVariable
-import sdmed.extra.cso.utils.FExtensions.moveToLandingActivity
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -18,9 +18,10 @@ object FAmhohwa {
         return URLDecoder.decode(encoded, StandardCharsets.UTF_8.name())
     }
     fun intervalBetweenDate(expiredDate: Long): Boolean {
-        val now = System.currentTimeMillis() / 1000
+        val now = FDateTime2().setThis(System.currentTimeMillis())
+        val expired = FDateTime2().setThis(expiredDate * 1000).addDays(-10)
         // 이거 나중에 수치 좀 바꿔야겠다
-        return now - expiredDate > 0
+        return expired.getDaysBetween(now) > 0
     }
     fun tokenIntervalValid(token: String?): Boolean {
         if (token == null) return false
@@ -53,11 +54,26 @@ object FAmhohwa {
     fun logout(context: Context?, expired: Boolean = false) {
         context ?: return
         removeLoginData(context)
-        moveToLandingActivity(context, expired)
+        val existToken = gatheringAnotherLoginData(context)
+        if (existToken) {
+            FExtensions.moveToLandingActivity(context, expired)
+        } else {
+            FExtensions.refreshActivity(context)
+        }
     }
     fun removeLoginData(context: Context) {
         FRetrofitVariable.token = ""
+        FStorage.delMultiLoginToken(context, FStorage.getAuthToken(context))
         FStorage.removeAuthToken(context)
+    }
+    fun gatheringAnotherLoginData(context: Context): Boolean {
+        val tokens = FStorage.getMultiLoginToken(context)
+        if (tokens.isEmpty()) {
+            return false
+        }
+        FRetrofitVariable.token = tokens.first()
+        FStorage.setAuthToken(context, tokens.first())
+        return true
     }
     fun getUserID(context: Context): String {
         return decodeUtf8(getTokenID(context))

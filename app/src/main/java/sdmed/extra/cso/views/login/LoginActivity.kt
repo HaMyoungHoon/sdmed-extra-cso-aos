@@ -57,6 +57,7 @@ class LoginActivity: FBaseActivity<LoginActivityBinding, LoginActivityVM>() {
             if (x.result == true && x.data != null) {
                 FRetrofitVariable.token = x.data
                 FStorage.setAuthToken(this, x.data)
+                FStorage.addMultiLoginToken(this, x.data)
                 finish()
                 startActivity(Intent(this, MainActivity::class.java))
             } else {

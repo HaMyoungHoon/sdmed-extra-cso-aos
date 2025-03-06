@@ -126,6 +126,10 @@ object FExtensions {
             }
         })
     }
+    fun refreshActivity(context: Context) {
+        val activity = context as Activity
+        ActivityCompat.recreate(activity)
+    }
 
     fun getMagicNumber(file: File, byteCount: Int = 8): String {
         file.inputStream().use { x ->
