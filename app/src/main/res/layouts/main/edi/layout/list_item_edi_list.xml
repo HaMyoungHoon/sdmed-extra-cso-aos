@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View" />
         <import type="sdmed.extra.cso.models.retrofit.edi.EDIUploadModel.ClickEvent" />
         <variable
             name="dataContext"
@@ -40,18 +41,34 @@
                 android:textColor="@color/def_foreground"
                 android:visibility="gone"
                 tools:text="2025-01" />
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:layout_marginEnd="5dp"
-                android:text="@{dataContext.orgName}"
-                android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
-                android:textSize="18sp"
-                android:ellipsize="middle"
-                tools:text="땡땡땡 병원" />
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="@{dataContext.orgName}"
+                    android:fontFamily="@font/nanum_gothic"
+                    android:textColor="@{dataContext.etc.length() > 0 ? @color/primary : @color/def_foreground}"
+                    android:textSize="18sp"
+                    android:ellipsize="middle"
+                    tools:text="땡땡땡 병원" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{dataContext.etcString}"
+                    android:fontFamily="@font/nanum_gothic"
+                    android:textColor="@color/def_foreground"
+                    android:textSize="16sp"
+                    android:ellipsize="middle"
+                    android:maxLines="1"
+                    android:visibility="@{dataContext.etc.length() > 0 ? View.VISIBLE : View.GONE}"
+                    tools:text="땡땡땡 병원" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

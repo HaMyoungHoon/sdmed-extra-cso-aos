@@ -39,10 +39,12 @@
                 android:padding="10dp"
                 android:text="@{dataContext.startDate}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/def_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.START_DATE)}"
+                android:maxLines="1"
+                android:ellipsize="start"
                 tools:text="2025-01-01" />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
@@ -53,10 +55,12 @@
                 android:padding="10dp"
                 android:text="@{dataContext.endDate}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/def_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.END_DATE)}"
+                android:maxLines="1"
+                android:ellipsize="start"
                 tools:text="2025-02-01" />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
