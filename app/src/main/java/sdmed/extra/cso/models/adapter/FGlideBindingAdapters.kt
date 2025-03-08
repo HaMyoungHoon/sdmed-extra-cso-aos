@@ -1,5 +1,6 @@
 package sdmed.extra.cso.models.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -375,12 +376,12 @@ object FGlideBindingAdapters {
         try {
             Glide.with(imageView.context).asGif().load(gifAssetSrc)
                 .listener(object: RequestListener<GifDrawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean ): Boolean {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable?>, isFirstResource: Boolean): Boolean {
                         return false
                     }
 
-                    override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        resource?.setLoopCount(gifAssetLoopCount)
+                    override fun onResourceReady(resource: GifDrawable, model: Any, target: Target<GifDrawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                        resource.setLoopCount(gifAssetLoopCount)
                         return false
                     }
                 }).into(imageView)
@@ -428,13 +429,12 @@ object FGlideBindingAdapters {
                 .override(imageView.width, imageView.height)
             )
             .listener(object: RequestListener<GifDrawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean ): Boolean {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable?>, isFirstResource: Boolean): Boolean {
                     return false
                 }
-
-                override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    resource?.setLoopCount(gifLoopCount ?: -1)
-                    resource?.registerAnimationCallback(object: Animatable2Compat.AnimationCallback() {
+                override fun onResourceReady(resource: GifDrawable, model: Any, target: Target<GifDrawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                    resource.setLoopCount(gifLoopCount ?: -1)
+                    resource.registerAnimationCallback(object: Animatable2Compat.AnimationCallback() {
                         override fun onAnimationEnd(drawable: Drawable?) {
                             animationEndListener?.onEvent(imageView)
                         }
@@ -442,7 +442,7 @@ object FGlideBindingAdapters {
                             animationStartListener?.onEvent(imageView)
                         }
                     })
-                    resource?.start()
+                    resource.start()
                     return false
                 }
             }).into(imageView)
@@ -455,13 +455,12 @@ object FGlideBindingAdapters {
                 .override(imageView.width, imageView.height)
             )
             .listener(object: RequestListener<GifDrawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean ): Boolean {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable?>, isFirstResource: Boolean): Boolean {
                     return false
                 }
-
-                override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    resource?.setLoopCount(gifLoopCount ?: -1)
-                    resource?.registerAnimationCallback(object: Animatable2Compat.AnimationCallback() {
+                override fun onResourceReady(resource: GifDrawable, model: Any, target: Target<GifDrawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                    resource.setLoopCount(gifLoopCount ?: -1)
+                    resource.registerAnimationCallback(object: Animatable2Compat.AnimationCallback() {
                         override fun onAnimationEnd(drawable: Drawable?) {
                             animationEndListener?.onEvent(imageView)
                         }
@@ -469,7 +468,7 @@ object FGlideBindingAdapters {
                             animationStartListener?.onEvent(imageView)
                         }
                     })
-                    resource?.start()
+                    resource.start()
                     return false
                 }
             }).into(imageView)

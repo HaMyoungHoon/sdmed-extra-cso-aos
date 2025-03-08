@@ -144,7 +144,7 @@ dependencies {
 
     implementation(libs.glide)
     implementation(libs.glide.okhttp)
-    implementation(libs.glide.compiler)
+    kapt(libs.glide.compiler)
     implementation(libs.webpdecoder)
 
     implementation(libs.androidx.multidex)

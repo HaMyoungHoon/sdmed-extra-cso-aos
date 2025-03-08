@@ -46,12 +46,11 @@ class FGlideSupport {
         fun imageLoad(url: String, imageView: ImageView, loadFailedListener: IEventListener? = null, resourceReadyListener: IEventListener? = null) {
             Glide.with(imageView.context).load(url)
                 .listener(object: RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                         loadFailedListener?.onEvent(arrayListOf(e, model, target, isFirstResource))
                         return false
                     }
-
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                         resourceReadyListener?.onEvent(arrayListOf(resource, model, target, dataSource, isFirstResource))
                         return false
                     }
@@ -61,12 +60,11 @@ class FGlideSupport {
         fun imageLoad(uri: Uri, imageView: AppCompatImageView, loadFailedListener: IEventListener? = null, resourceReadyListener: IEventListener? = null) {
             Glide.with(imageView.context).load(uri)
                 .listener(object: RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                         loadFailedListener?.onEvent(arrayListOf(e, model, target, isFirstResource))
                         return false
                     }
-
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                         resourceReadyListener?.onEvent(arrayListOf(resource, model, target, dataSource, isFirstResource))
                         return false
                     }
@@ -122,12 +120,11 @@ class FGlideSupport {
             try {
                 Glide.with(imageView.context).asGif().load(assetGifSrc)
                     .listener(object: RequestListener<GifDrawable> {
-                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable>?, isFirstResource: Boolean): Boolean {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<GifDrawable?>, isFirstResource: Boolean): Boolean {
                             return false
                         }
-
-                        override fun onResourceReady(resource: GifDrawable?, model: Any?, target: Target<GifDrawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                            resource?.setLoopCount(loopCount)
+                        override fun onResourceReady(resource: GifDrawable, model: Any, target: Target<GifDrawable?>?, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                            resource.setLoopCount(loopCount)
                             return false
                         }
                     })
