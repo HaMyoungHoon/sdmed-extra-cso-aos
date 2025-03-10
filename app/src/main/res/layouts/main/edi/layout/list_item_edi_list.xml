@@ -53,7 +53,7 @@
                     android:layout_marginEnd="5dp"
                     android:text="@{dataContext.orgName}"
                     android:fontFamily="@font/nanum_gothic"
-                    android:textColor="@{dataContext.isDefault ? @color/def_foreground : @color/primary}"
+                    android:textColor="@{dataContext.isDefault ? @color/def_foreground : @color/secondary}"
                     android:textSize="18sp"
                     android:ellipsize="middle"
                     tools:text="땡땡땡 병원" />

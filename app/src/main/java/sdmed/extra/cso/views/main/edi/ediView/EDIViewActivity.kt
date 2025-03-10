@@ -310,6 +310,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
 
         dataContext.startBackgroundService(data)
         toast(R.string.edi_file_upload)
+        finish()
     }
 
     private fun getResponseAdapter(): EDIViewResponseAdapter? {

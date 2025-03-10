@@ -71,6 +71,16 @@ class FBackgroundEDIRequestNewUpload(context: Context): Service(), KodeinAware  
         resultQ.unlocking()
         return ret
     }
+    private fun resultBreak(uuid: String) {
+        resultQ.locking()
+        val retBuff = resultQ.findQ(false, { it.uuid == uuid})
+        if (retBuff == null) {
+            resultQ.unlocking()
+            return
+        }
+        resultQ.removeQ(retBuff, false)
+        resultQ.unlocking()
+    }
 
     private fun sasKeyThreadStart() = sasKeyQ.threadStart {
         checkSASKeyQ(sasKeyQ.dequeue())
@@ -90,21 +100,24 @@ class FBackgroundEDIRequestNewUpload(context: Context): Service(), KodeinAware  
 
     private fun checkSASKeyQ(data: EDISASKeyQueueModel) {
         FCoroutineUtil.coroutineScope({
-            val blobName = data.blobName(context)
-            val ret = commonRepository.postGenerateSasList(blobName.map { it.second })
-            if (ret.result != true || ret.data == null) {
-                notificationService.sendNotify(context, NotifyIndex.EDI_FILE_UPLOAD, context.getString(R.string.edi_file_upload_fail), ret.msg ?: "")
-                notificationCall(context.getString(R.string.edi_file_upload_fail), ret.msg)
-                EventBus.getDefault().post(EDIUploadEvent())
-                return@coroutineScope
-            }
             val uuid = UUID.randomUUID().toString()
-            resultEnqueue(EDIFileResultQueueModel(uuid, data.ediPK, itemIndex = -1, itemCount = data.medias.size, ediUploadModel = data.ediUploadModel))
-            ret.data?.forEachIndexed { index, x ->
-                val queue = EDIAzureQueueModel(uuid, data.ediPK, mediaIndex = index).parse(data, blobName, x) ?: return@forEachIndexed
-                azureEnqueue(queue)
-            }
+            resultEnqueue(EDIFileResultQueueModel(uuid, "", "", itemIndex = -1, itemCount = data.ediUploadModel.pharmaList.flatMap { x -> x.uploadItems.value }.size, ediUploadModel = data.ediUploadModel))
             progressNotificationCall(uuid)
+            for (pharma in data.ediUploadModel.pharmaList) {
+                val blobName = data.blobName(context, pharma)
+                val ret = commonRepository.postGenerateSasList(blobName.map { it.second })
+                if (ret.result != true || ret.data == null) {
+                    notificationService.sendNotify(context, NotifyIndex.EDI_FILE_UPLOAD, context.getString(R.string.edi_file_upload_fail), ret.msg ?: "")
+                    notificationCall(context.getString(R.string.edi_file_upload_fail), ret.msg)
+                    resultBreak(uuid)
+                    progressNotificationCall(uuid, true)
+                    return@coroutineScope
+                }
+                ret.data?.forEachIndexed { index, x ->
+                    val queue = EDIAzureQueueModel(uuid, pharma.ediPK, pharma.thisPK, mediaIndex = index).parse(pharma, blobName, x) ?: return@forEachIndexed
+                    azureEnqueue(queue)
+                }
+            }
         })
     }
     private fun checkAzureQ(data: EDIAzureQueueModel) {
@@ -112,10 +125,10 @@ class FBackgroundEDIRequestNewUpload(context: Context): Service(), KodeinAware  
             data.media.mediaPath?.let { uri ->
                 try {
                     val cachedFile = FImageUtils.uriToFile(context, uri, data.media.mediaName)
-                    val ret = azureBlobRepository.upload(data.ediFileUploadModel.blobUrlKey(), cachedFile, data.ediFileUploadModel.mimeType)
+                    val ret = azureBlobRepository.upload(data.ediPharmaFileUploadModel.blobUrlKey(), cachedFile, data.ediPharmaFileUploadModel.mimeType)
                     FImageUtils.fileDelete(context, cachedFile)
                     if (ret.isSuccessful) {
-                        resultEnqueue(EDIFileResultQueueModel(data.uuid, data.ediPK, data.ediFileUploadModel, data.mediaIndex))
+                        resultEnqueue(EDIFileResultQueueModel(data.uuid, data.ediPK, data.ediPharmaPK, data.ediPharmaFileUploadModel, data.mediaIndex))
                     } else {
                         progressNotificationCall(data.uuid, true)
                         notificationCall(context.getString(R.string.edi_file_upload_fail))

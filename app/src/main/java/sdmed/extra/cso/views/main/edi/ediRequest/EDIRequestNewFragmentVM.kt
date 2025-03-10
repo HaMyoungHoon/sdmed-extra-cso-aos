@@ -25,6 +25,7 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
     val selectEDITypePosition = MutableStateFlow(0)
     val applyDateModel = MutableStateFlow(mutableListOf<EDIApplyDateModel>())
     var selectApplyDate: EDIApplyDateModel? = null
+    val tempHospitalPK = MutableStateFlow<String>("")
     val tempOrgName = MutableStateFlow<String>("")
     val searchString = MutableStateFlow<String>("")
     val pharmaModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
@@ -46,13 +47,20 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
         }
         return ret
     }
+    fun pharmaFileClear() {
+        this.pharmaModel.value.forEach { x -> x.uploadItems.value = mutableListOf() }
+        if (this.searchString.value == "") {
+            filterItem()
+        }
+        this.searchString.value = ""
+    }
     fun startBackgroundService() {
-        return
         val applyDate = selectApplyDate ?: return
         val ediUploadModel = EDIUploadModel().apply {
             year = applyDate.year
             month = applyDate.month
             ediType = ediTypeModel.value[selectEDITypePosition.value]
+            this.tempHospitalPK = this@EDIRequestNewFragmentVM.tempHospitalPK.value
             this.tempOrgName = this@EDIRequestNewFragmentVM.tempOrgName.value
             regDate = FExtensions.getTodayString()
         }
@@ -68,8 +76,7 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
             this.ediUploadModel = ediUploadModel
         }
         backgroundService.sasKeyEnqueue(data)
-        this.pharmaModel.value.forEach { x -> x.uploadItems.value = mutableListOf() }
-        this.searchString.value = ""
+//        pharmaFileClear()
     }
     fun applyDateSelect(data: EDIApplyDateModel) {
         if (selectApplyDate == data) {

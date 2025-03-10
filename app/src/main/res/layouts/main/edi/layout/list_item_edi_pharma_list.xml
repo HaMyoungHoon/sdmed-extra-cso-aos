@@ -84,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:visibility="@{dataContext.fileList.size() > 0 ? View.VISIBLE : View.GONE}"
                 android:text="@{dataContext.positionString}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="16sp"

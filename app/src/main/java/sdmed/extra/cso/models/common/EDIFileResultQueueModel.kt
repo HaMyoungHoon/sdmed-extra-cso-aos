@@ -1,26 +1,27 @@
 package sdmed.extra.cso.models.common
 
-import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
+import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaFileModel
 
 data class EDIFileResultQueueModel(
     var uuid: String = "",
     var ediPK: String = "",
-    var currentMedia: EDIUploadFileModel = EDIUploadFileModel(),
+    var ediPharmaPK: String = "",
+    var currentMedia: EDIUploadPharmaFileModel = EDIUploadPharmaFileModel(),
     var itemIndex: Int = -1,
     var itemCount: Int = 0,
-    var medias: MutableList<EDIUploadFileModel> = mutableListOf(),
+    var medias: MutableList<EDIUploadPharmaFileModel> = mutableListOf(),
     var mediaIndexList: MutableList<Int> = mutableListOf(),
     var ediUploadModel: EDIUploadModel = EDIUploadModel()
 ) {
     fun readyToSend() = itemCount <= 0
-    fun appendItemPath(media: EDIUploadFileModel, itemIndex: Int) {
-        medias.add(EDIUploadFileModel().copy(media))
+    fun appendItemPath(media: EDIUploadPharmaFileModel, itemIndex: Int) {
+        medias.add(EDIUploadPharmaFileModel().copy(media))
         mediaIndexList.add(itemIndex)
         itemCount--
+        ediUploadModel.pharmaList.find { x -> x.pharmaPK == media.pharmaPK }?.fileList?.add(media)
     }
     fun parseEDIUploadModel(): EDIUploadModel {
-        ediUploadModel.fileList.addAll(medias)
         return ediUploadModel
     }
 }

@@ -88,16 +88,17 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
     }
 
     fun startBackgroundService(data: EDIUploadPharmaModel) {
-//        return
-//        backgroundService.sasKeyEnqueue(EDISASKeyQueueModel().apply {
-//            ediPK = thisPK
-//            ediUploadModel = item.value
-//        })
-        data.uploadItems.value = mutableListOf()
-        val buff = item.value.pharmaList.toMutableList()
-        val findBuff = buff.find { x -> x.thisPK == data.thisPK } ?: return
-        findBuff.uploadItems.value = mutableListOf()
-        item.value.pharmaList = buff
+        backgroundService.sasKeyEnqueue(EDISASKeyQueueModel().apply {
+            pharmaPK = data.thisPK
+            ediUploadModel = EDIUploadModel().apply {
+                ediType = item.value.ediType
+                year = item.value.year
+                month = item.value.month
+                tempHospitalPK = item.value.tempHospitalPK
+                tempOrgName = item.value.tempOrgName
+                pharmaList = item.value.pharmaList.filter { x -> x.uploadItems.value.isNotEmpty() }.toMutableList()
+            }
+        })
     }
 
     enum class ClickEvent(var index: Int) {

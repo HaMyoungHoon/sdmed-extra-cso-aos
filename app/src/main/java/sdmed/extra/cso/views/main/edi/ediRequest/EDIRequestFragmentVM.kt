@@ -76,7 +76,6 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
         this.searchString.value = ""
     }
     fun startBackgroundService() {
-        return
         val applyDate = selectApplyDate ?: return
         val hospitalData = selectHospital ?: return
         val ediUploadModel = EDIUploadModel().apply {
@@ -105,7 +104,7 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
             this.ediUploadModel = ediUploadModel
         }
         backgroundService.sasKeyEnqueue(data)
-        pharmaFileClear()
+//        pharmaFileClear()
     }
     suspend fun applyDateSelect(data: EDIApplyDateModel?) {
         selectApplyDate?.isSelect?.value = false
