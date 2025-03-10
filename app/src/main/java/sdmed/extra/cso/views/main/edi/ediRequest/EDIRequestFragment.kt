@@ -17,13 +17,13 @@ import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseFragment
 import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.databinding.EdiRequestFragmentBinding
-import sdmed.extra.cso.models.adapter.UploadBuffAdapter
 import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.models.common.SelectListModel
 import sdmed.extra.cso.models.eventbus.EDIUploadEvent
 import sdmed.extra.cso.models.retrofit.edi.EDIApplyDateModel
 import sdmed.extra.cso.models.retrofit.edi.EDIHosBuffModel
+import sdmed.extra.cso.models.retrofit.edi.EDIPharmaBuffModel
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.utils.FCameraUtil
@@ -31,7 +31,8 @@ import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FImageUtils
-import sdmed.extra.cso.views.dialog.pharmaSelect.PharmaSelectDialog
+import sdmed.extra.cso.utils.FStorage.getParcelableList
+import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.select.SelectDialog
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
 import java.io.File
@@ -54,7 +55,7 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         super.viewInit()
         setApplyDateAdapter()
         setHospitalAdapter()
-        setUploadBuffAdapter()
+        setEDIPharmaFileCombinedAdapter()
         observeText()
         getData()
     }
@@ -62,6 +63,7 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         setThisCommand(data)
         setApplyDateCommand(data)
         setHospitalCommand(data)
+        setPharmaFileCombinedCommand(data)
         setUploadBuffCommand(data)
         setSelectDialogCommand(data)
     }
@@ -82,25 +84,21 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
                 return@registerForActivityResult
             }
             val context = contextBuff ?: return@registerForActivityResult
+            val pharmaBuffPK = _cameraUtil?.targetPK ?: return@registerForActivityResult
             val cameraPath = _cameraUtil?.path ?: return@registerForActivityResult
             val imageNames = "edi_shot${FExtensions.getTodayString()}.jpeg"
             val imagePath = FImageUtils.uriCopyToTempFolder(context, File(cameraPath), imageNames).toString()
             val fileType: MediaFileType = MediaFileType.IMAGE
-            dataContext.addImage(imagePath, imageNames, fileType, FContentsType.type_jpeg)
+            dataContext.addImage(pharmaBuffPK, imagePath, imageNames, fileType, FContentsType.type_jpeg)
             savableCheck()
         }
         _imagePickerResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode != RESULT_OK) {
                 return@registerForActivityResult
             }
-            val mediaList =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.data?.getParcelableArrayListExtra("mediaList", MediaPickerSourceModel::class.java)
-                } else {
-                    @Suppress("DEPRECATION")
-                    it.data?.getParcelableArrayListExtra<MediaPickerSourceModel>("mediaList")
-                }
-            dataContext.reSetImage(mediaList)
+            val pharmaBuffPK = it.data?.getStringExtra(FConstants.MEDIA_TARGET_PK) ?: ""
+            val mediaList = it.data?.getParcelableList<MediaPickerSourceModel>(FConstants.MEDIA_LIST)
+            dataContext.reSetImage(pharmaBuffPK, mediaList)
             savableCheck()
         }
         _externalManageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -117,17 +115,11 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
     }
     private fun setApplyDateAdapter() = EDIRequestApplyDateAdapter(dataContext.relayCommand).also { binding?.rvApplyDate?.adapter = it }
     private fun setHospitalAdapter() = EDIRequestHospitalAdapter(dataContext.relayCommand).also { binding?.rvHospital?.adapter = it }
-    private fun setUploadBuffAdapter() = UploadBuffAdapter(dataContext.relayCommand).also { binding?.rvUploadBuffList?.adapter = it }
+    private fun setEDIPharmaFileCombinedAdapter() = EDIPharmaFileCombinedAdapter(dataContext.relayCommand).also { binding?.rvPharmaFileCombined?.adapter = it }
     private fun setThisCommand(data: Any?) {
         val eventName = data as? EDIRequestFragmentVM.ClickEvent ?: return
         when (eventName) {
-            EDIRequestFragmentVM.ClickEvent.ADD -> addImage()
             EDIRequestFragmentVM.ClickEvent.SAVE -> save()
-            EDIRequestFragmentVM.ClickEvent.PHARMA_SELECT -> {
-                PharmaSelectDialog(dataContext.pharmaModel.value) {
-                    dataContext.pharmaSelect(it)
-                }.show(childFragmentManager, "")
-            }
         }
     }
     private fun setApplyDateCommand(data: Any?) {
@@ -149,12 +141,19 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         when (eventName) {
             EDIHosBuffModel.ClickEvent.THIS -> {
                 dataContext.hospitalSelect(dataBuff)
-                if (dataContext.selectHospital != null) {
-                    PharmaSelectDialog(dataContext.pharmaModel.value) {
-                        dataContext.pharmaSelect(it)
-                    }.show(childFragmentManager, "")
-                }
             }
+        }
+    }
+    private fun setPharmaFileCombinedCommand(data: Any?) {
+        if (data !is ArrayList<*> || data.size <= 1) return
+        val eventName = data[0] as? EDIPharmaBuffModel.ClickEvent ?: return
+        val dataBuff = data[1] as? EDIPharmaBuffModel ?: return
+        when (eventName) {
+            EDIPharmaBuffModel.ClickEvent.THIS -> { }
+            EDIPharmaBuffModel.ClickEvent.OPEN -> {
+                dataBuff.isOpen.value = !dataBuff.isOpen.value
+            }
+            EDIPharmaBuffModel.ClickEvent.ADD -> addImage(dataBuff)
         }
     }
     private fun setUploadBuffCommand(data: Any?) {
@@ -163,7 +162,7 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         val dataBuff = data[1] as? MediaPickerSourceModel ?: return
         when (eventName) {
             MediaPickerSourceModel.ClickEvent.SELECT ->  {
-                dataContext.removeImage(dataBuff)
+                dataContext.delImage(dataBuff.thisPK)
                 savableCheck()
             }
             else -> { }
@@ -177,13 +176,13 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
             SelectListModel.ClickEvent.SELECT -> {
                 if (dataBuff.itemIndex == 0) {
                     if (hasCameraGranted()) {
-                        cameraOpen()
+                        cameraOpen(dataBuff.data)
                     } else {
                         requestCameraPermissions()
                     }
                 } else if (dataBuff.itemIndex == 1) {
                     if (hasReadExternalGranted()) {
-                        imagePickerOpen()
+                        imagePickerOpen(dataBuff.data)
                     } else {
                         requestReadExternalPermissions()
                     }
@@ -191,14 +190,18 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
             }
         }
     }
-    private fun cameraOpen() {
+    private fun cameraOpen(data: Any?) {
         val cameraResult = _cameraResult ?: return
         val context = contextBuff ?: return
-        _cameraUtil = FCameraUtil(context, cameraResult).apply { showCamera() }
+        val pharmaBuffPK = (data as? EDIPharmaBuffModel)?.thisPK ?: ""
+        _cameraUtil = FCameraUtil(context, cameraResult).apply { showCamera(pharmaBuffPK) }
     }
-    private fun imagePickerOpen() {
+    private fun imagePickerOpen(data: Any?) {
         _imagePickerResult?.launch(Intent(contextBuff, MediaPickerActivity::class.java).apply {
-            putParcelableArrayListExtra("mediaList", dataContext.getMediaItems())
+            (data as? EDIPharmaBuffModel)?.let {
+                putExtra(FConstants.MEDIA_TARGET_PK, it.thisPK)
+                putParcelableList(FConstants.MEDIA_LIST, ArrayList(it.uploadItems.value))
+            }
         })
     }
     private fun getData() {
@@ -212,6 +215,9 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         })
     }
     private fun observeText() {
+        lifecycleScope.launch {
+            dataContext.searchString.collectLatest { filterItem() }
+        }
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
@@ -219,23 +225,28 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
     private fun savableCheck() {
         dataContext.savableCheck()
     }
-    private fun addImage() {
+    private fun filterItem() {
+        dataContext.filterItem()
+    }
+    private fun addImage(data: EDIPharmaBuffModel) {
         dataContext.isSavable.value = false
         val items = mutableListOf<SelectListModel>()
         items.add(SelectListModel().apply {
             itemIndex = 0
             iconResId = R.drawable.vector_camera_def
             stringResId = R.string.camera_desc
+            this.data = data
         })
         items.add(SelectListModel().apply {
             itemIndex = 1
             iconResId = R.drawable.vector_file_def
             stringResId = R.string.file_desc
+            this.data = data
         })
         SelectDialog(items, 0, dataContext.relayCommand).show(childFragmentManager, "")
     }
     private fun save() {
-        if (dataContext.uploadItems.value.isEmpty()) {
+        if (dataContext.pharmaModel.value.none { x -> x.uploadItems.value.isNotEmpty() }) {
             return
         }
         if (!dataContext.isSavable.value) {
@@ -243,10 +254,6 @@ class EDIRequestFragment: FBaseFragment<EdiRequestFragmentBinding, EDIRequestFra
         }
         dataContext.selectApplyDate ?: return
         dataContext.selectHospital ?: return
-        if (dataContext.selectPharma.isEmpty()) {
-            toast(R.string.warn_select_pharma)
-            return
-        }
 
         toast(R.string.edi_file_upload)
         loading()

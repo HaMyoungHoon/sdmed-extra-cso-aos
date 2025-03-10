@@ -24,6 +24,8 @@ import sdmed.extra.cso.utils.FCameraUtil
 import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FImageUtils
+import sdmed.extra.cso.utils.FStorage.getParcelableList
+import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.select.SelectDialog
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
 import java.io.File
@@ -81,13 +83,7 @@ class QnAAddActivity: FBaseActivity<QnaAddActivityBinding, QnAAddActivityVM>(Use
             if (it.resultCode != RESULT_OK) {
                 return@registerForActivityResult
             }
-            val mediaList =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.data?.getParcelableArrayListExtra("mediaList", MediaPickerSourceModel::class.java)
-                } else {
-                    @Suppress("DEPRECATION")
-                    it.data?.getParcelableArrayListExtra<MediaPickerSourceModel>("mediaList")
-                }
+            val mediaList = it.data?.getParcelableList<MediaPickerSourceModel>(FConstants.MEDIA_LIST)
             dataContext.reSetImage(mediaList)
             savableCheck()
         }
@@ -151,7 +147,7 @@ class QnAAddActivity: FBaseActivity<QnaAddActivityBinding, QnAAddActivityVM>(Use
     }
     private fun imagePickerOpen() {
         _imagePickerResult?.launch(Intent(this, MediaPickerActivity::class.java).apply {
-            putParcelableArrayListExtra("mediaList", dataContext.getMediaItems())
+            putParcelableList(FConstants.MEDIA_LIST, dataContext.getMediaItems())
         })
     }
     private fun savableCheck() {

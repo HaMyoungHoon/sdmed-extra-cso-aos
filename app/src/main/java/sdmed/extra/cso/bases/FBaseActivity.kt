@@ -26,7 +26,6 @@ import sdmed.extra.cso.models.retrofit.users.UserStatus
 import sdmed.extra.cso.models.services.FUIStateService
 import sdmed.extra.cso.utils.FAmhohwa
 import sdmed.extra.cso.utils.FCoroutineUtil
-import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FStorage
 import sdmed.extra.cso.views.landing.LandingActivity
 import sdmed.extra.cso.views.login.LoginActivity

@@ -12,6 +12,7 @@ import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.models.retrofit.edi.EDIApplyDateModel
 import sdmed.extra.cso.models.retrofit.edi.EDIPharmaBuffModel
+import sdmed.extra.cso.models.retrofit.edi.EDIType
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaModel
 import sdmed.extra.cso.models.services.FBackgroundEDIRequestNewUpload
@@ -20,13 +21,14 @@ import sdmed.extra.cso.utils.FExtensions
 class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(application) {
     private val ediRequestRepository: IEDIRequestRepository by kodein.instance(IEDIRequestRepository::class)
     private val backgroundService: FBackgroundEDIRequestNewUpload by kodein.instance(FBackgroundEDIRequestNewUpload::class)
+    val ediTypeModel = MutableStateFlow(mutableListOf<EDIType>())
+    val selectEDITypePosition = MutableStateFlow(0)
     val applyDateModel = MutableStateFlow(mutableListOf<EDIApplyDateModel>())
     var selectApplyDate: EDIApplyDateModel? = null
-    val etc = MutableStateFlow<String>("")
+    val tempOrgName = MutableStateFlow<String>("")
+    val searchString = MutableStateFlow<String>("")
     val pharmaModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
-    val selectPharma = mutableListOf<EDIPharmaBuffModel>()
-    val selectPharmaString = MutableStateFlow<String>("")
-    val uploadItems = MutableStateFlow(mutableListOf<MediaPickerSourceModel>())
+    val pharmaViewModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
     val isSavable = MutableStateFlow(false)
 
     suspend fun getData(): RestResultT<List<EDIApplyDateModel>> {
@@ -37,36 +39,37 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
         return ret
     }
     suspend fun getPharmaList(): RestResultT<List<EDIPharmaBuffModel>> {
-        val yearMonthDay = selectApplyDate?.yearMonthDay ?: return RestResultT<List<EDIPharmaBuffModel>>().emptyResult()
-        val ret = ediRequestRepository.getPharmaList(yearMonthDay)
+        val ret = ediRequestRepository.getPharmaList()
         if (ret.result == true) {
             pharmaModel.value = ret.data?.toMutableList() ?: mutableListOf()
+            pharmaViewModel.value = pharmaModel.value
         }
         return ret
     }
     fun startBackgroundService() {
+        return
         val applyDate = selectApplyDate ?: return
-        val uploadFile = this.uploadItems.value.toMutableList()
-        if (uploadFile.isEmpty()) {
-            return
-        }
         val ediUploadModel = EDIUploadModel().apply {
             year = applyDate.year
             month = applyDate.month
-            this.etc = this@EDIRequestNewFragmentVM.etc.value
+            ediType = ediTypeModel.value[selectEDITypePosition.value]
+            this.tempOrgName = this@EDIRequestNewFragmentVM.tempOrgName.value
             regDate = FExtensions.getTodayString()
         }
-        selectPharma.forEach { x ->
-            ediUploadModel.pharmaList.add(EDIUploadPharmaModel().apply {
-                this.pharmaPK = x.thisPK
-            })
+        pharmaModel.value.forEach { x ->
+            if (x.uploadItems.value.isNotEmpty()) {
+                ediUploadModel.pharmaList.add(EDIUploadPharmaModel().apply {
+                    this.pharmaPK = x.thisPK
+                    this.uploadItems.value = x.uploadItems.value
+                })
+            }
         }
         val data = EDISASKeyQueueModel().apply {
-            medias = uploadFile
             this.ediUploadModel = ediUploadModel
         }
-        this.uploadItems.value = mutableListOf()
         backgroundService.sasKeyEnqueue(data)
+        this.pharmaModel.value.forEach { x -> x.uploadItems.value = mutableListOf() }
+        this.searchString.value = ""
     }
     fun applyDateSelect(data: EDIApplyDateModel) {
         if (selectApplyDate == data) {
@@ -80,86 +83,67 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
         selectApplyDate?.isSelect?.value = true
         savableCheck()
     }
-    fun pharmaSelect(data: List<EDIPharmaBuffModel>) {
-        selectPharma.clear()
-        selectPharma.addAll(data)
-        pharmaModel.value.forEach { x -> x.isSelect.value = false }
-        pharmaModel.value.filter { x -> x.thisPK in data.map { it.thisPK } }.forEach { x -> x.isSelect.value = true }
-
-        if (selectPharma.isEmpty()) {
-            selectPharmaString.value = ""
-        } else {
-            selectPharmaString.value = "${selectPharma.getOrNull(0)?.orgName}, (${selectPharma.size})"
-        }
-        savableCheck()
-    }
-    fun pharmaSelect(data: EDIPharmaBuffModel?) {
-        if (data == null) {
-            pharmaModel.value = mutableListOf()
-            savableCheck()
+    fun filterItem() {
+        val searchBuff = searchString.value
+        if (searchBuff.isEmpty()) {
+            pharmaViewModel.value = pharmaModel.value.toMutableList()
             return
         }
-        val alreadyData = selectPharma.find { x -> x.thisPK == data.thisPK }
-        if (alreadyData == null) {
-            data.isSelect.value = true
-            selectPharma.add(data)
-        } else {
-            data.isSelect.value = false
-            selectPharma.remove(data)
-        }
-        savableCheck()
+
+        pharmaViewModel.value = pharmaModel.value.filter { x -> x.orgName.contains(searchBuff, true) }.toMutableList()
     }
     fun savableCheck() {
         if (selectApplyDate == null) {
             isSavable.value = false
             return
         }
-        if (etc.value.isBlank()) {
+        if (tempOrgName.value.isBlank()) {
             isSavable.value = false
             return
         }
-        if (selectPharma.isEmpty()) {
+        if (pharmaModel.value.none { x -> x.uploadItems.value.isNotEmpty() }) {
             isSavable.value = false
             return
         }
-        isSavable.value = uploadItems.value.isNotEmpty()
+        isSavable.value = true
     }
-    fun getMediaItems() = ArrayList(uploadItems.value.toMutableList())
-    fun removeImage(data: MediaPickerSourceModel?) {
-        uploadItems.value = uploadItems.value.filter { it != data }.toMutableList()
-    }
-    fun addImage(uriString: String?, name: String, fileType: MediaFileType, mimeType: String) {
+
+    fun addImage(pharmaBuffPK: String, uriString: String?, name: String, fileType: MediaFileType, mimeType: String) {
         uriString ?: return
+        val buff = this.pharmaModel.value.toMutableList()
+
         try {
-            val imageBuff = uploadItems.value.toMutableList()
+            val findBuff = buff.find { x -> x.thisPK == pharmaBuffPK } ?: return
+            val imageBuff = findBuff.uploadItems.value.toMutableList()
             imageBuff.add(MediaPickerSourceModel().apply {
                 mediaPath = uriString.toUri()
                 mediaName = name
                 mediaFileType = fileType
                 mediaMimeType = mimeType
             })
-            uploadItems.value = imageBuff
+            findBuff.uploadItems.value = imageBuff
+            findBuff.isOpen.value = true
+            this.pharmaModel.value = buff
         } catch (_: Exception) {
         }
+        savableCheck()
     }
-    fun addImage(mediaPickerSource: MediaPickerSourceModel) {
-        try {
-            val imageBuff = uploadItems.value.toMutableList()
-            imageBuff.add(mediaPickerSource)
-            uploadItems.value = imageBuff
-        } catch (_: Exception) {
-        }
+    fun delImage(imagePK: String) {
+        val buff = this.pharmaModel.value.toMutableList()
+        val findBuff = buff.find { x -> x.uploadItems.value.find { y -> y.thisPK == imagePK } != null } ?: return
+        findBuff.uploadItems.value = findBuff.uploadItems.value.filter { it.thisPK != imagePK }.toMutableList()
+        this.pharmaModel.value = buff
     }
-    fun reSetImage(mediaList: ArrayList<MediaPickerSourceModel>?) {
-        uploadItems.value = mutableListOf()
-        mediaList?.forEach { x ->
-            addImage(x)
-        }
+    fun reSetImage(pharmaBuffPK: String, mediaList: ArrayList<MediaPickerSourceModel>?) {
+        val buff = this.pharmaModel.value.toMutableList()
+        val findPharma = buff.find { x -> x.thisPK == pharmaBuffPK }
+        findPharma?.uploadItems?.value = mediaList?.toMutableList() ?: mutableListOf()
+        findPharma?.isOpen?.value = true
+        this.pharmaModel.value = buff
+        savableCheck()
     }
 
     enum class ClickEvent(var index: Int) {
-        ADD(0),
-        SAVE(1),
-        PHARMA_SELECT(2)
+        SAVE(0)
     }
 }

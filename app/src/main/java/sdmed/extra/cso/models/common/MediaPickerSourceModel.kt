@@ -7,9 +7,11 @@ import kotlinx.parcelize.Parcelize
 import sdmed.extra.cso.bases.FDataModelClass
 import sdmed.extra.cso.interfaces.command.ICommand
 import sdmed.extra.cso.utils.FExtensions
+import java.util.UUID
 
 @Parcelize
 data class MediaPickerSourceModel(
+    var thisPK: String = UUID.randomUUID().toString(),
     var mediaPath: Uri? = null,
     var mediaName: String = "",
     var mediaFileType: MediaFileType = MediaFileType.UNKNOWN,

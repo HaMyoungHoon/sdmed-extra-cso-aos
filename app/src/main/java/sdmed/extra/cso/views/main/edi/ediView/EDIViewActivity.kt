@@ -29,8 +29,11 @@ import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.models.common.MediaViewParcelModel
 import sdmed.extra.cso.models.common.SelectListModel
 import sdmed.extra.cso.models.eventbus.EDIUploadEvent
+import sdmed.extra.cso.models.retrofit.edi.EDIPharmaBuffModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
+import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaFileModel
+import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadResponseModel
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRoles
@@ -39,6 +42,9 @@ import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FImageUtils
+import sdmed.extra.cso.utils.FStorage.getParcelableList
+import sdmed.extra.cso.utils.FStorage.putParcelable
+import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.select.SelectDialog
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
 import sdmed.extra.cso.views.media.view.MediaListViewActivity
@@ -68,12 +74,13 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         setEDIFileAdapter()
         setEllipseAdapter()
         setEDIResponseAdapter()
-        setUploadBuffAdapter()
         getData()
     }
     override fun setLayoutCommand(data: Any?) {
         setThisCommand(data)
+        setEDIPharmaCommand(data)
         setEDIFileCommand(data)
+        setEDIPharmaFileCommand(data)
         setEDIResponseCommand(data)
         setUploadBuffCommand(data)
         setSelectDialogCommand(data)
@@ -98,26 +105,20 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
             if (it.resultCode != RESULT_OK) {
                 return@registerForActivityResult
             }
+            val pharmaBuffPK = _cameraUtil?.targetPK ?: return@registerForActivityResult
             val cameraPath = _cameraUtil?.path ?: return@registerForActivityResult
             val imageNames = "edi_shot${FExtensions.getTodayString()}.jpeg"
             val imagePath = FImageUtils.uriCopyToTempFolder(this, File(cameraPath), imageNames).toString()
             val fileType: MediaFileType = MediaFileType.IMAGE
-            dataContext.addImage(imagePath, imageNames, fileType, FContentsType.type_jpeg)
-            savableCheck()
+            dataContext.addImage(pharmaBuffPK, imagePath, imageNames, fileType, FContentsType.type_jpeg)
         }
         _imagePickerResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode != RESULT_OK) {
                 return@registerForActivityResult
             }
-            val mediaList =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    it.data?.getParcelableArrayListExtra("mediaList", MediaPickerSourceModel::class.java)
-                } else {
-                    @Suppress("DEPRECATION")
-                    it.data?.getParcelableArrayListExtra<MediaPickerSourceModel>("mediaList")
-                }
-            dataContext.reSetImage(mediaList)
-            savableCheck()
+            val pharmaBuffPK = it.data?.getStringExtra(FConstants.MEDIA_TARGET_PK) ?: ""
+            val mediaList = it.data?.getParcelableList<MediaPickerSourceModel>(FConstants.MEDIA_LIST)
+            dataContext.reSetImage(pharmaBuffPK, mediaList)
         }
         _externalManageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
@@ -135,8 +136,16 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         val eventName = data as? EDIViewActivityVM.ClickEvent ?: return
         when (eventName) {
             EDIViewActivityVM.ClickEvent.CLOSE -> close()
-            EDIViewActivityVM.ClickEvent.ADD -> addImage()
-            EDIViewActivityVM.ClickEvent.SAVE -> save()
+        }
+    }
+    private fun setEDIPharmaCommand(data: Any?) {
+        if (data !is ArrayList<*> || data.size <= 1) return
+        val eventName = data[0] as? EDIUploadPharmaModel.ClickEvent ?: return
+        val dataBuff = data[1] as? EDIUploadPharmaModel ?: return
+        when (eventName) {
+            EDIUploadPharmaModel.ClickEvent.OPEN -> dataBuff.isOpen.value = !dataBuff.isOpen.value
+            EDIUploadPharmaModel.ClickEvent.ADD -> addImage(dataBuff)
+            EDIUploadPharmaModel.ClickEvent.SAVE -> save(dataBuff)
         }
     }
     private fun setEDIFileCommand(data: Any?) {
@@ -146,12 +155,29 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         when (eventName) {
             EDIUploadFileModel.ClickEvent.SHORT -> {
                 startActivity((Intent(this, MediaViewActivity::class.java).apply {
-                    putExtra("mediaItem", MediaViewParcelModel().parse(dataBuff))
+                    putParcelable(FConstants.MEDIA_ITEM, MediaViewParcelModel().parse(dataBuff))
                 }))
             }
             EDIUploadFileModel.ClickEvent.LONG -> {
                 startActivity((Intent(this, MediaListViewActivity::class.java).apply {
-                    putParcelableArrayListExtra("mediaList", dataContext.getMediaViewFiles())
+                    putParcelableList(FConstants.MEDIA_LIST, dataContext.getMediaViewFiles())
+                }))
+            }
+        }
+    }
+    private fun setEDIPharmaFileCommand(data: Any?) {
+        if (data !is ArrayList<*> || data.size <= 1) return
+        val eventName = data[0] as? EDIUploadPharmaFileModel.ClickEvent ?: return
+        val dataBuff = data[1] as? EDIUploadPharmaFileModel ?: return
+        when (eventName) {
+            EDIUploadPharmaFileModel.ClickEvent.SHORT -> {
+                startActivity((Intent(this, MediaViewActivity::class.java).apply {
+                    putParcelable(FConstants.MEDIA_ITEM, MediaViewParcelModel().parse(dataBuff))
+                }))
+            }
+            EDIUploadPharmaFileModel.ClickEvent.LONG -> {
+                startActivity((Intent(this, MediaListViewActivity::class.java).apply {
+                    putParcelableList(FConstants.MEDIA_LIST, dataContext.getMediaViewPharmaFiles(dataBuff))
                 }))
             }
         }
@@ -172,18 +198,11 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         val eventName = data[0] as? MediaPickerSourceModel.ClickEvent ?: return
         val dataBuff = data[1] as? MediaPickerSourceModel ?: return
         when (eventName) {
-            MediaPickerSourceModel.ClickEvent.SELECT ->  {
-                dataContext.removeImage(dataBuff)
-                savableCheck()
-            }
+            MediaPickerSourceModel.ClickEvent.SELECT -> dataContext.delImage(dataBuff.thisPK)
             else -> { }
         }
     }
     private fun setSelectDialogCommand(data: Any?) {
-        if (dataContext.isAddable.value == false) {
-            return
-        }
-
         if (data !is ArrayList<*> || data.size <= 1) return
         val eventName = data[0] as? SelectListModel.ClickEvent ?: return
         val dataBuff = data[1] as? SelectListModel ?: return
@@ -191,13 +210,13 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
             SelectListModel.ClickEvent.SELECT -> {
                 if (dataBuff.itemIndex == 0) {
                     if (hasCameraGranted()) {
-                        cameraOpen()
+                        cameraOpen(dataBuff.data)
                     } else {
                         requestCameraPermissions()
                     }
                 } else if (dataBuff.itemIndex == 1) {
                     if (hasReadExternalGranted()) {
-                        imagePickerOpen()
+                        imagePickerOpen(dataBuff.data)
                     } else {
                         requestReadExternalPermissions()
                     }
@@ -205,27 +224,21 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
             }
         }
     }
-    private fun cameraOpen() {
+    private fun cameraOpen(data: Any?) {
         val cameraResult = _cameraResult ?: return
-        _cameraUtil = FCameraUtil(this, cameraResult).apply { showCamera() }
+        val pharmaBuffPK = (data as? EDIUploadPharmaModel)?.thisPK ?: ""
+        _cameraUtil = FCameraUtil(this, cameraResult).apply { showCamera(pharmaBuffPK) }
     }
-    private fun imagePickerOpen() {
+    private fun imagePickerOpen(data: Any?) {
         _imagePickerResult?.launch(Intent(this, MediaPickerActivity::class.java).apply {
-            putParcelableArrayListExtra("mediaList", dataContext.getMediaItems())
+            (data as? EDIUploadPharmaModel)?.let {
+                putExtra(FConstants.MEDIA_TARGET_PK, it.thisPK)
+                putParcelableList(FConstants.MEDIA_LIST, ArrayList(it.uploadItems.value))
+            }
         })
     }
-    private fun savableCheck() {
-        if (dataContext.isAddable.value == false) {
-            return
-        }
 
-        dataContext.isSavable.value = dataContext.uploadItems.value.isNotEmpty()
-    }
-
-    private fun setEDIPharmaAdapter() {
-        val binding = super.binding ?: return
-        binding.rvPharmaList.adapter = EDIViewPharmaAdapter(dataContext.relayCommand)
-    }
+    private fun setEDIPharmaAdapter() = EDIViewPharmaAdapter(dataContext.relayCommand).also{ binding?.rvPharmaList?.adapter = it }
     private fun setEDIFileAdapter() {
         val binding = super.binding ?: return
         binding.vpEdiFileList.adapter = EDIViewFileAdapter(dataContext.relayCommand)
@@ -237,7 +250,6 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
     }
     private fun setEllipseAdapter() = EllipseListAdapter(dataContext.relayCommand).also { binding?.rvEllipseList?.adapter = it }
     private fun setEDIResponseAdapter() = EDIViewResponseAdapter(dataContext.relayCommand).also { binding?.rvResponseList?.adapter = it }
-    private fun setUploadBuffAdapter() = UploadBuffAdapter(dataContext.relayCommand).also { binding?.rvUploadBuffList?.adapter = it }
     private fun updateEllipseList(position: Int) {
         val buff = dataContext.ellipseList.value
         if (position < 0 || position >= buff.size) {
@@ -269,9 +281,8 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
     private fun close() {
         finish()
     }
-    private fun addImage() {
-        dataContext.isSavable.value = false
-        if (!dataContext.item.value.ediState.isEditable()) {
+    private fun addImage(data: EDIUploadPharmaModel) {
+        if (!data.isAddable) {
             return
         }
         val items = mutableListOf<SelectListModel>()
@@ -279,40 +290,26 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
             itemIndex = 0
             iconResId = R.drawable.vector_camera_def
             stringResId = R.string.camera_desc
+            this.data = data
         })
         items.add(SelectListModel().apply {
             itemIndex = 1
             iconResId = R.drawable.vector_file_def
             stringResId = R.string.file_desc
+            this.data = data
         })
         SelectDialog(items, 0, dataContext.relayCommand).show(supportFragmentManager, "")
     }
-    private fun save() {
-        if (!dataContext.item.value.ediState.isEditable()) {
+    private fun save(data: EDIUploadPharmaModel) {
+        if (!data.isAddable) {
             return
         }
-        if (dataContext.uploadItems.value.isEmpty()) {
-            return
-        }
-        if (!dataContext.isSavable.value) {
+        if (!data.isSavable.value) {
             return
         }
 
-        dataContext.startBackgroundService()
+        dataContext.startBackgroundService(data)
         toast(R.string.edi_file_upload)
-        savableCheck()
-//        loading()
-//        val ediUploadFileModel = mutableListOf<EDIUploadFileModel>()
-//        FCoroutineUtil.coroutineScope({
-//            val ret = dataContext.postFile(ediUploadFileModel)
-//            loading(false)
-//            if (ret.result != true || ret.data == null) {
-//                toast(ret.msg)
-//                return@coroutineScope
-//            }
-//            dataContext.uploadItems.value = mutableListOf()
-//            getData()
-//        })
     }
 
     private fun getResponseAdapter(): EDIViewResponseAdapter? {
@@ -344,10 +341,6 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         } else {
             requestPermissions(FConstants.READ_EXTERNAL_PERMISSION_34, FConstants.Permit.READ_EXTERNAL.index)
         }
-    }
-
-    private fun uploadBuffAdapter(): UploadBuffAdapter? {
-        return binding?.rvUploadBuffList?.adapter as? UploadBuffAdapter
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

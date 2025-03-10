@@ -12,50 +12,129 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="horizontal">
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.OPEN)}"
+        android:background="@drawable/shape_rounded_box_able_5dp"
+        android:animateLayoutChanges="true">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:visibility="@{dataContext.carriedOver ? View.VISIBLE : View.GONE}"
-            android:text="@string/carried_over_desc"
-            android:textSize="18sp"
-            android:textColor="@color/primary"
-            android:fontFamily="@font/nanum_gothic"
-            tools:visibility="visible" />
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:visibility="@{dataContext.carriedOver ? View.VISIBLE : View.GONE}"
+                android:text="@string/carried_over_desc"
+                android:textSize="18sp"
+                android:textColor="@color/primary"
+                android:fontFamily="@font/nanum_gothic"
+                tools:visibility="visible" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{dataContext.yearMonth}"
+                android:textSize="18sp"
+                android:textColor="@color/def_foreground"
+                android:fontFamily="@font/nanum_gothic"
+                tools:text="2025-01" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:gravity="center"
+                android:ellipsize="middle"
+                android:text="@{dataContext.orgName}"
+                android:textSize="18sp"
+                android:textColor="@color/def_foreground"
+                android:fontFamily="@font/nanum_gothic"
+                tools:text="떙떙떙 병원" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@{dataContext.ediState.desc}"
+                android:fontFamily="@font/nanum_gothic"
+                android:textSize="18sp"
+                app:textColorResId="@{dataContext.ediColor}"
+                app:backgroundTintResId="@{dataContext.ediBackColor}"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                tools:text="반려"
+                tools:textColor="@color/edi_state_reject" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{dataContext.yearMonth}"
-            android:textSize="18sp"
-            android:textColor="@color/def_foreground"
-            android:fontFamily="@font/nanum_gothic"
-            tools:text="2025-01" />
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="3dp"
-            android:layout_marginEnd="3dp"
-            android:gravity="center"
-            android:ellipsize="middle"
-            android:text="@{dataContext.orgName}"
-            android:textSize="18sp"
-            android:textColor="@color/def_foreground"
-            android:fontFamily="@font/nanum_gothic"
-            tools:text="떙떙떙 병원" />
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@{dataContext.ediState.desc}"
-            android:fontFamily="@font/nanum_gothic"
-            android:textSize="18sp"
-            app:textColorResId="@{dataContext.ediColor}"
-            app:backgroundTintResId="@{dataContext.ediBackColor}"
-            android:background="@drawable/shape_rounded_box_able_5dp"
-            tools:text="반려"
-            tools:textColor="@color/edi_state_reject" />
+            android:orientation="vertical"
+            android:visibility="@{dataContext.open ? View.VISIBLE : View.GONE}">
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_edi_pharma_file_list"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:maxHeight="360dp"
+                android:orientation="horizontal"
+                android:visibility="@{dataContext.fileList.size() > 0 ? View.VISIBLE : View.GONE}"
+                android:nestedScrollingEnabled="false"
+                app:viewPagerEDIPharmaFileList="@{dataContext}"
+                app:layout_constraintTop_toBottomOf="@id/rv_pharma_list" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{dataContext.positionString}"
+                android:fontFamily="@font/nanum_gothic"
+                android:textSize="16sp"
+                android:textColor="@color/def_foreground"
+                tools:text="0/16" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_upload_buff_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="@{dataContext.uploadItems.size() > 0 ? View.VISIBLE : View.GONE}"
+                app:recyclerUploadBuffList="@{dataContext.uploadItems}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="@{dataContext.addable ? View.VISIBLE : View.GONE}"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="@string/add_file_desc"
+                    android:fontFamily="@font/nanum_gothic"
+                    android:textSize="18sp"
+                    android:textColor="@color/absolute_white"
+                    android:background="@drawable/selector_rounded_transparent"
+                    android:backgroundTint="@color/absolute_black"
+                    android:backgroundTintMode="screen"
+                    android:onClick="@{() -> dataContext.onClick(ClickEvent.ADD)}"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="@string/save_desc"
+                    android:fontFamily="@font/nanum_gothic"
+                    android:textSize="18sp"
+                    android:textColor="@{dataContext.savable ? @color/absolute_white : @color/disable_fore_gray}"
+                    android:background="@drawable/selector_rounded_transparent"
+                    android:backgroundTint="@{dataContext.savable ? @color/secondary : @color/disable_back_gray}"
+                    android:backgroundTintMode="screen"
+                    tools:textColor="@color/disable_fore_gray"
+                    tools:backgroundTint="@color/disable_back_gray"
+                    android:onClick="@{() -> dataContext.onClick(ClickEvent.SAVE)}"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

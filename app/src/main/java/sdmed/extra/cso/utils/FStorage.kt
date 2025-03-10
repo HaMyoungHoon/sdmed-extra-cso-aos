@@ -74,13 +74,6 @@ object FStorage {
     }
     fun removeMultiLoginToken(context: Context) = removeData(context, FConstants.MULTI_LOGIN_TOKEN)
 
-    inline fun <reified T: Parcelable> getParcel(intent: Intent, key: String): T? {
-        return intent.parcelable(key)
-    }
-    inline fun <reified T: Parcelable> getParcelArray(intent: Intent, key: String): ArrayList<T>? {
-        return intent.parcelableList(key)
-    }
-
     private fun getBool(context: Context, keyName: String, defData: Boolean = false) = cryptoSharedPreferences(context).getBoolean(keyName, defData)
     private fun putBool(context: Context, keyName: String, data: Boolean) = cryptoSharedPreferences(context).apply { edit { putBoolean(keyName, data) } }
     private fun getInt(context: Context, keyName: String, defData: Int = -1) = cryptoSharedPreferences(context).getInt(keyName, defData)
@@ -110,20 +103,18 @@ object FStorage {
         cryptoSharedPreferences(context).apply { edit { putString(keyName, buff) } }
     } catch (_: Exception) { }
     private fun removeData(context: Context, keyName: String) = cryptoSharedPreferences(context).apply { edit { remove(keyName) } }
-    inline fun <reified T: Parcelable> Intent.parcelable(key: String): T? = when {
+    inline fun <reified T: Parcelable> Intent.putParcelable(key: String, data: T) = putExtra(key, data)
+    inline fun <reified T: Parcelable> Intent.getParcelable(key: String): T? = when {
         Build.VERSION.SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
         else -> @Suppress("DEPRECATION") getParcelableExtra(key)
     }
-    inline fun <reified T: Parcelable> Bundle.parcelable(intent: Intent, key: String): T? = when {
-        Build.VERSION.SDK_INT >= 33 -> intent.getParcelableExtra(key, T::class.java)
-        else -> @Suppress("DEPRECATION") intent.getParcelableExtra(key)
-    }
-    inline fun <reified T: Parcelable> Intent.parcelableList(key: String): ArrayList<T>? = when {
+    inline fun <reified T: Parcelable> Bundle.putParcelable(intent: Intent, key: String, data: T) = intent.putParcelable(key, data)
+    inline fun <reified T: Parcelable> Bundle.getParcelable(intent: Intent, key: String): T? = intent.getParcelable(key)
+    inline fun <reified T: Parcelable> Intent.putParcelableList(key: String, data: ArrayList<T>) = putParcelableArrayListExtra(key, data)
+    inline fun <reified T: Parcelable> Intent.getParcelableList(key: String): ArrayList<T>? = when {
         Build.VERSION.SDK_INT >= 33 -> getParcelableArrayListExtra(key, T::class.java)
         else -> @Suppress("DEPRECATION") getParcelableArrayListExtra(key)
     }
-    inline fun <reified T: Parcelable> Bundle.parcelableList(intent: Intent, key: String): List<T>? = when {
-        Build.VERSION.SDK_INT >= 33 -> intent.getParcelableArrayListExtra(key, T::class.java)
-        else -> @Suppress("DEPRECATION") intent.getParcelableArrayListExtra(key)
-    }
+    inline fun <reified T: Parcelable> Bundle.putParcelableList(intent: Intent, key: String, data: ArrayList<T>) = intent.putParcelableList(key, data)
+    inline fun <reified T: Parcelable> Bundle.getParcelableList(intent: Intent, key: String): List<T>? = intent.getParcelableList(key)
 }

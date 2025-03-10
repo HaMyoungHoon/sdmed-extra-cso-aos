@@ -17,12 +17,16 @@ object FConstants {
     const val TOKEN_REFRESHING = "tokenRefreshing"
     const val HOME_MENU_INDEX = "homeMenuIndex"
     const val MULTI_LOGIN_TOKEN = "multiLoginToken"
-
-    const val REST_API_DEBUG_RUL = "https://back-cso.sdmed.co.kr"
-    const val REST_API_URL = "https://back-cso.sdmed.co.kr"
+    const val MEDIA_ITEM = "mediaItem"
+    const val MEDIA_LIST = "mediaList"
+    const val EDI_PHARMA_BUFF_PK = "ediPharmaBuffPK"
+    const val MEDIA_TARGET_PK = "mediaTargetPK"
 
     const val GOOGLE_DOC_PREFIX = "https://docs.google.com/viewer?url="
     const val WEB_VIEW_PREFIX = "https://intra-cso.sdmed.co.kr/externalBlobView?blobUrl="
+
+    const val REST_API_DEBUG_RUL = "https://dev-back-cso.sdmed.co.kr"
+    const val REST_API_URL = "https://back-cso.sdmed.co.kr"
 
     const val REST_API_COMMON = "common"
     const val REST_API_MQTT = "mqtt"

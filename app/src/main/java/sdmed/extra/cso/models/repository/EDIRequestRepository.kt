@@ -8,7 +8,7 @@ import sdmed.extra.cso.utils.FExtensions
 class EDIRequestRepository(private val _service: IEDIRequestService): IEDIRequestRepository {
     override suspend fun getApplyDateList() = FExtensions.restTryT { _service.getApplyDateList() }
     override suspend fun getHospitalList(applyDate: String) = FExtensions.restTryT { _service.getHospitalList(applyDate) }
-    override suspend fun getPharmaList(applyDate: String) = FExtensions.restTryT { _service.getPharmaList(applyDate) }
+    override suspend fun getPharmaList() = FExtensions.restTryT { _service.getPharmaList() }
     override suspend fun getPharmaList(hosPK: String, applyDate: String) = FExtensions.restTryT { _service.getPharmaList(hosPK, applyDate) }
     override suspend fun getMedicineList(hosPK: String, pharmaPK: List<String>) = FExtensions.restTryT { _service.getMedicineList(hosPK, pharmaPK) }
     override suspend fun postData(ediUploadModel: EDIUploadModel) = FExtensions.restTryT { _service.postData(ediUploadModel) }

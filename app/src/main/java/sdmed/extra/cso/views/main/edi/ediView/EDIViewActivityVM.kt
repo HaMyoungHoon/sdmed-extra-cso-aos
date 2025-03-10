@@ -14,7 +14,10 @@ import sdmed.extra.cso.models.common.EDISASKeyQueueModel
 import sdmed.extra.cso.models.common.MediaViewParcelModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
+import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaFileModel
+import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaModel
 import sdmed.extra.cso.models.services.FBackgroundEDIFileUpload
+import kotlin.collections.find
 
 class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
     private val ediListRepository: IEDIListRepository by kodein.instance(IEDIListRepository::class)
@@ -23,9 +26,6 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
     var thisPK: String = ""
     val item = MutableStateFlow(EDIUploadModel())
     val ellipseList = MutableStateFlow(mutableListOf<EllipseItemModel>())
-    val uploadItems = MutableStateFlow(mutableListOf<MediaPickerSourceModel>())
-    val isAddable = MutableStateFlow(false)
-    val isSavable = MutableStateFlow(false)
 
     suspend fun getData(): RestResultT<EDIUploadModel> {
         val ret = ediListRepository.getData(thisPK)
@@ -34,9 +34,6 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
             val ellipseBuff = mutableListOf<EllipseItemModel>()
             ret.data?.fileList?.forEach { ellipseBuff.add(EllipseItemModel()) }
             ellipseList.value = ellipseBuff
-            uploadItems.value = mutableListOf()
-            isAddable.value = item.value.ediState.isEditable()
-            isSavable.value = uploadItems.value.isNotEmpty()
         }
         return ret
     }
@@ -51,56 +48,59 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
         }
         return ret
     }
-    fun getMediaItems() = ArrayList(uploadItems.value.toMutableList())
-    fun getMediaPathList() = ArrayList(uploadItems.value.map { it.mediaPath.toString() })
-    fun getMediaNameList() = ArrayList(uploadItems.value.map { it.mediaName.toString() })
-    fun getMediaFileTypeList() = ArrayList(uploadItems.value.map { it.mediaFileType.index })
-    fun removeImage(data: MediaPickerSourceModel?) {
-        uploadItems.value = uploadItems.value.filter { it != data }.toMutableList()
+    fun getMediaViewPharmaFiles(data: EDIUploadPharmaFileModel): ArrayList<MediaViewParcelModel> {
+        val buff = item.value.pharmaList.toMutableList()
+        val ret = arrayListOf<MediaViewParcelModel>()
+        val findBuff = buff.find { x -> x.fileList.find { y -> y.thisPK == data.thisPK } != null }
+        findBuff?.fileList?.forEach { x ->
+            ret.add(MediaViewParcelModel().parse(x))
+        }
+        return ret
     }
-    fun addImage(uriString: String?, name: String, fileType: MediaFileType, mimeType: String) {
+    fun addImage(pharmaBuffPK: String, uriString: String?, name: String, fileType: MediaFileType, mimeType: String) {
         uriString ?: return
+        val buff = item.value.pharmaList.toMutableList()
         try {
-            val imageBuff = uploadItems.value.toMutableList()
+            val findBuff = buff.find { x -> x.thisPK == pharmaBuffPK } ?: return
+            val imageBuff = findBuff.uploadItems.value.toMutableList()
             imageBuff.add(MediaPickerSourceModel().apply {
                 mediaPath = uriString.toUri()
                 mediaName = name
                 mediaFileType = fileType
                 mediaMimeType = mimeType
             })
-            uploadItems.value = imageBuff
+            findBuff.uploadItems.value = imageBuff
+            item.value.pharmaList = buff
         } catch (_: Exception) {
         }
     }
-    fun addImage(mediaPickerSource: MediaPickerSourceModel) {
-        try {
-            val imageBuff = uploadItems.value.toMutableList()
-            imageBuff.add(mediaPickerSource)
-            uploadItems.value = imageBuff
-        } catch (_: Exception) {
-        }
+    fun delImage(imagePK: String) {
+        val buff = item.value.pharmaList.toMutableList()
+        val findBuff = buff.find { x -> x.uploadItems.value.find { y -> y.thisPK == imagePK } != null } ?: return
+        findBuff.uploadItems.value = findBuff.uploadItems.value.filter { it.thisPK != imagePK }.toMutableList()
+        item.value.pharmaList = buff
     }
-    fun reSetImage(mediaList: ArrayList<MediaPickerSourceModel>?) {
-        uploadItems.value = mutableListOf()
-        mediaList?.forEach { x ->
-            addImage(x)
-        }
+    fun reSetImage(pharmaBuffPK: String, mediaList: ArrayList<MediaPickerSourceModel>?) {
+        val buff = item.value.pharmaList.toMutableList()
+        val findBuff = buff.find { x -> x.thisPK == pharmaBuffPK } ?: return
+        findBuff.uploadItems.value = mediaList?.toMutableList() ?: mutableListOf()
+        item.value.pharmaList = buff
     }
 
-    fun startBackgroundService() {
-        val uploadFile = this.uploadItems.value.toMutableList()
-        val data = EDISASKeyQueueModel().apply {
-            ediPK = thisPK
-            medias = uploadFile
-            ediUploadModel = item.value
-        }
-        this.uploadItems.value = mutableListOf()
-        backgroundService.sasKeyEnqueue(data)
+    fun startBackgroundService(data: EDIUploadPharmaModel) {
+//        return
+//        backgroundService.sasKeyEnqueue(EDISASKeyQueueModel().apply {
+//            ediPK = thisPK
+//            ediUploadModel = item.value
+//        })
+        data.uploadItems.value = mutableListOf()
+        val buff = item.value.pharmaList.toMutableList()
+        val findBuff = buff.find { x -> x.thisPK == data.thisPK } ?: return
+        findBuff.uploadItems.value = mutableListOf()
+        item.value.pharmaList = buff
     }
 
     enum class ClickEvent(var index: Int) {
-        CLOSE(0),
-        ADD(1),
-        SAVE(2),
+        CLOSE(0)
     }
 }

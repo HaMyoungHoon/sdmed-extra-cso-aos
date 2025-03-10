@@ -6,10 +6,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseActivity
+import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.databinding.MediaViewActivityBinding
 import sdmed.extra.cso.models.common.MediaViewModel
 import sdmed.extra.cso.models.common.MediaViewParcelModel
-import sdmed.extra.cso.utils.FStorage
+import sdmed.extra.cso.utils.FStorage.getParcelable
 
 class MediaViewActivity: FBaseActivity<MediaViewActivityBinding, MediaViewActivityVM>() {
     override var layoutId = R.layout.media_view_activity
@@ -19,7 +20,7 @@ class MediaViewActivity: FBaseActivity<MediaViewActivityBinding, MediaViewActivi
 
     override fun viewInit() {
         super.viewInit()
-        val buffItem = FStorage.getParcel<MediaViewParcelModel>(intent, "mediaItem")
+        val buffItem =  intent.getParcelable<MediaViewParcelModel>(FConstants.MEDIA_ITEM)
         dataContext.setItemData(buffItem)
         setWebView()
     }

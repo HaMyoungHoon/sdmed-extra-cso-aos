@@ -108,9 +108,13 @@
     <string name="edi_pharma_select_desc">EDI 제약사 선택</string>
     <string name="edi_due_date_desc">마감일정</string>
     <string name="warn_select_pharma">제약사를 선택해주세요.</string>
-    <string name="new_hospital_desc">병원명(신규처 or 기존처 or 이관처)</string>
+    <string name="new_hospital_desc">병원명(신규처 or 이관처)</string>
     <string name="new_pharma_desc">제약사명</string>
     <string name="search_range_desc">조회기간(등록일 기준)</string>
     <string name="media_view_title_desc">단일 자료</string>
     <string name="media_list_view_title_desc">다중 자료</string>
+    <string name="edi_type_default">기존처</string>
+    <string name="edi_type_new">신규처</string>
+    <string name="edi_type_transfer">이관처</string>
+    <string name="pharma_search_desc">제약사 찾기</string>
 </resources>

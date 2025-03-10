@@ -19,7 +19,7 @@ interface IEDIRequestService {
     @GET("${FConstants.REST_API_EDI_REQUEST}/list/hospital")
     suspend fun getHospitalList(@Query("applyDate") applyDate: String): RestResultT<List<EDIHosBuffModel>>
     @GET("${FConstants.REST_API_EDI_REQUEST}/list/pharma")
-    suspend fun getPharmaList(@Query("applyDate") applyDate: String): RestResultT<List<EDIPharmaBuffModel>>
+    suspend fun getPharmaList(): RestResultT<List<EDIPharmaBuffModel>>
     @GET("${FConstants.REST_API_EDI_REQUEST}/list/pharma/{hosPK}")
     suspend fun getPharmaList(@Path("hosPK") hosPK: String, @Query("applyDate") applyDate: String): RestResultT<List<EDIPharmaBuffModel>>
     @GET("${FConstants.REST_API_EDI_REQUEST}/list/medicine/{hosPK}")

@@ -28,7 +28,8 @@ import sdmed.extra.cso.models.common.SelectListModel
 import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FImageUtils
-import sdmed.extra.cso.utils.FStorage
+import sdmed.extra.cso.utils.FStorage.getParcelableList
+import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.select.SelectDialog
 
 class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPickerActivityVM>() {
@@ -68,7 +69,8 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                 dataContext.selectItem(it)
             }
         }
-        val buffList = FStorage.getParcelArray<MediaPickerSourceModel>(intent, "mediaList")
+        dataContext.mediaTargetPK = intent.getStringExtra(FConstants.MEDIA_TARGET_PK) ?: ""
+        val buffList = intent.getParcelableList<MediaPickerSourceModel>(FConstants.MEDIA_LIST)
         dataContext.ableSelectCountStringSuffix = getString(R.string.media_able_click_suffix_desc)
         dataContext.setPreviousMedia(buffList)
         dataContext.setMediaMaxCount(intent.getIntExtra("mediaMaxCount", -1))
@@ -94,7 +96,8 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                     return
                 }
                 setResult(RESULT_OK, Intent().apply {
-                    putParcelableArrayListExtra("mediaList", dataContext.getClickItems())
+                    putExtra(FConstants.MEDIA_TARGET_PK, dataContext.mediaTargetPK)
+                    putParcelableList(FConstants.MEDIA_LIST, dataContext.getClickItems())
                 })
                 Glide.get(this).clearMemory()
                 finish()
@@ -256,23 +259,23 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                 val findFolder = mediaList.find { x -> x.first == folderName }
                 if (findFolder != null) {
                     findFolder.second.add(
-                        MediaPickerSourceModel(
-                            uri.toUri(),
-                            name,
-                            MediaFileType.fromMimeType(mimeString),
-                            dateTime,
-                            mimeString
-                        )
+                        MediaPickerSourceModel().apply {
+                            mediaPath = uri.toUri()
+                            mediaName = name
+                            mediaFileType = MediaFileType.fromMimeType(mimeString)
+                            mediaDateTime = dateTime
+                            mediaMimeType = mimeString
+                        }
                     )
                 } else {
                     mediaList.add(Pair(folderName, arrayListOf(
-                        MediaPickerSourceModel(
-                            uri.toUri(),
-                            name,
-                            MediaFileType.fromMimeType(mimeString),
-                            dateTime,
-                            mimeString
-                        )
+                        MediaPickerSourceModel().apply {
+                            mediaPath = uri.toUri()
+                            mediaName = name
+                            mediaFileType = MediaFileType.fromMimeType(mimeString)
+                            mediaDateTime = dateTime
+                            mediaMimeType = mimeString
+                        }
                     )))
                 }
             }
@@ -307,23 +310,23 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                 val findFolder = mediaList.find { x -> x.first == folderName }
                 if (findFolder != null) {
                     findFolder.second.add(
-                        MediaPickerSourceModel(
-                            uri,
-                            name,
-                            MediaFileType.IMAGE,
-                            dateTime,
-                            mimeType,
-                        )
+                        MediaPickerSourceModel().apply {
+                            mediaPath = uri
+                            mediaName = name
+                            mediaFileType = MediaFileType.IMAGE
+                            mediaDateTime = dateTime
+                            mediaMimeType = mimeType
+                        }
                     )
                 } else {
                     mediaList.add(Pair(folderName, arrayListOf(
-                        MediaPickerSourceModel(
-                            uri,
-                            name,
-                            MediaFileType.IMAGE,
-                            dateTime,
-                            mimeType,
-                        )
+                        MediaPickerSourceModel().apply {
+                            mediaPath = uri
+                            mediaName = name
+                            mediaFileType = MediaFileType.IMAGE
+                            mediaDateTime = dateTime
+                            mediaMimeType = mimeType
+                        }
                     )))
                 }
             }
@@ -358,24 +361,24 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
                 val findFolder = mediaList.find { x -> x.first == folderName }
                 if (findFolder != null) {
                     findFolder.second.add(
-                        MediaPickerSourceModel(
-                            uri,
-                            name,
-                            MediaFileType.VIDEO,
-                            dateTime,
-                            this.contentResolver.getType(uri) ?: "",
-                            duration
-                        ).generateData())
+                        MediaPickerSourceModel().apply {
+                            mediaPath = uri
+                            mediaName = name
+                            mediaFileType = MediaFileType.VIDEO
+                            mediaDateTime = dateTime
+                            mediaMimeType = this@MediaPickerActivity.contentResolver.getType(uri) ?: ""
+                            this.duration = duration
+                        }.generateData())
                 } else {
                     mediaList.add(Pair(folderName, arrayListOf(
-                        MediaPickerSourceModel(
-                            uri,
-                            name,
-                            MediaFileType.VIDEO,
-                            dateTime,
-                            this.contentResolver.getType(uri) ?: "",
-                            duration
-                        ).generateData())))
+                        MediaPickerSourceModel().apply {
+                            mediaPath = uri
+                            mediaName = name
+                            mediaFileType = MediaFileType.VIDEO
+                            mediaDateTime = dateTime
+                            mediaMimeType = this@MediaPickerActivity.contentResolver.getType(uri) ?: ""
+                            this.duration = duration
+                        }.generateData())))
                 }
             }
         }

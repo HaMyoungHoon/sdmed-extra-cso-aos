@@ -14,6 +14,7 @@ import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.models.retrofit.edi.EDIApplyDateModel
 import sdmed.extra.cso.models.retrofit.edi.EDIHosBuffModel
 import sdmed.extra.cso.models.retrofit.edi.EDIPharmaBuffModel
+import sdmed.extra.cso.models.retrofit.edi.EDIType
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaMedicineModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaModel
@@ -29,11 +30,10 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
     var selectApplyDate: EDIApplyDateModel? = null
     val hospitalModel = MutableStateFlow(mutableListOf<EDIHosBuffModel>())
     var selectHospital: EDIHosBuffModel? = null
+    val searchString = MutableStateFlow<String>("")
     val pharmaModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
-    val selectPharma = mutableListOf<EDIPharmaBuffModel>()
-    val uploadItems = MutableStateFlow(mutableListOf<MediaPickerSourceModel>())
+    val pharmaViewModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
     val isSavable = MutableStateFlow(false)
-    val selectPharmaString = MutableStateFlow<String>("")
 
     suspend fun getApplyData(): RestResultT<List<EDIApplyDateModel>> {
         val ret = ediRequestRepository.getApplyDateList()
@@ -66,43 +66,46 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
     }
     fun getPharmaData() {
         pharmaModel.value = selectHospital?.pharmaList ?: mutableListOf()
-        this.selectPharma.clear()
+        pharmaFileClear()
+    }
+    fun pharmaFileClear() {
+        this.pharmaModel.value.forEach { x -> x.uploadItems.value = mutableListOf() }
+        if (this.searchString.value == "") {
+            filterItem()
+        }
+        this.searchString.value = ""
     }
     fun startBackgroundService() {
+        return
         val applyDate = selectApplyDate ?: return
         val hospitalData = selectHospital ?: return
-        if (selectPharma.isEmpty()) {
-            return
-        }
-        val uploadFile = this.uploadItems.value.toMutableList()
-        if (uploadFile.isEmpty()) {
-            return
-        }
-
         val ediUploadModel = EDIUploadModel().apply {
             year = applyDate.year
             month = applyDate.month
+            ediType = EDIType.DEFAULT
             regDate = FExtensions.getTodayString()
             hospitalPK = hospitalData.thisPK
             orgName = hospitalData.orgName
         }
-        selectPharma.forEach { x ->
-            ediUploadModel.pharmaList.add(EDIUploadPharmaModel().apply {
-                this.pharmaPK = x.thisPK
-                x.medicineList.forEach { y ->
-                    this@apply.medicineList.add(EDIUploadPharmaMedicineModel().apply {
-                        this.pharmaPK = x.thisPK
-                        this.medicinePK = y.thisPK
-                    })
-                }
-            })
+        pharmaModel.value.forEach { x ->
+            if (x.uploadItems.value.isNotEmpty()) {
+                ediUploadModel.pharmaList.add(EDIUploadPharmaModel().apply {
+                    this.pharmaPK = x.thisPK
+                    this.uploadItems.value = x.uploadItems.value
+                    x.medicineList.forEach { y ->
+                        this@apply.medicineList.add(EDIUploadPharmaMedicineModel().apply {
+                            this.pharmaPK = x.thisPK
+                            this.medicinePK = y.thisPK
+                        })
+                    }
+                })
+            }
         }
         val data = EDISASKeyQueueModel().apply {
-            medias = uploadFile
             this.ediUploadModel = ediUploadModel
         }
-        this.uploadItems.value = mutableListOf()
         backgroundService.sasKeyEnqueue(data)
+        pharmaFileClear()
     }
     suspend fun applyDateSelect(data: EDIApplyDateModel?) {
         selectApplyDate?.isSelect?.value = false
@@ -123,16 +126,15 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
         savableCheck()
     }
     fun hospitalSelect(data: EDIHosBuffModel?) {
-        selectPharma.clear()
         selectHospital?.isSelect?.value = false
         if (data == null) {
             selectHospital = null
-            pharmaSelect(null)
+            pharmaClear()
             return
         }
         if (selectHospital?.thisPK == data.thisPK) {
             selectHospital = null
-            pharmaSelect(null)
+            pharmaClear()
             return
         }
         selectHospital = data
@@ -140,41 +142,21 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
         getPharmaData()
         savableCheck()
     }
-    fun pharmaSelect(data: List<EDIPharmaBuffModel>) {
-        selectPharma.clear()
-        selectPharma.addAll(data)
-        pharmaModel.value.forEach { x -> x.isSelect.value = false }
-        pharmaModel.value.filter { x -> x.thisPK in data.map { it.thisPK } }.forEach { x -> x.isSelect.value = true }
-
-        if (selectPharma.isEmpty()) {
-            selectPharmaString.value = ""
-        } else {
-            selectPharmaString.value = "${selectPharma.getOrNull(0)?.orgName}, (${selectPharma.size})"
-        }
+    fun pharmaClear() {
+        pharmaModel.value = mutableListOf()
+        pharmaFileClear()
         savableCheck()
     }
-    fun pharmaSelect(data: EDIPharmaBuffModel?) {
-        if (data == null) {
-            pharmaModel.value = mutableListOf()
-            savableCheck()
+    fun filterItem() {
+        val searchBuff = searchString.value
+        if (searchBuff.isEmpty()) {
+            pharmaViewModel.value = pharmaModel.value.toMutableList()
             return
         }
-        val alreadyData = selectPharma.find { x -> x.thisPK == data.thisPK }
-        if (alreadyData == null) {
-            data.isSelect.value = true
-            selectPharma.add(data)
-        } else {
-            data.isSelect.value = false
-            selectPharma.remove(data)
-        }
-        savableCheck()
+
+        pharmaViewModel.value = pharmaModel.value.filter { x -> x.orgName.contains(searchBuff, true) }.toMutableList()
     }
     fun savableCheck() {
-        if (selectPharma.isEmpty()) {
-            selectPharmaString.value = ""
-        } else {
-            selectPharmaString.value = "${selectPharma.getOrNull(0)?.orgName}, (${selectPharma.size})"
-        }
         if (selectApplyDate == null) {
             isSavable.value = false
             return
@@ -183,48 +165,48 @@ class EDIRequestFragmentVM(application: MultiDexApplication): FBaseViewModel(app
             isSavable.value = false
             return
         }
-        if (selectPharma.isEmpty()) {
+        if (pharmaModel.value.none { x -> x.uploadItems.value.isNotEmpty() }) {
             isSavable.value = false
             return
         }
-        isSavable.value = uploadItems.value.isNotEmpty()
+        isSavable.value = true
     }
-    fun getMediaItems() = ArrayList(uploadItems.value.toMutableList())
-    fun removeImage(data: MediaPickerSourceModel?) {
-        uploadItems.value = uploadItems.value.filter { it != data }.toMutableList()
-    }
-    fun addImage(uriString: String?, name: String, fileType: MediaFileType, mimeType: String) {
+    fun addImage(pharmaBuffPK: String, uriString: String?, name: String, fileType: MediaFileType, mimeType: String) {
         uriString ?: return
+        val buff = this.pharmaModel.value.toMutableList()
+
         try {
-            val imageBuff = uploadItems.value.toMutableList()
+            val findBuff = buff.find { x -> x.thisPK == pharmaBuffPK } ?: return
+            val imageBuff = findBuff.uploadItems.value.toMutableList()
             imageBuff.add(MediaPickerSourceModel().apply {
                 mediaPath = uriString.toUri()
                 mediaName = name
                 mediaFileType = fileType
                 mediaMimeType = mimeType
             })
-            uploadItems.value = imageBuff
+            findBuff.uploadItems.value = imageBuff
+            findBuff.isOpen.value = true
+            this.pharmaModel.value = buff
         } catch (_: Exception) {
         }
+        savableCheck()
     }
-    fun addImage(mediaPickerSource: MediaPickerSourceModel) {
-        try {
-            val imageBuff = uploadItems.value.toMutableList()
-            imageBuff.add(mediaPickerSource)
-            uploadItems.value = imageBuff
-        } catch (_: Exception) {
-        }
+    fun delImage(imagePK: String) {
+        val buff = this.pharmaModel.value.toMutableList()
+        val findBuff = buff.find { x -> x.uploadItems.value.find { y -> y.thisPK == imagePK } != null } ?: return
+        findBuff.uploadItems.value = findBuff.uploadItems.value.filter { it.thisPK != imagePK }.toMutableList()
+        this.pharmaModel.value = buff
     }
-    fun reSetImage(mediaList: ArrayList<MediaPickerSourceModel>?) {
-        uploadItems.value = mutableListOf()
-        mediaList?.forEach { x ->
-            addImage(x)
-        }
+    fun reSetImage(pharmaBuffPK: String, mediaList: ArrayList<MediaPickerSourceModel>?) {
+        val buff = this.pharmaModel.value.toMutableList()
+        val findPharma = buff.find { x -> x.thisPK == pharmaBuffPK }
+        findPharma?.uploadItems?.value = mediaList?.toMutableList() ?: mutableListOf()
+        findPharma?.isOpen?.value = true
+        this.pharmaModel.value = buff
+        savableCheck()
     }
 
     enum class ClickEvent(var index: Int) {
-        ADD(0),
-        SAVE(1),
-        PHARMA_SELECT(2),
+        SAVE(0),
     }
 }

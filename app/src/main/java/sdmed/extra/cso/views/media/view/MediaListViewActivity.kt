@@ -9,10 +9,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseActivity
+import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.databinding.MediaListViewActivityBinding
 import sdmed.extra.cso.models.common.MediaViewModel
 import sdmed.extra.cso.models.common.MediaViewParcelModel
-import sdmed.extra.cso.utils.FStorage
+import sdmed.extra.cso.utils.FStorage.getParcelableList
 
 class MediaListViewActivity: FBaseActivity<MediaListViewActivityBinding, MediaListViewActivityVM>() {
     override var layoutId = R.layout.media_list_view_activity
@@ -23,7 +24,7 @@ class MediaListViewActivity: FBaseActivity<MediaListViewActivityBinding, MediaLi
     override fun viewInit() {
         super.viewInit()
         setMediaAdapter()
-        val buffList = FStorage.getParcelArray<MediaViewParcelModel>(intent, "mediaList")
+        val buffList = intent.getParcelableList<MediaViewParcelModel>(FConstants.MEDIA_LIST)
         dataContext.setItemData(buffList)
     }
     override fun setLayoutCommand(data: Any?) {

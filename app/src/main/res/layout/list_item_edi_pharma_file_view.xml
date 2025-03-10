@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaFileModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaFileModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="3dp"
+        android:onClick="@{()->dataContext.onClick(ClickEvent.SHORT)}"
+        android:onLongClick="@{()->dataContext.onLongClick(ClickEvent.LONG)}"
+        android:background="@color/def_background">
+        <sdmed.extra.cso.utils.FilenameTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="middle"
+            android:translationZ="1dp"
+            android:breakStrategy="balanced"
+            android:hyphenationFrequency="full"
+            android:maxLines="2"
+            android:alpha="0.5"
+            app:filenameTextViewText="@{dataContext.originalFilename}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="파일 이름.xlsx" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            app:glideBlobUrl="@{dataContext.blobUrl}"
+            app:glideBlobMimeType="@{dataContext.mimeType}"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/buff_image"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -108,9 +108,13 @@
     <string name="edi_pharma_select_desc">edi pharma select</string>
     <string name="edi_due_date_desc">due date</string>
     <string name="warn_select_pharma">plz select pharma</string>
-    <string name="new_hospital_desc">hospital(new or exist or transfer)</string>
+    <string name="new_hospital_desc">hospital(new or transfer)</string>
     <string name="new_pharma_desc">pharma name</string>
     <string name="search_range_desc">inquiry period (reg. date)</string>
     <string name="media_view_title_desc">signle view</string>
     <string name="media_list_view_title_desc">muli view</string>
+    <string name="edi_type_default">exist</string>
+    <string name="edi_type_new">new</string>
+    <string name="edi_type_transfer">transfer</string>
+    <string name="pharma_search_desc">pharma search</string>
 </resources>

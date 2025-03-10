@@ -44,6 +44,8 @@ class PharmaSelectDialog(val items: List<EDIPharmaBuffModel>, val ret: (List<EDI
         val dataBuff = data[1] as? EDIPharmaBuffModel ?: return
         when (eventName) {
             EDIPharmaBuffModel.ClickEvent.THIS -> selectPharma(dataBuff)
+            EDIPharmaBuffModel.ClickEvent.OPEN -> { }
+            EDIPharmaBuffModel.ClickEvent.ADD -> { }
         }
     }
 

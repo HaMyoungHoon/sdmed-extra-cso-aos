@@ -53,20 +53,20 @@
                     android:layout_marginEnd="5dp"
                     android:text="@{dataContext.orgName}"
                     android:fontFamily="@font/nanum_gothic"
-                    android:textColor="@{dataContext.etc.length() > 0 ? @color/primary : @color/def_foreground}"
+                    android:textColor="@{dataContext.isDefault ? @color/def_foreground : @color/primary}"
                     android:textSize="18sp"
                     android:ellipsize="middle"
                     tools:text="땡땡땡 병원" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{dataContext.etcString}"
+                    android:text="@{dataContext.tempOrgString}"
                     android:fontFamily="@font/nanum_gothic"
                     android:textColor="@color/def_foreground"
                     android:textSize="16sp"
                     android:ellipsize="middle"
                     android:maxLines="1"
-                    android:visibility="@{dataContext.etc.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{dataContext.isDefault ? View.GONE : View.VISIBLE}"
                     tools:text="땡땡땡 병원" />
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.AppCompatTextView

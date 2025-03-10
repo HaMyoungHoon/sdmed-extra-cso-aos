@@ -11,8 +11,10 @@ import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel
 import sdmed.extra.cso.utils.FContentsType
 import java.io.File
+import java.util.UUID
 
 class MediaPickerActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
+    var mediaTargetPK: String = ""
     val mediaMaxCount = MutableStateFlow(-1)
     var ableSelectCountStringSuffix = ""
     val boxesPosition = MutableStateFlow(0)
@@ -34,6 +36,7 @@ class MediaPickerActivityVM(application: MultiDexApplication): FBaseViewModel(ap
             val mimeType = if (!mediaMimeType.isNullOrEmpty() && mediaMimeType.size > index) mediaMimeType[index] else FContentsType.type_jpeg
             clickItemBuff.add(
                 MediaPickerSourceModel(
+                    UUID.randomUUID().toString(),
                     x.toUri(),
                     mediaName,
                     MediaFileType.fromIndex(mediaFileType),
@@ -186,7 +189,7 @@ class MediaPickerActivityVM(application: MultiDexApplication): FBaseViewModel(ap
         data.parentFile?.listFiles()?.forEach { x ->
             val fileType = isMediaFile(x)
             if (fileType != MediaFileType.UNKNOWN) {
-                itemBuff.add(MediaPickerSourceModel(x.toUri(), mediaFileType = fileType))
+                itemBuff.add(MediaPickerSourceModel(UUID.randomUUID().toString(), x.toUri(), mediaFileType = fileType))
             }
         }
     }
