@@ -43,14 +43,15 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/dynamic_app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sdmedextracso"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="${GOOGLE_API_KEY}" />
         <provider
-            android:authorities="sdmed.extra.cso.provider"
+            android:authorities="${applicationId}.provider"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -67,7 +68,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="sdmed.extra.cso" android:scheme="http" />
+                <data android:host="${applicationId}" android:scheme="http" />
             </intent-filter>
         </activity>
         <activity android:name=".views.media.picker.MediaPickerActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,6 +18,9 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         multiDexEnabled = true
+        val googleApiKey: String by project
+        buildConfigField("String", "GOOGLE_API_KEY", googleApiKey)
+        manifestPlaceholders.put("GOOGLE_API_KEY", googleApiKey)
     }
     sourceSets {
         getByName("main") {
@@ -77,6 +82,19 @@ android {
             isMinifyEnabled = false
             isDebuggable = true
             signingConfig = signingConfigs.getByName("releaseWithKey")
+        }
+    }
+    flavorDimensions += "version"
+    productFlavors {
+        create("kr") {
+            dimension = "version"
+            applicationId = "kr.sdmed.extra.cso"
+            resValue("string", "dynamic_app_name", "@string/app_name")
+        }
+        create("dev") {
+            dimension = "version"
+            applicationId = "kr.sdmed.extra.cso.dev"
+            resValue("string", "dynamic_app_name", "@string/app_name_dev")
         }
     }
     compileOptions {
@@ -153,4 +171,6 @@ dependencies {
 
     implementation(libs.fasterxml.jacson)
     implementation(libs.hivemq.client)
+
+    implementation(libs.google.play)
 }

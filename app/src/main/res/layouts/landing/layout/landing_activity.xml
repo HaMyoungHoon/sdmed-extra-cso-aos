@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
             android:padding="5dp"
-            android:text="@string/app_name"
+            android:text="@string/dynamic_app_name"
             android:fontFamily=""
             android:textColor="@color/absolute_black"
             android:textSize="30sp"

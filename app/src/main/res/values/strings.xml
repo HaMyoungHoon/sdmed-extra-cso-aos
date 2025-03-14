@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">SD Extra-CSO</string>
+    <string name="app_name">에스디 메디컬 CSO</string>
+    <string name="app_name_dev">씨에스오 dev</string>
     <string name="sample_txt">hello world!</string>
     <string name="expired_token">인증이 만료 되었습니다.</string>
     <string name="do_logout">로그아웃 되었습니다.</string>

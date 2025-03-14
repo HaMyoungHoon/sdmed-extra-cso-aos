@@ -25,7 +25,7 @@ object FConstants {
     const val GOOGLE_DOC_PREFIX = "https://docs.google.com/viewer?url="
     const val WEB_VIEW_PREFIX = "https://intra-cso.sdmed.co.kr/externalBlobView?blobUrl="
 
-    const val REST_API_DEBUG_RUL = "https://dev-back-cso.sdmed.co.kr"
+    const val REST_API_DEBUG_RUL = "https://back-cso.sdmed.co.kr"
     const val REST_API_URL = "https://back-cso.sdmed.co.kr"
 
     const val REST_API_COMMON = "common"

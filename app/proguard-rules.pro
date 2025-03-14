@@ -62,3 +62,5 @@
 }
 -keepclassmembernames class io.netty.** { *; }
 -keepclassmembernames class org.jctools.** { *; }
+
+-keep class com.google.maps.** { *; }
