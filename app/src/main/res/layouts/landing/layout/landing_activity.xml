@@ -25,7 +25,7 @@
             android:layout_marginTop="100dp"
             android:padding="5dp"
             android:text="@string/dynamic_app_name"
-            android:fontFamily=""
+            android:fontFamily="@font/nanum_gothic"
             android:textColor="@color/absolute_black"
             android:textSize="30sp"
             android:textStyle="bold"

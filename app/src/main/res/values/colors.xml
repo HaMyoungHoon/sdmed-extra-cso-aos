@@ -22,6 +22,8 @@
     <color name="transparent">#00000000</color>
     <color name="def_background">#FFFFFFFF</color>
     <color name="def_foreground">#FF000000</color>
+    <color name="def_stroke">#475D92</color>
+
     <color name="color_1F000000">#1F000000</color>
     <color name="color_1A000000">#1A000000</color>
     <color name="color_AA000000">#AA000000</color>

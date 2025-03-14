@@ -73,7 +73,7 @@
                     android:padding="5dp"
                     android:text="@string/forgot_id_desc"
                     android:fontFamily="@font/nanum_gothic"
-                    android:textColor="@color/material_dynamic_secondary70"
+                    android:textColor="@color/disable_fore_gray"
                     android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.FORGOT_ID)}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -84,7 +84,7 @@
                     android:padding="5dp"
                     android:text="@string/forgot_pw_desc"
                     android:fontFamily="@font/nanum_gothic"
-                    android:textColor="@color/material_dynamic_secondary70"
+                    android:textColor="@color/disable_fore_gray"
                     android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.FORGOT_PW)}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
