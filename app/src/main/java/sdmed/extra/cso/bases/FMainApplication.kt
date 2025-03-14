@@ -23,6 +23,7 @@ import sdmed.extra.cso.interfaces.repository.ICommonRepository
 import sdmed.extra.cso.interfaces.repository.IEDIDueDateRepository
 import sdmed.extra.cso.interfaces.repository.IEDIListRepository
 import sdmed.extra.cso.interfaces.repository.IEDIRequestRepository
+import sdmed.extra.cso.interfaces.repository.IHospitalTempRepository
 import sdmed.extra.cso.interfaces.repository.IMedicinePriceListRepository
 import sdmed.extra.cso.interfaces.repository.IMqttRepository
 import sdmed.extra.cso.interfaces.repository.IMyInfoRepository
@@ -32,6 +33,7 @@ import sdmed.extra.cso.interfaces.services.ICommonService
 import sdmed.extra.cso.interfaces.services.IEDIDueDateService
 import sdmed.extra.cso.interfaces.services.IEDIListService
 import sdmed.extra.cso.interfaces.services.IEDIRequestService
+import sdmed.extra.cso.interfaces.services.IHospitalTempService
 import sdmed.extra.cso.interfaces.services.IMedicinePriceListService
 import sdmed.extra.cso.interfaces.services.IMqttService
 import sdmed.extra.cso.interfaces.services.IMyInfoService
@@ -41,6 +43,7 @@ import sdmed.extra.cso.models.repository.CommonRepository
 import sdmed.extra.cso.models.repository.EDIDueDateRepository
 import sdmed.extra.cso.models.repository.EDIListRepository
 import sdmed.extra.cso.models.repository.EDIRequestRepository
+import sdmed.extra.cso.models.repository.HospitalTempRepository
 import sdmed.extra.cso.models.repository.MedicinePriceListRepository
 import sdmed.extra.cso.models.repository.MqttRepository
 import sdmed.extra.cso.models.repository.MyInfoRepository
@@ -85,6 +88,7 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
         bind<IMedicinePriceListRepository>(IMedicinePriceListRepository::class) with singleton { MedicinePriceListRepository(RetrofitService.create(IMedicinePriceListService::class.java)) }
         bind<IQnAListRepository>(IQnAListRepository::class) with singleton { QnAListRepository(RetrofitService.create(IQnAListService::class.java)) }
         bind<IMyInfoRepository>(IMyInfoRepository::class) with singleton { MyInfoRepository(RetrofitService.create(IMyInfoService::class.java)) }
+        bind<IHospitalTempRepository>(IHospitalTempRepository::class) with singleton { HospitalTempRepository(RetrofitService.create(IHospitalTempService::class.java)) }
     }.kodein
 
     fun isDebug() = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE

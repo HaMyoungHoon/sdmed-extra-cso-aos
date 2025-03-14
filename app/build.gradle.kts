@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "sdmed.extra.cso"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
@@ -35,6 +35,9 @@ android {
                 "src/main/res/layouts/landing",
                 "src/main/res/layouts/login",
                 "src/main/res/layouts/media",
+                "src/main/res/layouts/hospitalMap/hospitalFind",
+                "src/main/res/layouts/hospitalMap/hospitalDetail",
+                "src/main/res/layouts/hospitalMap/hospitalPharmacyFind",
 
                 "src/main/res/layouts/main",
                 "src/main/res/layouts/main/edi",
@@ -173,4 +176,5 @@ dependencies {
     implementation(libs.hivemq.client)
 
     implementation(libs.google.play)
+    implementation(libs.google.location)
 }

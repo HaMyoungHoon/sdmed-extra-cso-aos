@@ -81,6 +81,7 @@
         <activity android:name=".views.main.qna.qnaView.QnAViewActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.main.qna.qnaAdd.QnAAddActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
         <activity android:name=".views.login.PasswordChangeActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
+        <activity android:name=".views.hospitalMap.hospitalFind.HospitalFindActivity" android:configChanges="screenSize|smallestScreenSize|screenLayout" />
     </application>
 
 </manifest>
