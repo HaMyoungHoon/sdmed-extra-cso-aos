@@ -1,6 +1,8 @@
 package sdmed.extra.cso.models.adapter
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.databinding.BindingAdapter
@@ -37,7 +39,8 @@ class PaginationAdapter
         val position = (binding.dataContext?.pages?.value?.toMutableList()?.size ?: return) - 1
         updateSelect(position)
         binding.rvPage.post {
-            binding.rvPage.scrollToPosition(position)
+            binding.rvPage.scrollToPosition(0)
+            Handler(Looper.getMainLooper()).postDelayed({ binding.rvPage.scrollToPosition(position) }, 500)
         }
     }
     fun updateSelect(position: Int) {
