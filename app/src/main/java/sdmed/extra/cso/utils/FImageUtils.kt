@@ -36,6 +36,8 @@ import kotlin.math.sqrt
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.scale
 import androidx.exifinterface.media.ExifInterface
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FConstants
 
@@ -47,6 +49,16 @@ object FImageUtils {
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.draw(canvas)
         return bitmap
+    }
+    fun urlToBitmap(url: String): BitmapDescriptor {
+        return try {
+            val connection = URL(url).openConnection()
+            val stream = connection.getInputStream()
+            val bitmap = BitmapFactory.decodeStream(stream)
+            BitmapDescriptorFactory.fromBitmap(bitmap)
+        } catch (_: Exception) {
+            BitmapDescriptorFactory.fromResource(R.drawable.buff_image)
+        }
     }
     fun bitmapHexagonMask(bitmap: Bitmap, radius: Float = 5F, cornerLength: Float = 10F) {
         val canvas = Canvas(bitmap)

@@ -49,7 +49,8 @@
         android:theme="@style/Theme.Sdmedextracso"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="${GOOGLE_API_KEY}" />
+        <uses-library android:name="com.google.android.maps" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/googleApiKey" />
         <provider
             android:authorities="${applicationId}.provider"
             android:name="androidx.core.content.FileProvider"

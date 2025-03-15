@@ -19,8 +19,9 @@ android {
         versionName = "1.0.0"
         multiDexEnabled = true
         val googleApiKey: String by project
-        buildConfigField("String", "GOOGLE_API_KEY", googleApiKey)
-        manifestPlaceholders.put("GOOGLE_API_KEY", googleApiKey)
+        resValue("string", "googleApiKey", googleApiKey)
+        buildConfigField("String", "googleApiKey", googleApiKey)
+        manifestPlaceholders.put("googleApiKey", googleApiKey)
     }
     sourceSets {
         getByName("main") {
@@ -35,6 +36,7 @@ android {
                 "src/main/res/layouts/landing",
                 "src/main/res/layouts/login",
                 "src/main/res/layouts/media",
+                "src/main/res/layouts/hospitalMap",
                 "src/main/res/layouts/hospitalMap/hospitalFind",
                 "src/main/res/layouts/hospitalMap/hospitalDetail",
                 "src/main/res/layouts/hospitalMap/hospitalPharmacyFind",
@@ -52,6 +54,7 @@ android {
                 "src/main/res/layouts/dialog/calendar",
                 "src/main/res/layouts/dialog/select",
                 "src/main/res/layouts/dialog/pharmaSelect",
+                "src/main/res/layouts/dialog/hospitalTemp",
 
                 "src/main/res/drawables",
                 "src/main/res/drawables/shape",
@@ -177,4 +180,6 @@ dependencies {
 
     implementation(libs.google.play)
     implementation(libs.google.location)
+    implementation(libs.google.maps)
+    implementation(libs.google.map.util)
 }

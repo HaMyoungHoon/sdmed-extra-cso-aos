@@ -118,4 +118,11 @@
     <string name="edi_type_new">신규처</string>
     <string name="edi_type_transfer">이관처</string>
     <string name="pharma_search_desc">제약사 찾기</string>
+    <string name="check_location_desc">위치 확인</string>
+    <string name="permission_location_for_map_desc">지도 선택을 위해 위치 권한을 요청합니다.</string>
+    <string name="search_length_too_low">3글자 이상 입력해주세요</string>
+    <string name="map_toggle">지도여닫기</string>
+    <string name="search_nearby">근처찾기</string>
+    <string name="select_desc">선택</string>
+    <string name="hospital_find_desc">병원찾기</string>
 </resources>

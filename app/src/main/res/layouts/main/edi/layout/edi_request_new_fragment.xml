@@ -48,6 +48,21 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_edi_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_hospital_find"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:text="@string/hospital_find_desc"
+                android:fontFamily="@font/nanum_gothic"
+                android:textColor="@color/def_background"
+                android:textSize="20sp"
+                android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/def_foreground"
+                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOSPITAL_FIND)}"
+                app:layout_constraintTop_toBottomOf="@id/rv_apply_date" />
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/et_tempOrgName"
                 android:layout_width="match_parent"
@@ -62,7 +77,7 @@
                 android:textSize="20sp"
                 android:background="@drawable/shape_rounded_box_able_5dp"
                 android:maxLength="100"
-                app:layout_constraintTop_toBottomOf="@id/rv_apply_date" />
+                app:layout_constraintTop_toBottomOf="@id/tv_hospital_find" />
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/tv_search"
                 android:layout_width="match_parent"

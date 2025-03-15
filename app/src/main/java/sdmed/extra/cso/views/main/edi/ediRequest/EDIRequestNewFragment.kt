@@ -30,6 +30,7 @@ import sdmed.extra.cso.models.eventbus.EDIUploadEvent
 import sdmed.extra.cso.models.retrofit.edi.EDIApplyDateModel
 import sdmed.extra.cso.models.retrofit.edi.EDIPharmaBuffModel
 import sdmed.extra.cso.models.retrofit.edi.EDIType
+import sdmed.extra.cso.models.retrofit.hospitals.HospitalTempModel
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRoles
 import sdmed.extra.cso.utils.FCameraUtil
@@ -37,9 +38,11 @@ import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
 import sdmed.extra.cso.utils.FImageUtils
+import sdmed.extra.cso.utils.FStorage.getParcelable
 import sdmed.extra.cso.utils.FStorage.getParcelableList
 import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.select.SelectDialog
+import sdmed.extra.cso.views.hospitalMap.hospitalFind.HospitalFindActivity
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
 import java.io.File
 import java.util.ArrayList
@@ -53,6 +56,7 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
     private var _cameraResult: ActivityResultLauncher<Intent>? = null
     private var _imagePickerResult: ActivityResultLauncher<Intent>? = null
     private var _externalManageResult: ActivityResultLauncher<Intent>? = null
+    private var _hospitalFindResult: ActivityResultLauncher<Intent>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerActivityResult()
@@ -80,6 +84,8 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
         _imagePickerResult = null
         _externalManageResult?.unregister()
         _externalManageResult = null
+        _hospitalFindResult?.unregister()
+        _hospitalFindResult = null
         super.onDestroy()
     }
 
@@ -117,6 +123,13 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
                 }
             }
         }
+        _hospitalFindResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode != RESULT_OK) {
+                return@registerForActivityResult
+            }
+            val hospitalTempModel = it.data?.getParcelable<HospitalTempModel>(FConstants.HOSPITAL_TEMP) ?: return@registerForActivityResult
+            dataContext.setHospitalTemp(hospitalTempModel)
+        }
     }
     private fun setApplyDateAdapter() = EDIRequestApplyDateAdapter(dataContext.relayCommand).also { binding?.rvApplyDate?.adapter = it }
     private fun setEDIPharmaFileCombinedAdapter() = EDIPharmaFileCombinedAdapter(dataContext.relayCommand).also { binding?.rvPharmaFileCombined?.adapter = it }
@@ -125,6 +138,7 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
         val eventName = data as? EDIRequestNewFragmentVM.ClickEvent ?: return
         when (eventName) {
             EDIRequestNewFragmentVM.ClickEvent.SAVE -> save()
+            EDIRequestNewFragmentVM.ClickEvent.HOSPITAL_FIND -> hospitalFind()
         }
     }
     private fun setApplyDateCommand(data: Any?) {
@@ -272,6 +286,10 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
         toast(R.string.edi_file_upload)
         loading()
         dataContext.startBackgroundService()
+    }
+    private fun hospitalFind() {
+        val context = contextBuff ?: return
+        _hospitalFindResult?.launch(Intent(context, HospitalFindActivity::class.java))
     }
     private fun hasCameraGranted(): Boolean {
         return hasPermissionsGranted(FConstants.CAMERA_PERMISSION)

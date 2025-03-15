@@ -16,11 +16,13 @@ object FConstants {
     const val AUTH_TOKEN = "token"
     const val TOKEN_REFRESHING = "tokenRefreshing"
     const val HOME_MENU_INDEX = "homeMenuIndex"
+    const val GOOGLE_MAP_STYLE_INDEX = "googleMapStyleIndex"
     const val MULTI_LOGIN_TOKEN = "multiLoginToken"
     const val MEDIA_ITEM = "mediaItem"
     const val MEDIA_LIST = "mediaList"
     const val EDI_PHARMA_BUFF_PK = "ediPharmaBuffPK"
     const val MEDIA_TARGET_PK = "mediaTargetPK"
+    const val HOSPITAL_TEMP = "hospitalTemp"
 
     const val GOOGLE_DOC_PREFIX = "https://docs.google.com/viewer?url="
     const val WEB_VIEW_PREFIX = "https://intra-cso.sdmed.co.kr/externalBlobView?blobUrl="
@@ -36,6 +38,7 @@ object FConstants {
     const val REST_API_EDI_LIST = "extra/ediList"
     const val REST_API_EDI_REQUEST = "extra/ediRequest"
     const val REST_API_EDI_DUE_DATE = "extra/ediDueDate"
+    const val REST_API_HOSPITAL_TEMP = "extra/hospitalTemp"
 
     const val REST_API_MY_INFO = "extra/myInfo"
 
@@ -47,6 +50,7 @@ object FConstants {
     const val CLAIMS_NAME = "name"
     const val CLAIMS_EXP = "exp"
 
+    const val REGEX_NUMBER_REPLACE = "[^0-9]"
     // 숫자, 문자(영대소한글)
     const val REGEX_CHECK_PASSWORD_0 = "^(?=.*[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ!@#\$%^&*()])(?=.*\\d)[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ\\d@\$!@#\$%^&*()]{8,20}\$"
     // 숫자, 특수문자, 문자(영대소한글)

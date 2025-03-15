@@ -33,6 +33,8 @@ object FStorage {
     fun setRefreshing(context: Context, data: Boolean?) = data?.let { putBool(context, FConstants.TOKEN_REFRESHING, it) }
     fun getHomeMenuIndex(context: Context) = getInt(context, FConstants.HOME_MENU_INDEX)
     fun setHomeMenuIndex(context: Context, data: Int?) = data?.let { putInt(context, FConstants.HOME_MENU_INDEX, it) }
+    fun getGoogleMapStyleIndex(context: Context) = getInt(context, FConstants.GOOGLE_MAP_STYLE_INDEX)
+    fun setGoogleMapStyleIndex(context: Context, data: Int?) = data?.let { putInt(context, FConstants.GOOGLE_MAP_STYLE_INDEX, it) }
     fun getMultiLoginToken(context: Context): List<String> = getList(context, FConstants.MULTI_LOGIN_TOKEN)
     fun setMultiLoginToken(context: Context, data: List<String>) = putList(context, FConstants.MULTI_LOGIN_TOKEN, data)
     fun addMultiLoginToken(context: Context, data: String?) {

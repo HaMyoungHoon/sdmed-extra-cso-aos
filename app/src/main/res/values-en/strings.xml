@@ -118,4 +118,11 @@
     <string name="edi_type_new">new</string>
     <string name="edi_type_transfer">transfer</string>
     <string name="pharma_search_desc">pharma search</string>
+    <string name="check_location_desc">check location</string>
+    <string name="permission_location_for_map_desc">location permission requested for map selection.</string>
+    <string name="search_length_too_low">plz input 3 character</string>
+    <string name="map_toggle">map toggle</string>
+    <string name="search_nearby">search nearby</string>
+    <string name="select_desc">select</string>
+    <string name="hospital_find_desc">hospital_find</string>
 </resources>

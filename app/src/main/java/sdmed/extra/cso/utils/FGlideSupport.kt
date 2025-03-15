@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
@@ -131,6 +132,20 @@ class FGlideSupport {
                     .into(imageView)
             } catch (_: Exception) {
             }
+        }
+        fun imageLoad(imageView: AppCompatImageView, @DrawableRes resId: Int, onResourceReady: (Drawable) -> Unit) {
+            Glide.with(imageView.context).load(resId)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .optionalCenterCrop()
+                .priority(Priority.IMMEDIATE)
+                .into(object: CustomTarget<Drawable>() {
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                    }
+
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        onResourceReady(resource)
+                    }
+                })
         }
         fun imageLoad(imageView: FHexagonMaskView, src: String?, width: Int?, height: Int?) {
             if (src.isNullOrEmpty()) {

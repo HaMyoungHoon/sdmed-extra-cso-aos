@@ -169,5 +169,6 @@ object FExtensions {
         }
     }
 
+    fun regexNumberReplace(data: String?) = data?.replace(Regex(FConstants.REGEX_NUMBER_REPLACE), "")
     fun regexPasswordCheck(data: String?) = data?.let { Regex(FConstants.REGEX_CHECK_PASSWORD_0).matches(it) }
 }

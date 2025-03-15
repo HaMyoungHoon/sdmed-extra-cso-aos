@@ -15,6 +15,7 @@ import sdmed.extra.cso.models.retrofit.edi.EDIPharmaBuffModel
 import sdmed.extra.cso.models.retrofit.edi.EDIType
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaModel
+import sdmed.extra.cso.models.retrofit.hospitals.HospitalTempModel
 import sdmed.extra.cso.models.services.FBackgroundEDIRequestNewUpload
 import sdmed.extra.cso.utils.FExtensions
 
@@ -27,6 +28,8 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
     var selectApplyDate: EDIApplyDateModel? = null
     val tempHospitalPK = MutableStateFlow<String>("")
     val tempOrgName = MutableStateFlow<String>("")
+    var selectHospitalBuff = HospitalTempModel()
+
     val searchString = MutableStateFlow<String>("")
     val pharmaModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
     val pharmaViewModel = MutableStateFlow(mutableListOf<EDIPharmaBuffModel>())
@@ -60,7 +63,9 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
             year = applyDate.year
             month = applyDate.month
             ediType = ediTypeModel.value[selectEDITypePosition.value]
-            this.tempHospitalPK = this@EDIRequestNewFragmentVM.tempHospitalPK.value
+            if (selectHospitalBuff.orgName == this@EDIRequestNewFragmentVM.tempOrgName.value) {
+                this.tempHospitalPK = this@EDIRequestNewFragmentVM.tempHospitalPK.value
+            }
             this.tempOrgName = this@EDIRequestNewFragmentVM.tempOrgName.value
             regDate = FExtensions.getTodayString()
         }
@@ -88,6 +93,12 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
         selectApplyDate?.isSelect?.value = false
         selectApplyDate = data
         selectApplyDate?.isSelect?.value = true
+        savableCheck()
+    }
+    fun setHospitalTemp(hospitalTempModel: HospitalTempModel) {
+        tempHospitalPK.value = hospitalTempModel.thisPK
+        tempOrgName.value = hospitalTempModel.orgName
+        selectHospitalBuff = hospitalTempModel
         savableCheck()
     }
     fun filterItem() {
@@ -151,6 +162,7 @@ class EDIRequestNewFragmentVM(application: MultiDexApplication): FBaseViewModel(
     }
 
     enum class ClickEvent(var index: Int) {
-        SAVE(0)
+        SAVE(0),
+        HOSPITAL_FIND(1),
     }
 }
