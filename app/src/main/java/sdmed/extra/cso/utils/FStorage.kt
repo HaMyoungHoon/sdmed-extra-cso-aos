@@ -12,6 +12,7 @@ import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import sdmed.extra.cso.bases.FConstants
+import sdmed.extra.cso.models.retrofit.users.UserMultiLoginModel
 
 object FStorage {
     fun sharedPreferences(context: Context): SharedPreferences = context.getSharedPreferences(
@@ -35,46 +36,56 @@ object FStorage {
     fun setHomeMenuIndex(context: Context, data: Int?) = data?.let { putInt(context, FConstants.HOME_MENU_INDEX, it) }
     fun getGoogleMapStyleIndex(context: Context) = getInt(context, FConstants.GOOGLE_MAP_STYLE_INDEX)
     fun setGoogleMapStyleIndex(context: Context, data: Int?) = data?.let { putInt(context, FConstants.GOOGLE_MAP_STYLE_INDEX, it) }
-    fun getMultiLoginToken(context: Context): List<String> = getList(context, FConstants.MULTI_LOGIN_TOKEN)
-    fun setMultiLoginToken(context: Context, data: List<String>) = putList(context, FConstants.MULTI_LOGIN_TOKEN, data)
-    fun addMultiLoginToken(context: Context, data: String?) {
+    fun getMultiLoginData(context: Context): List<UserMultiLoginModel>? = getList(context, FConstants.MULTI_LOGIN_TOKEN)
+    fun setMultiLoginData(context: Context, data: List<UserMultiLoginModel>) = putList(context, FConstants.MULTI_LOGIN_TOKEN, data)
+    fun logoutMultiLoginData(context: Context) {
+        val item = getMultiLoginData(context) ?: return
+        item.forEach { it.isLogin = false }
+        removeMultiLoginData(context)
+        setMultiLoginData(context, item)
+    }
+    fun addMultiLoginData(context: Context, data: UserMultiLoginModel?) {
         data ?: return
         try {
-            val ret = mutableListOf<String>().apply {
-                val pastData = getMultiLoginToken(context)
-                if (pastData.isNotEmpty()) {
+            val ret = mutableListOf<UserMultiLoginModel>().apply {
+                val pastData = getMultiLoginData(context)
+                if (!pastData.isNullOrEmpty()) {
                     addAll(pastData)
                 }
             }.distinctBy { it }.toMutableList()
-            val findBuff = ret.find { it == data }
+            ret.forEach { x -> x.isLogin = false }
+            val findBuff = ret.find { it.thisPK == data.thisPK }
             if (findBuff == null) {
                 ret.add(data)
+            } else {
+                findBuff.safeCopy(data)
             }
-            removeMultiLoginToken(context)
-            setMultiLoginToken(context, ret)
+            removeMultiLoginData(context)
+            setMultiLoginData(context, ret)
         } catch (_: Exception) {
-            removeMultiLoginToken(context)
+            removeMultiLoginData(context)
         }
     }
-    fun delMultiLoginToken(context: Context, data: String?) {
+    fun delMultiLoginData(context: Context, data: UserMultiLoginModel?) {
+        data ?: return
         try {
-            val ret = mutableListOf<String>().apply {
-                val pastData = getMultiLoginToken(context)
-                if (pastData.isNotEmpty()) {
+            val ret = mutableListOf<UserMultiLoginModel>().apply {
+                val pastData = getMultiLoginData(context)
+                if (!pastData.isNullOrEmpty()) {
                     addAll(pastData)
                 }
             }.distinctBy { it }.toMutableList()
-            val findBuff = ret.find { it == data }
+            val findBuff = ret.find { it.thisPK == data.thisPK }
             if (findBuff != null) {
                 ret.remove(findBuff)
             }
-            removeMultiLoginToken(context)
-            setMultiLoginToken(context, ret)
+            removeMultiLoginData(context)
+            setMultiLoginData(context, ret)
         } catch (_: Exception) {
-            removeMultiLoginToken(context)
+            removeMultiLoginData(context)
         }
     }
-    fun removeMultiLoginToken(context: Context) = removeData(context, FConstants.MULTI_LOGIN_TOKEN)
+    fun removeMultiLoginData(context: Context) = removeData(context, FConstants.MULTI_LOGIN_TOKEN)
 
     private fun getBool(context: Context, keyName: String, defData: Boolean = false) = cryptoSharedPreferences(context).getBoolean(keyName, defData)
     private fun putBool(context: Context, keyName: String, data: Boolean) = cryptoSharedPreferences(context).apply { edit { putBoolean(keyName, data) } }
@@ -94,7 +105,7 @@ object FStorage {
         val buff = Gson().toJson(data, (object: TypeToken<T>() { }).type)
         cryptoSharedPreferences(context).apply { edit { putString(keyName, buff) } }
     } catch (_: Exception) { }
-    inline fun <reified T> getList(context: Context, keyName: String): List<T> = try {
+    inline fun <reified T> getList(context: Context, keyName: String): List<T>? = try {
         Gson().fromJson(cryptoSharedPreferences(context).getString(keyName, ""), (object: TypeToken<List<T>>() { }).type)
     } catch (_: Exception) {
         cryptoSharedPreferences(context).apply { edit { remove(keyName) } }

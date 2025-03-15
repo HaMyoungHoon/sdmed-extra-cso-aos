@@ -1,5 +1,6 @@
 package sdmed.extra.cso.bases
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -7,6 +8,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.os.Build
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -18,6 +20,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
+import sdmed.extra.cso.MainActivity
 import sdmed.extra.cso.interfaces.repository.IAzureBlobRepository
 import sdmed.extra.cso.interfaces.repository.ICommonRepository
 import sdmed.extra.cso.interfaces.repository.IEDIDueDateRepository
@@ -61,6 +64,7 @@ import sdmed.extra.cso.utils.FThemeUtil
 class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAware {
     companion object {
         var isForeground = false
+        var isMainActivityRunning = false
         private var _ins: FMainApplication? = null
         val ins: FMainApplication get() {
             if (_ins == null) {
@@ -149,6 +153,7 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
     override fun onCreate() {
         super.onCreate()
         _ins = this
+        registerActivity()
         FThemeUtil.applyTheme()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         try {
@@ -161,5 +166,30 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
         } else if (event == Lifecycle.Event.ON_STOP) {
             isForeground = false
         }
+    }
+    private fun registerActivity() {
+        registerActivityLifecycleCallbacks(object: ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+            override fun onActivityStarted(activity: Activity) {
+                if (activity is MainActivity) { // 감지할 Activity
+                    isMainActivityRunning = true
+                }
+            }
+
+            override fun onActivityStopped(activity: Activity) {
+                if (activity is MainActivity) {
+                    isMainActivityRunning = false
+                }
+            }
+
+            override fun onActivityResumed(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+            override fun onActivityDestroyed(activity: Activity) {
+                if (activity is MainActivity) {
+                    isMainActivityRunning = false
+                }
+            }
+        })
     }
 }

@@ -28,9 +28,10 @@ class MyFragmentVM(application: MultiDexApplication): FBaseViewModel(application
     enum class ClickEvent(var index: Int) {
         LOGOUT(0),
         PASSWORD_CHANGE(1),
-        IMAGE_TAXPAYER(2),
-        IMAGE_BANK_ACCOUNT(3),
-        IMAGE_CSO_REPORT(4),
-        IMAGE_MARKETING_CONTRACT(5),
+        MULTI_LOGIN(2),
+        IMAGE_TAXPAYER(3),
+        IMAGE_BANK_ACCOUNT(4),
+        IMAGE_CSO_REPORT(5),
+        IMAGE_MARKETING_CONTRACT(6),
     }
 }

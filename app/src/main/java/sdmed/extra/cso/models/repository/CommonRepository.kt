@@ -9,6 +9,7 @@ import sdmed.extra.cso.models.retrofit.common.VersionCheckType
 
 class CommonRepository(private val _service: ICommonService): ICommonRepository {
     override suspend fun signIn(id: String, pw: String) = FExtensions.restTryT { _service.signIn(id, pw) }
+    override suspend fun multiSign(token: String) = FExtensions.restTryT { _service.multiSign(token) }
     override suspend fun tokenRefresh() = FExtensions.restTryT { _service.tokenRefresh() }
 
     override suspend fun getFindIDAuthNumber(name: String, phoneNumber: String) = FExtensions.restTry { _service.getFindIDAuthNumber(name, phoneNumber) }

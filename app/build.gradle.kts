@@ -56,6 +56,7 @@ android {
                 "src/main/res/layouts/dialog/pharmaSelect",
                 "src/main/res/layouts/dialog/hospitalTemp",
                 "src/main/res/layouts/dialog/pharmacyTemp",
+                "src/main/res/layouts/dialog/bottomLogin",
 
                 "src/main/res/drawables",
                 "src/main/res/drawables/shape",

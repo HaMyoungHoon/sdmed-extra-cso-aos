@@ -19,6 +19,7 @@ import org.kodein.di.android.closestKodein
 import sdmed.extra.cso.interfaces.command.IAsyncEventListener
 import sdmed.extra.cso.models.eventbus.TokenCheckEvent
 import sdmed.extra.cso.models.retrofit.FRetrofitVariable
+import sdmed.extra.cso.models.retrofit.users.UserMultiLoginModel
 import sdmed.extra.cso.models.retrofit.users.UserRole
 import sdmed.extra.cso.models.retrofit.users.UserRole.Companion.getFlag
 import sdmed.extra.cso.models.retrofit.users.UserRoles
@@ -196,11 +197,13 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
                 val newToken = x.data ?: ""
                 if (FAmhohwa.rhsTokenIsMost(newToken)) {
                     FStorage.setAuthToken(this, newToken)
-                    FStorage.addMultiLoginToken(this, newToken)
+                    addLoginData()
                 }
                 FRetrofitVariable.token = FStorage.getAuthToken(this)
             } else {
-                FStorage.delMultiLoginToken(this, FStorage.getAuthToken(this))
+                if (x.code == -10002) {
+                    delLoginData()
+                }
                 FStorage.removeAuthToken(this)
                 goToLogin(true)
             }
@@ -208,6 +211,26 @@ abstract class FBaseActivity<T1: ViewDataBinding, T2: FBaseViewModel>(val needRo
                 afterOnCreate()
             })
         }
+    }
+    protected fun addLoginData() {
+        val context = this
+        FStorage.addMultiLoginData(context, UserMultiLoginModel().apply {
+            thisPK = FAmhohwa.getThisPK(context)
+            id = FAmhohwa.getTokenID(context)
+            name = FAmhohwa.getTokenName(context)
+            token = FStorage.getAuthToken(context) ?: ""
+            isLogin = true
+        })
+    }
+    protected fun delLoginData() {
+        val context = this
+        FStorage.delMultiLoginData(context, UserMultiLoginModel().apply {
+            thisPK = FAmhohwa.getThisPK(context)
+            id = FAmhohwa.getUserID(context)
+            name = FAmhohwa.getUserName(context)
+            token = FStorage.getAuthToken(context) ?: ""
+            isLogin = true
+        })
     }
 
     protected fun shouldShowRequestPermissionRationale(permissions: Array<String>) = permissions.any { ActivityCompat.shouldShowRequestPermissionRationale(this, it) }

@@ -54,34 +54,30 @@ object FAmhohwa {
     fun logout(context: Context?, expired: Boolean = false) {
         context ?: return
         removeLoginData(context)
-        val existToken = gatheringAnotherLoginData(context)
-        if (existToken) {
-            FExtensions.moveToLandingActivity(context, expired)
-        } else {
-            FExtensions.refreshActivity(context)
-        }
+        FExtensions.moveToLandingActivity(context, expired)
     }
     fun removeLoginData(context: Context) {
         FRetrofitVariable.token = ""
-        FStorage.delMultiLoginToken(context, FStorage.getAuthToken(context))
         FStorage.removeAuthToken(context)
-    }
-    fun gatheringAnotherLoginData(context: Context): Boolean {
-        val tokens = FStorage.getMultiLoginToken(context)
-        if (tokens.isEmpty()) {
-            return false
-        }
-        FRetrofitVariable.token = tokens.first()
-        FStorage.setAuthToken(context, tokens.first())
-        return true
     }
     fun getUserID(context: Context): String {
         return decodeUtf8(getTokenID(context))
+    }
+    fun getUserName(context: Context): String {
+        return decodeUtf8(getTokenName(context))
     }
     fun getTokenID(context: Context): String {
         val token = FRetrofitVariable.token ?: FStorage.getAuthToken(context) ?: return ""
         return try {
             JWT(token).subject ?: ""
+        } catch (_: Exception) {
+            ""
+        }
+    }
+    fun getTokenName(context: Context): String {
+        val token = FRetrofitVariable.token ?: FStorage.getAuthToken(context) ?: return ""
+        return try {
+            JWT(token).claims[FConstants.CLAIMS_NAME]?.asString() ?: ""
         } catch (_: Exception) {
             ""
         }

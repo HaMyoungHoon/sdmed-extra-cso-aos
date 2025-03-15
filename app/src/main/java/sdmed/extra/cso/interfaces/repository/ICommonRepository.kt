@@ -12,6 +12,7 @@ import java.util.Date
 
 interface ICommonRepository {
     suspend fun signIn(id: String, pw: String): RestResultT<String>
+    suspend fun multiSign(token: String): RestResultT<String>
     suspend fun tokenRefresh(): RestResultT<String>
 
     suspend fun getFindIDAuthNumber(name: String, phoneNumber: String): RestResult

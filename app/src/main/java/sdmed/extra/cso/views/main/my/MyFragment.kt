@@ -8,13 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseFragment
 import sdmed.extra.cso.databinding.MyFragmentBinding
+import sdmed.extra.cso.models.eventbus.MultiSignEvent
 import sdmed.extra.cso.models.retrofit.hospitals.HospitalModel
 import sdmed.extra.cso.models.retrofit.pharmas.PharmaModel
 import sdmed.extra.cso.utils.FAmhohwa
 import sdmed.extra.cso.utils.FCoroutineUtil
+import sdmed.extra.cso.utils.FStorage
+import sdmed.extra.cso.views.dialog.bottomLogin.BottomLoginDialog
+import sdmed.extra.cso.views.dialog.bottomLogin.BottomLoginDialogVM
+import sdmed.extra.cso.views.login.LoginActivity
 import sdmed.extra.cso.views.login.PasswordChangeActivity
 import java.util.ArrayList
 
@@ -33,6 +41,7 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
     override fun setLayoutCommand(data: Any?) {
         setThisCommand(data)
         setHospitalCommand(data)
+        setBottomLoginCommand(data)
     }
 
     private fun getData() {
@@ -48,8 +57,9 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
     private fun setThisCommand(data: Any?) {
         val eventName = data as? MyFragmentVM.ClickEvent ?: return
         when (eventName) {
-            MyFragmentVM.ClickEvent.LOGOUT -> FAmhohwa.logout(contextBuff)
+            MyFragmentVM.ClickEvent.LOGOUT -> logout()
             MyFragmentVM.ClickEvent.PASSWORD_CHANGE -> startActivity(Intent(contextBuff, PasswordChangeActivity::class.java))
+            MyFragmentVM.ClickEvent.MULTI_LOGIN -> bottomLoginOn()
             MyFragmentVM.ClickEvent.IMAGE_TAXPAYER -> { }
             MyFragmentVM.ClickEvent.IMAGE_BANK_ACCOUNT -> { }
             MyFragmentVM.ClickEvent.IMAGE_CSO_REPORT -> { }
@@ -66,6 +76,13 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
             }
         }
     }
+    private fun setBottomLoginCommand(data: Any?) {
+        val eventName = data as? BottomLoginDialogVM.ClickEvent ?: return
+        when (eventName) {
+            BottomLoginDialogVM.ClickEvent.CLOSE -> { }
+            BottomLoginDialogVM.ClickEvent.ADD -> startActivity(Intent(contextBuff, LoginActivity::class.java))
+        }
+    }
     private fun setHospitalAdapter() = UserHospitalAdapter(dataContext.relayCommand).also { binding?.rvUserHospital?.adapter = it }
     private fun setPharmaAdapter() = UserPharmaAdapter(dataContext.relayCommand).also { binding?.rvUserPharma?.adapter = it }
     private fun observeData() {
@@ -79,6 +96,22 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
                 dataContext.hosList.value = it.hosList
             }
         }
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
+    private fun logout() {
+        val context = contextBuff ?: return
+        FAmhohwa.logout(context)
+        FStorage.logoutMultiLoginData(context)
+    }
+    private fun bottomLoginOn() {
+        BottomLoginDialog(true, dataContext.relayCommand).show(childFragmentManager, "")
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun multiSignEvent(data: MultiSignEvent) {
+        getData()
     }
 
     companion object {

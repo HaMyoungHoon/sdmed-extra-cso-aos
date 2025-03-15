@@ -15,6 +15,8 @@ import java.util.Date
 interface ICommonService {
     @GET("${FConstants.REST_API_COMMON}/signIn")
     suspend fun signIn(@Query("id") id: String, @Query("pw") pw: String): RestResultT<String>
+    @GET("${FConstants.REST_API_COMMON}/multiSign")
+    suspend fun multiSign(@Query("token") token: String): RestResultT<String>
     @POST("${FConstants.REST_API_COMMON}/tokenRefresh")
     suspend fun tokenRefresh(): RestResultT<String>
 

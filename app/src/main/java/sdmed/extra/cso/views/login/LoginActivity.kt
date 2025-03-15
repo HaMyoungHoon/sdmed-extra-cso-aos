@@ -5,12 +5,18 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import sdmed.extra.cso.MainActivity
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseActivity
+import sdmed.extra.cso.bases.FMainApplication
 import sdmed.extra.cso.utils.FStorage
 import sdmed.extra.cso.databinding.LoginActivityBinding
+import sdmed.extra.cso.models.eventbus.MultiSignEvent
 import sdmed.extra.cso.models.retrofit.FRetrofitVariable
+import sdmed.extra.cso.utils.FCoroutineUtil
+import sdmed.extra.cso.views.dialog.bottomLogin.BottomLoginDialog
 
 class LoginActivity: FBaseActivity<LoginActivityBinding, LoginActivityVM>() {
     override var layoutId = R.layout.login_activity
@@ -20,14 +26,25 @@ class LoginActivity: FBaseActivity<LoginActivityBinding, LoginActivityVM>() {
     override fun viewInit() {
         super.viewInit()
         observeText()
+        FStorage.getMultiLoginData(this)?.let {
+            dataContext.multiSignItems.value = it.toMutableList()
+        }
     }
     override fun setLayoutCommand(data: Any?) {
+        setThisCommand(data)
+        setBottomSelectCommand(data)
+    }
+    private fun setThisCommand(data: Any?) {
         val eventName = data as? LoginActivityVM.ClickEvent ?: return
         when (eventName) {
             LoginActivityVM.ClickEvent.FORGOT_ID -> forgotIDEvent()
             LoginActivityVM.ClickEvent.FORGOT_PW -> forgotPWEvent()
             LoginActivityVM.ClickEvent.SIGN_IN -> signInEvent()
+            LoginActivityVM.ClickEvent.MULTI_LOGIN -> multiLoginOn()
         }
+    }
+    private fun setBottomSelectCommand(data: Any?) {
+
     }
     private fun observeText() {
         lifecycleScope.launch {
@@ -52,17 +69,28 @@ class LoginActivity: FBaseActivity<LoginActivityBinding, LoginActivityVM>() {
             return
         }
         loading()
-        dataContext.signIn { x ->
+        FCoroutineUtil.coroutineScope({
+            val ret = dataContext.signIn()
             loading(false)
-            if (x.result == true && x.data != null) {
-                FRetrofitVariable.token = x.data
-                FStorage.setAuthToken(this, x.data)
-                FStorage.addMultiLoginToken(this, x.data)
+            if (ret.result == true) {
+                FRetrofitVariable.token = ret.data
+                FStorage.setAuthToken(this@LoginActivity, ret.data)
+                addLoginData()
                 finish()
-                startActivity(Intent(this, MainActivity::class.java))
-            } else {
-                toast(x.msg)
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                return@coroutineScope
             }
+            toast(ret.msg)
+        })
+    }
+    private fun multiLoginOn() {
+        BottomLoginDialog(false, dataContext.relayCommand).show(supportFragmentManager, "")
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun multiSignEvent(data: MultiSignEvent) {
+        finish()
+        if (!FMainApplication.isMainActivityRunning) {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         }
     }
 }
