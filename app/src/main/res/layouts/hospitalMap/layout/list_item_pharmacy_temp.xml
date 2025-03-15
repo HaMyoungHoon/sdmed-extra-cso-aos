@@ -12,11 +12,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@{dataContext.select ? @color/def_foreground : @color/def_background}"
+        android:background="@{dataContext.select ? @color/def_foreground : @color/half_background}"
         android:layout_margin="5dp"
         android:padding="10dp"
         android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}"
-        tools:background="@color/def_foreground">
+        tools:background="@color/half_foreground">
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_org_name"
             android:layout_width="wrap_content"

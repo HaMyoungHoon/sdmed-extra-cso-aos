@@ -23,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10dp"
-            android:textColor="@color/black"
+            android:textColor="@color/def_foreground"
+            android:background="@color/half_background"
             tools:text="marker name"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
