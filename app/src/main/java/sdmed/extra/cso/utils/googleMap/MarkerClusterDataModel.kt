@@ -18,8 +18,4 @@ data class MarkerClusterDataModel(
     override fun getTitle() = orgName
     override fun getSnippet() = address.takeIf { it.isNotEmpty() }
     override fun getZIndex() = zIndex
-
-    fun toastMessage(): String {
-        return "${orgName}\n${address}\n${phoneNumber}\n${websiteUrl}"
-    }
 }

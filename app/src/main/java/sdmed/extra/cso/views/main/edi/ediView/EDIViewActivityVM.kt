@@ -102,6 +102,7 @@ class EDIViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
     }
 
     enum class ClickEvent(var index: Int) {
-        CLOSE(0)
+        CLOSE(0),
+        HOSPITAL_DETAIL(1)
     }
 }

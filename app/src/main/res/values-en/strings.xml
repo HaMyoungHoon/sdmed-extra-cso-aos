@@ -122,7 +122,9 @@
     <string name="permission_location_for_map_desc">location permission requested for map selection.</string>
     <string name="search_length_too_low">plz input 3 character</string>
     <string name="map_toggle">map toggle</string>
+    <string name="pharmacy_toggle">pharmacy toggle</string>
     <string name="search_nearby">search nearby</string>
     <string name="select_desc">select</string>
-    <string name="hospital_find_desc">hospital_find</string>
+    <string name="hospital_find_desc">hospital find</string>
+    <string name="hospital_temp_detail">hospital detail</string>
 </resources>

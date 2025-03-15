@@ -46,6 +46,7 @@ import sdmed.extra.cso.utils.FStorage.getParcelableList
 import sdmed.extra.cso.utils.FStorage.putParcelable
 import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.select.SelectDialog
+import sdmed.extra.cso.views.hospitalMap.hospitalTempDetail.HospitalTempDetailActivity
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
 import sdmed.extra.cso.views.media.view.MediaListViewActivity
 import sdmed.extra.cso.views.media.view.MediaViewActivity
@@ -136,6 +137,7 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
         val eventName = data as? EDIViewActivityVM.ClickEvent ?: return
         when (eventName) {
             EDIViewActivityVM.ClickEvent.CLOSE -> close()
+            EDIViewActivityVM.ClickEvent.HOSPITAL_DETAIL -> hospitalTempDetail()
         }
     }
     private fun setEDIPharmaCommand(data: Any?) {
@@ -280,6 +282,11 @@ class EDIViewActivity: FBaseActivity<EdiViewActivityBinding, EDIViewActivityVM>(
     }
     private fun close() {
         finish()
+    }
+    private fun hospitalTempDetail() {
+        startActivity(Intent(this, HospitalTempDetailActivity::class.java).apply {
+            putExtra(FConstants.HOSPITAL_PK, dataContext.item.value.tempHospitalPK)
+        })
     }
     private fun addImage(data: EDIUploadPharmaModel) {
         if (!data.isAddable) {

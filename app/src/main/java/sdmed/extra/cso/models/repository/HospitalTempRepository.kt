@@ -8,4 +8,5 @@ class HospitalTempRepository(private val _service: IHospitalTempService): IHospi
     override suspend fun getData(thisPK: String) = FExtensions.restTryT { _service.getData(thisPK) }
     override suspend fun getListSearch(searchString: String) = FExtensions.restTryT { _service.getListSearch(searchString) }
     override suspend fun getListNearby(latitude: Double, longitude: Double, distance: Int) = FExtensions.restTryT { _service.getListNearby(latitude, longitude, distance) }
+    override suspend fun getPharmacyListNearby(latitude: Double, longitude: Double, distance: Int) = FExtensions.restTryT { _service.getPharmacyListNearby(latitude, longitude, distance) }
 }

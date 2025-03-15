@@ -1,4 +1,4 @@
-package sdmed.extra.cso.views.hospitalMap.hospitalFind
+package sdmed.extra.cso.views.hospitalMap.hospitalTempFind
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +16,7 @@ import sdmed.extra.cso.BuildConfig
 import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.bases.FConstants
-import sdmed.extra.cso.databinding.HospitalFindActivityBinding
+import sdmed.extra.cso.databinding.HospitalTempFindActivityBinding
 import sdmed.extra.cso.models.retrofit.hospitals.HospitalTempModel
 import sdmed.extra.cso.utils.FCoroutineUtil
 import sdmed.extra.cso.utils.FExtensions
@@ -36,10 +36,10 @@ import java.util.ArrayList
 import androidx.core.net.toUri
 import com.gun0912.tedpermission.coroutine.TedPermission
 
-class HospitalFindActivity: FBaseActivity<HospitalFindActivityBinding, HospitalFindActivityVM>(), OnMapReadyCallback, FLocationUtil.ILocationListener {
-    override var layoutId = R.layout.hospital_find_activity
-    override val dataContext: HospitalFindActivityVM by lazy {
-        HospitalFindActivityVM(multiDexApplication)
+class HospitalTempFindActivity: FBaseActivity<HospitalTempFindActivityBinding, HospitalTempFindActivityVM>(), OnMapReadyCallback, FLocationUtil.ILocationListener {
+    override var layoutId = R.layout.hospital_temp_find_activity
+    override val dataContext: HospitalTempFindActivityVM by lazy {
+        HospitalTempFindActivityVM(multiDexApplication)
     }
     private var googleMap = FGooglePlayMapSupport()
     private var locationUtil: FLocationUtil? = null
@@ -185,12 +185,12 @@ class HospitalFindActivity: FBaseActivity<HospitalFindActivityBinding, HospitalF
     }
 
     private fun setThisCommand(data: Any?) {
-        val eventName = data as? HospitalFindActivityVM.ClickEvent ?: return
+        val eventName = data as? HospitalTempFindActivityVM.ClickEvent ?: return
         when (eventName) {
-            HospitalFindActivityVM.ClickEvent.SELECT -> selectHospitalFinish()
-            HospitalFindActivityVM.ClickEvent.CLOSE -> finish()
-            HospitalFindActivityVM.ClickEvent.MAP_TOGGLE -> mapToggle()
-            HospitalFindActivityVM.ClickEvent.NEARBY -> getNearbyHospital()
+            HospitalTempFindActivityVM.ClickEvent.SELECT -> selectHospitalFinish()
+            HospitalTempFindActivityVM.ClickEvent.CLOSE -> finish()
+            HospitalTempFindActivityVM.ClickEvent.MAP_TOGGLE -> mapToggle()
+            HospitalTempFindActivityVM.ClickEvent.NEARBY -> getNearbyHospital()
         }
     }
     private fun setHospitalTempCommand(data: Any?) {

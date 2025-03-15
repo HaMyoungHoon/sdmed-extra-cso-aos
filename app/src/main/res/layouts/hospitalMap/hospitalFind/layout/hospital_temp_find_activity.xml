@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View" />
-        <import type="sdmed.extra.cso.views.hospitalMap.hospitalFind.HospitalFindActivityVM.ClickEvent" />
+        <import type="sdmed.extra.cso.views.hospitalMap.hospitalTempFind.HospitalTempFindActivityVM.ClickEvent" />
         <variable
             name="dataContext"
-            type="sdmed.extra.cso.views.hospitalMap.hospitalFind.HospitalFindActivityVM" />
+            type="sdmed.extra.cso.views.hospitalMap.hospitalTempFind.HospitalTempFindActivityVM" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

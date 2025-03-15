@@ -42,7 +42,7 @@ import sdmed.extra.cso.utils.FStorage.getParcelable
 import sdmed.extra.cso.utils.FStorage.getParcelableList
 import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.select.SelectDialog
-import sdmed.extra.cso.views.hospitalMap.hospitalFind.HospitalFindActivity
+import sdmed.extra.cso.views.hospitalMap.hospitalTempFind.HospitalTempFindActivity
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
 import java.io.File
 import java.util.ArrayList
@@ -289,7 +289,7 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
     }
     private fun hospitalFind() {
         val context = contextBuff ?: return
-        _hospitalFindResult?.launch(Intent(context, HospitalFindActivity::class.java))
+        _hospitalFindResult?.launch(Intent(context, HospitalTempFindActivity::class.java))
     }
     private fun hasCameraGranted(): Boolean {
         return hasPermissionsGranted(FConstants.CAMERA_PERMISSION)

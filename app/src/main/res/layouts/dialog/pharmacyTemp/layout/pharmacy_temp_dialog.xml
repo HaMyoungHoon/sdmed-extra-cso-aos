@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.views.dialog.pharmacyTemp.PharmacyTempDialogVM.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.views.dialog.pharmacyTemp.PharmacyTempDialogVM" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_org_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:text="@{dataContext.item.orgName}"
+            android:fontFamily="@font/nanum_gothic"
+            android:textSize="20sp"
+            android:textColor="@color/def_foreground"
+            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.THIS)}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="뿅뿅병원" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:text="@{dataContext.item.address}"
+            android:fontFamily="@font/nanum_gothic"
+            android:textSize="20sp"
+            android:textColor="@color/def_foreground"
+            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.THIS)}"
+            app:layout_constraintTop_toBottomOf="@id/tv_org_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="서울시 서울구 서울로 1-23" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:visibility="@{dataContext.item.phoneNumber.length() > 0 ? View.VISIBLE : View.GONE}"
+            android:text="@{dataContext.item.phoneNumber}"
+            android:fontFamily="@font/nanum_gothic"
+            android:textSize="20sp"
+            android:textColor="@color/def_foreground"
+            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.PHONE_NUMBER)}"
+            app:layout_constraintTop_toBottomOf="@id/tv_address"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="010-6574-8520" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

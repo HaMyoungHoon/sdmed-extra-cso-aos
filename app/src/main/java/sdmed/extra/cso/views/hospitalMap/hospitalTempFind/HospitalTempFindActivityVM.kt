@@ -1,4 +1,4 @@
-package sdmed.extra.cso.views.hospitalMap.hospitalFind
+package sdmed.extra.cso.views.hospitalMap.hospitalTempFind
 
 import sdmed.extra.cso.R
 import androidx.multidex.MultiDexApplication
@@ -9,7 +9,7 @@ import sdmed.extra.cso.interfaces.repository.IHospitalTempRepository
 import sdmed.extra.cso.models.RestResultT
 import sdmed.extra.cso.models.retrofit.hospitals.HospitalTempModel
 
-class HospitalFindActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
+class HospitalTempFindActivityVM(application: MultiDexApplication): FBaseViewModel(application) {
     private val hospitalTempRepository: IHospitalTempRepository by kodein.instance(IHospitalTempRepository::class)
 
     val searchLoading = MutableStateFlow(false)
