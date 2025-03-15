@@ -42,21 +42,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="뿅뿅 병원"/>
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="@string/hospital_temp_detail"
-                android:fontFamily="@font/nanum_gothic"
-                android:textSize="16sp"
-                android:textColor="@color/def_background"
-                android:background="@drawable/shape_rounded_box_able_5dp"
-                android:backgroundTint="@color/def_foreground"
-                android:visibility="@{dataContext.item.tempHospitalPK.length() > 0 ? View.VISIBLE : View.GONE}"
-                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOSPITAL_DETAIL)}"
-                app:layout_constraintTop_toTopOf="@id/tv_name"
-                app:layout_constraintBottom_toBottomOf="@id/tv_name"
-                app:layout_constraintEnd_toStartOf="@id/tv_edi_state"/>
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_edi_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,13 +73,30 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_hospital_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_margin="5dp"
+                    android:text="@string/hospital_temp_detail"
+                    android:fontFamily="@font/nanum_gothic"
+                    android:textSize="16sp"
+                    android:textColor="@color/def_background"
+                    android:background="@drawable/shape_rounded_box_able_5dp"
+                    android:backgroundTint="@color/def_foreground"
+                    android:visibility="@{dataContext.item.tempHospitalPK.length() > 0 ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOSPITAL_DETAIL)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_pharma_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:recyclerEDIPharmaList="@{dataContext.item}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_hospital_temp" />
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_edi_file_list"
                     android:layout_width="match_parent"
