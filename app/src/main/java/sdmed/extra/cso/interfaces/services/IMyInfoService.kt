@@ -18,5 +18,5 @@ interface IMyInfoService {
     @PUT("${FConstants.REST_API_MY_INFO}/passwordChange")
     suspend fun putPasswordChange(@Query("currentPW") currentPW: String, @Query("afterPW") afterPW: String, @Query("confirmPW") confirmPW: String): RestResultT<UserDataModel>
     @PUT("${FConstants.REST_API_MY_INFO}/file/{thisPK}")
-    suspend fun putUserFileImageUrl(@Body blobModel: BlobUploadModel, @Query("userFileType") userFileType: UserFileType, @Path("thisPK") thisPK: String): RestResultT<UserFileModel>
+    suspend fun putUserFileImageUrl(@Path("thisPK") thisPK: String, @Body blobModel: BlobUploadModel, @Query("userFileType") userFileType: UserFileType): RestResultT<UserFileModel>
 }

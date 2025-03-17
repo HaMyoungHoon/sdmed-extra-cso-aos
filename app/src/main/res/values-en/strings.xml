@@ -128,4 +128,7 @@
     <string name="select_desc">select</string>
     <string name="hospital_find_desc">hospital find</string>
     <string name="hospital_temp_detail">hospital detail</string>
+    <string name="user_file_upload">user file upload</string>
+    <string name="user_file_upload_comp">user file upload complete</string>
+    <string name="user_file_upload_fail">user file upload fail</string>
 </resources>

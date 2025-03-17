@@ -109,6 +109,7 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
             NotifyIndex.QNA_UPLOAD -> openQnAFragment(MainActivityVM.ClickEvent.QNA)
             NotifyIndex.QNA_FILE_UPLOAD -> openQnAFragment(MainActivityVM.ClickEvent.QNA)
             NotifyIndex.QNA_RESPONSE -> openQnAFragment(MainActivityVM.ClickEvent.QNA)
+            NotifyIndex.USER_FILE_UPLOAD -> openMyFragment(MainActivityVM.ClickEvent.MY)
         }
         if (thisPK.isNotEmpty()) {
             when (notifyIndex) {

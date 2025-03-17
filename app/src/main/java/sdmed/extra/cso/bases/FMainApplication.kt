@@ -55,6 +55,7 @@ import sdmed.extra.cso.models.services.FBackgroundEDIFileUpload
 import sdmed.extra.cso.models.services.FBackgroundEDIRequestNewUpload
 import sdmed.extra.cso.models.services.FBackgroundEDIRequestUpload
 import sdmed.extra.cso.models.services.FBackgroundQnAUpload
+import sdmed.extra.cso.models.services.FBackgroundUserFileUpload
 import sdmed.extra.cso.models.services.FMqttService
 import sdmed.extra.cso.models.services.FNotificationService
 import sdmed.extra.cso.models.services.ForcedTerminationService
@@ -81,6 +82,7 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
         bind<FBackgroundEDIRequestNewUpload>(FBackgroundEDIRequestNewUpload::class) with singleton { FBackgroundEDIRequestNewUpload(applicationContext) }
         bind<FBackgroundEDIFileUpload>(FBackgroundEDIFileUpload::class) with singleton { FBackgroundEDIFileUpload(applicationContext) }
         bind<FBackgroundQnAUpload>(FBackgroundQnAUpload::class) with singleton { FBackgroundQnAUpload(applicationContext) }
+        bind<FBackgroundUserFileUpload>(FBackgroundUserFileUpload::class) with singleton { FBackgroundUserFileUpload(applicationContext) }
         bind<FMqttService>(FMqttService::class) with singleton { FMqttService(applicationContext) }
 
         bind<IAzureBlobRepository>(IAzureBlobRepository::class) with singleton { AzureBlobRepository(RetrofitService.create(IAzureBlobService::class.java)) }

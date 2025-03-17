@@ -9,5 +9,5 @@ import sdmed.extra.cso.models.retrofit.users.UserFileModel
 interface IMyInfoRepository {
     suspend fun getData(relationView: Boolean = true): RestResultT<UserDataModel>
     suspend fun putPasswordChange(currentPW: String, afterPW: String, confirmPW: String): RestResultT<UserDataModel>
-    suspend fun putUserFileImageUrl(blobModel: BlobUploadModel, userFileType: UserFileType, thisPK: String): RestResultT<UserFileModel>
+    suspend fun putUserFileImageUrl(thisPK: String, blobModel: BlobUploadModel, userFileType: UserFileType): RestResultT<UserFileModel>
 }

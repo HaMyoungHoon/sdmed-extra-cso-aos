@@ -128,4 +128,7 @@
     <string name="select_desc">선택</string>
     <string name="hospital_find_desc">병원찾기</string>
     <string name="hospital_temp_detail">병원정보</string>
+    <string name="user_file_upload">유저파일업로드</string>
+    <string name="user_file_upload_comp">유저파일업로드 완료</string>
+    <string name="user_file_upload_fail">유저파일업로드 실패</string>
 </resources>

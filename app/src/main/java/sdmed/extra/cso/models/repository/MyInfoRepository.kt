@@ -9,5 +9,5 @@ import sdmed.extra.cso.utils.FExtensions
 class MyInfoRepository(private val _service: IMyInfoService): IMyInfoRepository {
     override suspend fun getData(relationView: Boolean) = FExtensions.restTryT { _service.getData(relationView) }
     override suspend fun putPasswordChange(currentPW: String, afterPW: String, confirmPW: String) = FExtensions.restTryT { _service.putPasswordChange(currentPW, afterPW, confirmPW) }
-    override suspend fun putUserFileImageUrl(blobModel: BlobUploadModel, userFileType: UserFileType, thisPK: String) = FExtensions.restTryT { _service.putUserFileImageUrl(blobModel, userFileType, thisPK) }
+    override suspend fun putUserFileImageUrl(thisPK: String, blobModel: BlobUploadModel, userFileType: UserFileType) = FExtensions.restTryT { _service.putUserFileImageUrl(thisPK, blobModel, userFileType) }
 }

@@ -20,8 +20,8 @@ object FConstants {
     const val MULTI_LOGIN_TOKEN = "multiLoginToken"
     const val MEDIA_ITEM = "mediaItem"
     const val MEDIA_LIST = "mediaList"
-    const val EDI_PHARMA_BUFF_PK = "ediPharmaBuffPK"
     const val MEDIA_TARGET_PK = "mediaTargetPK"
+    const val MEDIA_MAX_COUNT = "mediaMaxCount"
     const val HOSPITAL_TEMP = "hospitalTemp"
     const val HOSPITAL_PK = "hospitalPK"
 

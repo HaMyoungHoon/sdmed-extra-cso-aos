@@ -137,6 +137,7 @@ class FNotificationService(context: Context): Service(), KodeinAware {
             NotifyIndex.QNA_UPLOAD -> MainActivity::class.java
             NotifyIndex.QNA_FILE_UPLOAD -> MainActivity::class.java
             NotifyIndex.QNA_RESPONSE -> MainActivity::class.java
+            NotifyIndex.USER_FILE_UPLOAD -> MainActivity::class.java
         }
     }
     private fun sendNotification(context: Context, notifyIndex: NotifyIndex, title: String, content: String? = null, notifyType: NotifyType = NotifyType.DEFAULT, isCancel: Boolean = false, thisPK: String = "") {

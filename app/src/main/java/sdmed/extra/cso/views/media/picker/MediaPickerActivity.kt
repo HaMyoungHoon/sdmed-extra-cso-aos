@@ -73,7 +73,7 @@ class MediaPickerActivity: FBaseActivity<MediaPickerActivityBinding, MediaPicker
         val buffList = intent.getParcelableList<MediaPickerSourceModel>(FConstants.MEDIA_LIST)
         dataContext.ableSelectCountStringSuffix = getString(R.string.media_able_click_suffix_desc)
         dataContext.setPreviousMedia(buffList)
-        dataContext.setMediaMaxCount(intent.getIntExtra("mediaMaxCount", -1))
+        dataContext.setMediaMaxCount(intent.getIntExtra(FConstants.MEDIA_MAX_COUNT, -1))
         binding?.playerView?.player = ExoPlayer.Builder(this).build()
     }
 
