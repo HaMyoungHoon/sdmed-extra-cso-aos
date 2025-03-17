@@ -1,6 +1,5 @@
 package sdmed.extra.cso.models
 
-import retrofit2.HttpException
 import sdmed.extra.cso.interfaces.IRestResult
 
 class RestResultT<T>: IRestResult {

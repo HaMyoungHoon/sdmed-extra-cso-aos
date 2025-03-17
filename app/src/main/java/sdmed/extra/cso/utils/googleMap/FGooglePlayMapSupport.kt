@@ -27,7 +27,6 @@ import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.model.GeocodingResult
 import sdmed.extra.cso.databinding.CustomClusterViewBinding
 import sdmed.extra.cso.utils.FCoroutineUtil
-import sdmed.extra.cso.utils.FGlideSupport
 import sdmed.extra.cso.utils.FImageUtils
 import java.util.Locale
 
