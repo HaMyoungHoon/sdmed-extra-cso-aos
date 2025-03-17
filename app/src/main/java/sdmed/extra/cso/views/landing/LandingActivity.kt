@@ -60,6 +60,7 @@ class LandingActivity: FBaseActivity<LandingActivityBinding, LandingActivityVM>(
                         getString(R.string.update_desc),
                         "",
                         false).show(supportFragmentManager, "")
+                    return@versionCheck
                 }
                 page()
             }
@@ -90,10 +91,10 @@ class LandingActivity: FBaseActivity<LandingActivityBinding, LandingActivityVM>(
     private fun setMessageDialogCommand(data: Any?) {
         val eventName = data as? MessageDialogVM.ClickEvent ?: return
         when (eventName) {
-            MessageDialogVM.ClickEvent.RIGHT -> startActivity(Intent(Intent.ACTION_VIEW).apply {
+            MessageDialogVM.ClickEvent.RIGHT -> page()
+            MessageDialogVM.ClickEvent.LEFT -> startActivity(Intent(Intent.ACTION_VIEW).apply {
                 this.data = "market://details?id=$packageName".toUri()
             })
-            MessageDialogVM.ClickEvent.LEFT -> page()
         }
     }
 }
