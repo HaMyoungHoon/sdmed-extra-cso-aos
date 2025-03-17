@@ -3,7 +3,6 @@ package sdmed.extra.cso.models.services
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import org.greenrobot.eventbus.EventBus
 import org.kodein.di.Kodein
@@ -155,15 +154,9 @@ class FBackgroundEDIFileUpload(context: Context): Service(), KodeinAware  {
     }
 
     private fun notificationCall(title: String, message: String? = null, ediPK: String = "") {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
         notificationService.sendNotify(context, NotifyIndex.EDI_FILE_UPLOAD, title, message, FNotificationService.NotifyType.WITH_VIBRATE, true, ediPK)
     }
     private fun progressNotificationCall(uuid: String, isCancel: Boolean = false) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
         if (isCancel) {
             notificationService.progressUpdate(context, uuid, isCancel = true)
         } else {

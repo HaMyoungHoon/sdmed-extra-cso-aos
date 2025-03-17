@@ -7,12 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import sdmed.extra.cso.R

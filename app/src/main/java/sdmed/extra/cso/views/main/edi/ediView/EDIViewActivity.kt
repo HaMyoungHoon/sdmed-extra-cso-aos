@@ -22,7 +22,6 @@ import sdmed.extra.cso.R
 import sdmed.extra.cso.bases.FBaseActivity
 import sdmed.extra.cso.bases.FConstants
 import sdmed.extra.cso.databinding.EdiViewActivityBinding
-import sdmed.extra.cso.models.adapter.UploadBuffAdapter
 import sdmed.extra.cso.models.adapter.EllipseListAdapter
 import sdmed.extra.cso.models.common.MediaFileType
 import sdmed.extra.cso.models.common.MediaPickerSourceModel

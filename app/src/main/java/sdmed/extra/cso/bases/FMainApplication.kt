@@ -100,11 +100,7 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
     fun isDebug() = 0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
     fun getVersionCode(flags: Int = 0): Long {
         val pInfo = getPackageInfo(flags)
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            pInfo?.longVersionCode ?: 0
-        } else {
-            @Suppress("DEPRECATION") (pInfo?.versionCode ?: 0).toLong()
-        }
+        return pInfo?.longVersionCode ?: 0
     }
     fun getVersionName(flags: Int = 0): Long {
         val versionName = getVersionNameString(flags)
@@ -131,18 +127,10 @@ class FMainApplication: MultiDexApplication(), LifecycleEventObserver, KodeinAwa
     }
     fun getApplicationID() = applicationInfo.processName.toString()
     fun getSignatureArray(): Array<Signature>? {
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            PackageManager.GET_SIGNING_CERTIFICATES
-        } else {
-            @Suppress("DEPRECATION") PackageManager.GET_SIGNATURES
-        }
+        val flag = PackageManager.GET_SIGNING_CERTIFICATES
         val pInfo = getPackageInfo(flag) ?: return null
         return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                pInfo.signingInfo?.apkContentsSigners
-            } else {
-                @Suppress("DEPRECATION") pInfo.signatures
-            }
+            pInfo.signingInfo?.apkContentsSigners
         } catch (_: Exception) {
             return null
         }

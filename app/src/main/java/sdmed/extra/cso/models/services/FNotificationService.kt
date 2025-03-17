@@ -93,26 +93,24 @@ class FNotificationService(context: Context): Service(), KodeinAware {
         }
     }
     private fun createNotificationChannel(context: Context, notifyType: NotifyType = NotifyType.DEFAULT) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(FConstants.NOTIFICATION_CHANNEL_ID, FConstants.NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
-            when (notifyType) {
-                NotifyType.DEFAULT -> channel.enableVibration(false)
-                NotifyType.WITH_SOUND -> {
-                    channel.enableVibration(false)
-                    channel.setSound(getSoundUri(context), getAudioAttribute())
-                }
-                NotifyType.WITH_VIBRATE -> {
-                    channel.vibrationPattern = getVibratePattern()
-                    channel.enableVibration(true)
-                }
-                NotifyType.WITH_S_V -> {
-                    channel.vibrationPattern = getVibratePattern()
-                    channel.setSound(getSoundUri(context), getAudioAttribute())
-                    channel.enableVibration(true)
-                }
+        val channel = NotificationChannel(FConstants.NOTIFICATION_CHANNEL_ID, FConstants.NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+        when (notifyType) {
+            NotifyType.DEFAULT -> channel.enableVibration(false)
+            NotifyType.WITH_SOUND -> {
+                channel.enableVibration(false)
+                channel.setSound(getSoundUri(context), getAudioAttribute())
             }
-            _notificationManager.createNotificationChannel(channel)
+            NotifyType.WITH_VIBRATE -> {
+                channel.vibrationPattern = getVibratePattern()
+                channel.enableVibration(true)
+            }
+            NotifyType.WITH_S_V -> {
+                channel.vibrationPattern = getVibratePattern()
+                channel.setSound(getSoundUri(context), getAudioAttribute())
+                channel.enableVibration(true)
+            }
         }
+        _notificationManager.createNotificationChannel(channel)
     }
     private fun sendNotification(context: Context, intent: Intent, title: String, content: String = "", notifyType: NotifyType = NotifyType.DEFAULT) {
         if (!checkPermission(context)) {
@@ -236,14 +234,7 @@ class FNotificationService(context: Context): Service(), KodeinAware {
                 CombinedVibration.createParallel(VibrationEffect.createWaveform(getVibratePattern(), getVibrateAmplitude(), repeat)))
         } else {
             @Suppress("DEPRECATION")
-            (context.getSystemService(VIBRATOR_SERVICE) as? Vibrator)?.let { x ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    x.vibrate(VibrationEffect.createWaveform(getVibratePattern(), getVibrateAmplitude(), repeat))
-                } else {
-                    @Suppress("DEPRECATION")
-                    x.vibrate(getVibratePattern(), repeat)
-                }
-            }
+            ((context.getSystemService(VIBRATOR_SERVICE) as? Vibrator)?.vibrate(VibrationEffect.createWaveform(getVibratePattern(), getVibrateAmplitude(), repeat)))
         }
     }
     private fun getVibratePattern() = longArrayOf(50, 150, 50, 150)

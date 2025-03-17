@@ -3,7 +3,6 @@ package sdmed.extra.cso.models.services
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import org.greenrobot.eventbus.EventBus
 import org.kodein.di.Kodein
@@ -158,16 +157,10 @@ class FBackgroundQnAUpload(context: Context): Service(), KodeinAware {
         progressNotificationCall(data.uuid, true)
     }
     private fun notificationCall(title: String, message: String? = null, qnaPK: String = "") {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
         notificationService.sendNotify(context, NotifyIndex.QNA_UPLOAD, title, message, FNotificationService.NotifyType.WITH_VIBRATE, true, qnaPK)
         EventBus.getDefault().post(QnAUploadEvent(qnaPK))
     }
     private fun progressNotificationCall(uuid: String, isCancel: Boolean = false) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return
-        }
         if (isCancel) {
             notificationService.progressUpdate(context, uuid, isCancel = true)
         } else {
