@@ -35,7 +35,7 @@
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="@color/transparent"
                 android:contentDescription="@string/menu_home_desc"
-                android:src="@drawable/menu_home"
+                android:src="@drawable/image_edi"
                 android:elevation="0dp"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOME)}"
                 style="@style/FloatingActionButtonStyle"

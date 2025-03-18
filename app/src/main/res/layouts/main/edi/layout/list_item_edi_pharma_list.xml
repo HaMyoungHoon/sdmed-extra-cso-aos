@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_margin="1dp"
         android:padding="5dp"
         android:onClick="@{() -> dataContext.onClick(ClickEvent.OPEN)}"
         android:background="@drawable/shape_rounded_box_able_5dp"

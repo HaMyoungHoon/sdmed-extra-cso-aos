@@ -58,10 +58,10 @@
                 android:textAlignment="center"
                 android:text="@string/hospital_find_desc"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_background"
+                android:textColor="@color/def_button_foreground"
                 android:textSize="20sp"
                 android:background="@drawable/shape_rounded_box_able_5dp"
-                android:backgroundTint="@color/def_foreground"
+                android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.HOSPITAL_FIND)}"
                 app:layout_constraintTop_toBottomOf="@id/rv_apply_date" />
             <androidx.appcompat.widget.AppCompatEditText

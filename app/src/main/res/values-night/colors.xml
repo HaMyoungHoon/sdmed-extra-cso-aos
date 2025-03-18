@@ -44,22 +44,22 @@
     <color name="disable_back_gray">#FFD9DDDC</color>
 
     <color name="edi_state_none">@color/def_foreground</color>
-    <color name="edi_state_ok">#FF018786</color>
-    <color name="edi_state_reject">#FFD0505D</color>
-    <color name="edi_state_pending">#FF6F8F8F</color>
-    <color name="edi_state_partial">#FF6260EE</color>
+    <color name="edi_state_ok">#FFFFFD85</color>
+    <color name="edi_state_reject">#FFF5516D</color>
+    <color name="edi_state_pending">#FFC5C6A9</color>
+    <color name="edi_state_partial">#FFB293B4</color>
     <color name="edi_back_state_none">@color/def_background</color>
-    <color name="edi_back_state_ok">#99018786</color>
-    <color name="edi_back_state_reject">#99D0505D</color>
-    <color name="edi_back_state_pending">#996F8F8F</color>
-    <color name="edi_back_state_partial">#996260EE</color>
+    <color name="edi_back_state_ok">#FF9BD770</color>
+    <color name="edi_back_state_reject">#FFF88B9D</color>
+    <color name="edi_back_state_pending">#FFCCB7CD</color>
+    <color name="edi_back_state_partial">#FFFFFC5C</color>
 
     <color name="qna_state_none">@color/def_foreground</color>
-    <color name="qna_state_ok">#FF018786</color>
-    <color name="qna_state_recep">#FF6F8F8F</color>
-    <color name="qna_state_reply">#FF6260EE</color>
+    <color name="qna_state_ok">#FFFFFD85</color>
+    <color name="qna_state_recep">#FF4DD17F</color>
+    <color name="qna_state_reply">#FF2D3047</color>
     <color name="qna_back_state_none">@color/def_background</color>
-    <color name="qna_back_state_ok">#99018786</color>
-    <color name="qna_back_state_recep">#996F8F8F</color>
-    <color name="qna_back_state_reply">#996260EE</color>
+    <color name="qna_back_state_ok">#FF9BD770</color>
+    <color name="qna_back_state_recep">#FFC5C6A9</color>
+    <color name="qna_back_state_reply">#FFB293B4</color>
 </resources>
