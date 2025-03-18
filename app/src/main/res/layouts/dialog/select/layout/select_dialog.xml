@@ -10,7 +10,8 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/def_background">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_select_list"
             android:layout_width="wrap_content"

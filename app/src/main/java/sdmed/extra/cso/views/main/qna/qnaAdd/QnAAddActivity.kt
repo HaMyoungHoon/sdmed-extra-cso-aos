@@ -168,12 +168,12 @@ class QnAAddActivity: FBaseActivity<QnaAddActivityBinding, QnAAddActivityVM>(Use
         val items = mutableListOf<SelectListModel>()
         items.add(SelectListModel().apply {
             itemIndex = 0
-            iconResId = R.drawable.vector_camera_def
+            iconResId = R.drawable.vector_camera_button
             stringResId = R.string.camera_desc
         })
         items.add(SelectListModel().apply {
             itemIndex = 1
-            iconResId = R.drawable.vector_file_def
+            iconResId = R.drawable.vector_file_button
             stringResId = R.string.file_desc
         })
         SelectDialog(items, 0, dataContext.relayCommand).show(supportFragmentManager, "")

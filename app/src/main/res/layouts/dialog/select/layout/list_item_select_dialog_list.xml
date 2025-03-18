@@ -23,11 +23,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_gravity="center"
-            android:backgroundTint="@color/def_button_foreground"
             app:glideResSrc="@{dataContext.iconResId}"
             app:imageViewWidth="@{20}"
             app:imageViewHeight="@{20}"
-            tools:src="@drawable/vector_camera_def" />
+            tools:src="@drawable/vector_camera_button" />
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,6 +37,6 @@
             app:textResId="@{dataContext.stringResId}"
             app:textColorResId="@{dataContext.colorResId}"
             tools:text="test"
-            android:textColor="@color/def_foreground"/>
+            android:textColor="@color/def_button_foreground"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

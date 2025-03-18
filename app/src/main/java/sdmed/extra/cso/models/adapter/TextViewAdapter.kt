@@ -18,7 +18,7 @@ class TextViewAdapter {
             textColorResId ?: return
             var colorBuff = textColorResId
             if (colorBuff == 0) {
-                colorBuff = R.color.def_foreground
+                colorBuff = R.color.def_button_foreground
             }
             val color = try {
                 textView.context.getColor(colorBuff)

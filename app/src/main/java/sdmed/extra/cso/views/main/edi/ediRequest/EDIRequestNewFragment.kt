@@ -259,13 +259,13 @@ class EDIRequestNewFragment: FBaseFragment<EdiRequestNewFragmentBinding, EDIRequ
         val items = mutableListOf<SelectListModel>()
         items.add(SelectListModel().apply {
             itemIndex = 0
-            iconResId = R.drawable.vector_camera_def
+            iconResId = R.drawable.vector_camera_button
             stringResId = R.string.camera_desc
             this.data = data
         })
         items.add(SelectListModel().apply {
             itemIndex = 1
-            iconResId = R.drawable.vector_file_def
+            iconResId = R.drawable.vector_file_button
             stringResId = R.string.file_desc
             this.data = data
         })
