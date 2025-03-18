@@ -9,6 +9,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -135,6 +136,26 @@ class EDIFragment: FBaseFragment<EdiFragmentBinding, EDIFragmentVM>() {
         searchItem()
     }
     companion object {
+        @JvmStatic
+        @BindingAdapter("swipeRefreshingEDIRefreshing")
+        fun setSwipeRefreshingEDIRefreshing(swipeRefreshLayout: SwipeRefreshLayout, isRefreshing: StateFlow<Boolean>?) {
+            swipeRefreshLayout.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+                isRefreshing?.collectLatest {
+                    swipeRefreshLayout.isRefreshing = it
+                }
+            }
+        }
+        @JvmStatic
+        @BindingAdapter("swipeRefreshingEDIRefreshCallback")
+        fun setSwipeRefreshingEDIRefreshCallback(swipeRefreshLayout: SwipeRefreshLayout, callback: (() -> Unit)?) {
+            callback?.let {
+                swipeRefreshLayout.setOnRefreshListener {
+                    swipeRefreshLayout.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+                        it()
+                    }
+                }
+            }
+        }
         @JvmStatic
         @BindingAdapter("recyclerEDIListItems")
         fun setEDIListItems(recyclerView: RecyclerView, listItems: StateFlow<MutableList<EDIUploadModel>>?) {

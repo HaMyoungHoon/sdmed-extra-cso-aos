@@ -11,7 +11,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="20dp"
         android:background="@color/def_background">
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
@@ -81,12 +80,19 @@
             android:layout_height="1dp"
             android:background="@color/divider_gray"
             app:layout_constraintTop_toBottomOf="@id/ll_header_container" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_edi_list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/spr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/vw_line"
-            app:recyclerEDIListItems="@{dataContext.ediUploadModel}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:swipeRefreshingEDIRefreshing="@{dataContext.refreshing}"
+            app:swipeRefreshingEDIRefreshCallback="@{() -> dataContext.refreshingTemp()}"
+            app:layout_constraintTop_toBottomOf="@id/vw_line">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_edi_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:recyclerEDIListItems="@{dataContext.ediUploadModel}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

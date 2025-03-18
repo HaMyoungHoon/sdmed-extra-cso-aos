@@ -130,6 +130,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.swiperefresh)
     implementation(libs.androidx.fragment)
     implementation(libs.media3.player.ui)
     implementation(libs.media3.player.common)
