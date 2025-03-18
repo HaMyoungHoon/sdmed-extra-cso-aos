@@ -11,7 +11,8 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/def_background">
         <sdmed.extra.cso.utils.view.FZoomLayout
             android:id="@+id/zl_media_container"
             android:layout_width="match_parent"

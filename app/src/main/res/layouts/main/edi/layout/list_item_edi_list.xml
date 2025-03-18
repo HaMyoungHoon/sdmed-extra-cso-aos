@@ -11,16 +11,18 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="@drawable/shape_rounded_box_able_5dp"
+        android:backgroundTint="@color/def_card_background">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_margin="5dp"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:onClick="@{() -> dataContext.onClick(ClickEvent.OPEN)}" >
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -29,7 +31,7 @@
                 android:text="@{dataContext.regDateString}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="18sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 tools:text="2025-01" />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -53,7 +55,7 @@
                     android:layout_marginEnd="5dp"
                     android:text="@{dataContext.orgName}"
                     android:fontFamily="@font/nanum_gothic"
-                    android:textColor="@{dataContext.isDefault ? @color/def_foreground : @color/secondary}"
+                    android:textColor="@{dataContext.isDefault ? @color/def_foreground : @color/def_card_paragraph}"
                     android:textSize="18sp"
                     android:ellipsize="middle"
                     tools:text="땡땡땡 병원" />
@@ -62,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{dataContext.tempOrgString}"
                     android:fontFamily="@font/nanum_gothic"
-                    android:textColor="@color/def_foreground"
+                    android:textColor="@color/def_card_foreground"
                     android:textSize="16sp"
                     android:ellipsize="middle"
                     android:maxLines="1"
@@ -83,11 +85,5 @@
                 tools:textColor="@color/edi_state_reject"
                 tools:backgroundTint="@color/edi_back_state_reject"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/divider_gray"
-            app:layout_constraintTop_toBottomOf="@id/ll_content_container" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

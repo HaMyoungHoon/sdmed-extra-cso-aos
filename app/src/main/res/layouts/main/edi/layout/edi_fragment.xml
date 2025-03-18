@@ -39,8 +39,9 @@
                 android:text="@{dataContext.startDate}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="16sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_button_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.START_DATE)}"
                 android:maxLines="1"
                 android:ellipsize="start"
@@ -55,8 +56,9 @@
                 android:text="@{dataContext.endDate}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="16sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_button_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.END_DATE)}"
                 android:maxLines="1"
                 android:ellipsize="start"
@@ -70,8 +72,9 @@
                 android:text="@string/refresh_desc"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="18sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_button_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SEARCH)}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
         <View

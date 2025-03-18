@@ -12,8 +12,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@color/def_background">
+        android:layout_margin="1dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_rounded_box_able_5dp"
+        android:backgroundTint="@color/def_card_background">
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_id"
             android:layout_width="wrap_content"
@@ -21,7 +23,7 @@
             android:text="@{dataContext.id}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="20sp"
-            android:textColor="@color/def_foreground"
+            android:textColor="@color/def_card_paragraph"
             android:ellipsize="end"
             android:maxLines="1"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +37,7 @@
             android:text="@{dataContext.name}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="20sp"
-            android:textColor="@color/def_foreground"
+            android:textColor="@color/def_card_paragraph"
             android:ellipsize="end"
             android:maxLines="1"
             app:layout_constraintTop_toBottomOf="@id/tv_id"
@@ -50,9 +52,9 @@
             android:text="@string/login_btn_desc"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="20sp"
-            android:textColor="@color/def_background"
+            android:textColor="@color/def_button_foreground"
             android:background="@drawable/shape_rounded_box_able_5dp"
-            android:backgroundTint="@color/def_foreground"
+            android:backgroundTint="@color/def_button_background"
             android:visibility="@{dataContext.login ? View.GONE : View.VISIBLE}"
             android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}"
             app:layout_constraintTop_toTopOf="parent"

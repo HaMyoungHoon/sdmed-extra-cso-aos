@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="@{dataContext.pageNumberString}"
             android:fontFamily="@font/nanum_gothic"
-            android:textColor="@{dataContext.select ? @color/def_background : @color/def_foreground}"
+            android:textColor="@{dataContext.select ? @color/def_button_foreground : @color/def_foreground}"
             android:textSize="18sp"
             android:visibility="@{dataContext.visible ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent"

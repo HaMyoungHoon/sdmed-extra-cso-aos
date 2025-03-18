@@ -11,7 +11,8 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/def_background">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_header_container"
             android:layout_width="match_parent"
@@ -29,8 +30,9 @@
                 android:text="@{dataContext.startDate}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="18sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_button_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.START_DATE)}"
                 tools:text="2025-01-01" />
             <androidx.appcompat.widget.AppCompatTextView
@@ -43,8 +45,9 @@
                 android:text="@{dataContext.endDate}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="18sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_button_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.END_DATE)}"
                 tools:text="2025-02-01" />
             <androidx.appcompat.widget.AppCompatTextView
@@ -56,21 +59,16 @@
                 android:text="@string/refresh_desc"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="18sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_button_foreground"
                 android:background="@drawable/shape_rounded_box_able_5dp"
+                android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SEARCH)}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-        <View
-            android:id="@+id/vw_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_gray"
-            app:layout_constraintTop_toBottomOf="@id/ll_header_container" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_edi_due_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/vw_line"
+            app:layout_constraintTop_toBottomOf="@id/ll_header_container"
             app:recyclerViewEDIDueDate="@{dataContext.dateModel}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.constraintlayout.widget.ConstraintLayout>

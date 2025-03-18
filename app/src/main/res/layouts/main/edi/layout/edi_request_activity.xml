@@ -12,16 +12,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/def_background"
         android:fitsSystemWindows="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_top_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/def_background"
             app:layout_constraintTop_toTopOf="parent">
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/def_background"
             app:layout_constraintTop_toBottomOf="@id/cl_top_container"
             app:layout_constraintBottom_toBottomOf="parent">
             <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -37,10 +40,12 @@
                     android:fitsSystemWindows="true">
                     <androidx.appcompat.widget.Toolbar
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@color/def_background">
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:background="@color/def_background">
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -56,6 +61,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:orientation="vertical"
+                                android:background="@color/def_background"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +70,7 @@
                                     android:id="@+id/tl_content"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:background="@color/def_background"
                                     app:tabIndicatorFullWidth="false"
                                     app:tabIndicatorColor="@color/primary"
                                     app:tabPaddingBottom="0dp"
@@ -75,12 +82,6 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.appcompat.widget.Toolbar>
                 </com.google.android.material.appbar.AppBarLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/divider_gray"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_content"
                     android:layout_width="match_parent"

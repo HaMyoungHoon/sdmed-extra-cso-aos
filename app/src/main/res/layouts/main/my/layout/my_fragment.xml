@@ -287,8 +287,7 @@
                     android:layout_height="wrap_content"
                     app:recyclerUserHospitalList="@{dataContext.hosList}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/tv_own_hospital_list"
-                    app:layout_constraintBottom_toTopOf="@id/rv_user_pharma"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_own_hospital_list" />
                 <View
                     android:id="@+id/vw_pharma_top_line"
                     android:layout_width="match_parent"

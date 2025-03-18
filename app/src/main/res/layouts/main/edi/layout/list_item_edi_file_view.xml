@@ -15,7 +15,7 @@
         android:elevation="3dp"
         android:onClick="@{()->dataContext.onClick(ClickEvent.SHORT)}"
         android:onLongClick="@{()->dataContext.onLongClick(ClickEvent.LONG)}"
-        android:background="@color/def_background">
+        android:background="@color/def_card_background">
         <sdmed.extra.cso.utils.FilenameTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

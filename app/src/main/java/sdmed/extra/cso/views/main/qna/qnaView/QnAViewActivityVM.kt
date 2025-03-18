@@ -24,7 +24,6 @@ class QnAViewActivityVM(application: MultiDexApplication): FBaseViewModel(applic
             val contentRet = qnaListRepository.getContentData(thisPK)
             if (contentRet.result == true) {
                 val contentBuff = contentRet.data ?: QnAContentModel()
-                contentBuff.replyList.forEach { it.initEllipseList() }
                 contentModel.value = contentBuff
                 val ellipseBuff = mutableListOf<EllipseItemModel>()
                 contentModel.value.fileList.forEach { ellipseBuff.add(EllipseItemModel()) }

@@ -11,23 +11,22 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}">
+        android:layout_margin="1dp"
+        android:padding="5dp"
+        android:background="@drawable/shape_rounded_box_able_5dp"
+        android:backgroundTint="@{dataContext.select ? @color/secondary : @color/disable_back_gray}"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}"
+        tools:backgroundTint="@color/secondary">
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="5dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@{dataContext.yearMonth}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="18sp"
             android:textColor="@{dataContext.select ? @color/def_foreground : @color/disable_fore_gray}"
-            android:background="@drawable/shape_rounded_box_able_5dp"
-            android:backgroundTint="@{dataContext.select ? @color/secondary : @color/disable_back_gray}"
             tools:text="2025-01"
-            tools:textColor="@color/def_foreground"
-            tools:backgroundTint="@color/secondary"/>
-
+            tools:textColor="@color/def_foreground"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

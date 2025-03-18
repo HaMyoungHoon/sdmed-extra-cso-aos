@@ -12,11 +12,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@{dataContext.select ? @color/def_foreground : @color/half_background}"
         android:layout_margin="5dp"
         android:padding="10dp"
         android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}"
-        tools:background="@color/half_foreground">
+        android:background="@drawable/shape_rounded_box_able_5dp"
+        android:backgroundTint="@{dataContext.select ? @color/def_card_background : @color/def_background}"
+        tools:backgroundTint="@color/def_card_background">
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_org_name"
             android:layout_width="wrap_content"
@@ -24,7 +25,7 @@
             android:text="@{dataContext.orgName}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="16sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/def_card_paragraph"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="병원이름임" />
@@ -37,14 +38,13 @@
             android:text="@{dataContext.address}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="16sp"
-            android:textColor="@{dataContext.select ? @color/def_background : @color/def_foreground}"
+            android:textColor="@color/def_card_foreground"
             android:maxLines="1"
             android:ellipsize="middle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_org_name"
             app:layout_constraintEnd_toStartOf="@id/tv_phone_number"
-            tools:text="aslkdjflkasdfj asdfkj asdflkj alsdkfj"
-            tools:textColor="@color/def_background"/>
+            tools:text="aslkdjflkasdfj asdfkj asdflkj alsdkfj" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_phone_number"
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             android:text="@{dataContext.phoneNumber}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="16sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/def_card_paragraph"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="010-6574-8520" />

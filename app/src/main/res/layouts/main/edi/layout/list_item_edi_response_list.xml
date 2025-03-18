@@ -16,6 +16,7 @@
         android:padding="5dp"
         android:onClick="@{() -> dataContext.onClick(ClickEvent.OPEN)}"
         android:background="@drawable/shape_rounded_box_able_5dp"
+        android:backgroundTint="@color/def_card_background"
         android:animateLayoutChanges="true">
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -27,7 +28,7 @@
                 android:text="@{dataContext.responseDate}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="18sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 tools:text="2025-01-01" />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -39,7 +40,7 @@
                 android:text="@{dataContext.pharmaName}"
                 android:fontFamily="@font/nanum_gothic"
                 android:textSize="18sp"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_paragraph"
                 android:ellipsize="middle"
                 tools:text="땡떙땡 병원" />
             <androidx.appcompat.widget.AppCompatTextView
@@ -65,7 +66,7 @@
             android:visibility="@{dataContext.open ? View.VISIBLE : View.GONE}"
             android:fontFamily="@font/nanum_gothic"
             android:textSize="16sp"
-            android:textColor="@color/def_foreground"
+            android:textColor="@color/def_card_foreground"
             tools:text="ㅁㄴㅇ리ㅏㅁㄴ얼\nㅁㄴ이ㅏ럼ㄴ아ㅣ러\nasldkfjasdlkfj" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

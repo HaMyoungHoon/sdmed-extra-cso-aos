@@ -43,22 +43,22 @@ class CalendarProperties(private val context: Context) {
         get() = if (field <= 0) field else context.parseColor(field)
 
     var selectionColor: Int = 0
-        get() = if (field == 0) context.parseColor(R.color.secondary) else field
+        get() = if (field == 0) context.parseColor(R.color.calendar_secondary) else field
 
     var todayLabelColor: Int = 0
         get() = if (field == 0) context.parseColor(R.color.primary) else field
 
     var sunDayLabelColor: Int = 0
-        get() = if (field == 0) context.parseColor(R.color.red) else field
+        get() = if (field == 0) context.parseColor(R.color.calendar_red) else field
 
     var saturDayLabelColor: Int = 0
         get() = if (field == 0) context.parseColor(R.color.primary) else field
 
     var sunDayDisabledLabelColor: Int = 0
-        get() = if (field == 0) context.parseColor(R.color.red2) else field
+        get() = if (field == 0) context.parseColor(R.color.calendar_red2) else field
 
     var saturDayDisabledLabelColor: Int = 0
-        get() = if (field == 0) context.parseColor(R.color.purple_200) else field
+        get() = if (field == 0) context.parseColor(R.color.calendar_purple) else field
 
     var todayColor: Int = 0
         get() = if (field <= 0) field else context.parseColor(field)

@@ -85,7 +85,7 @@
                 android:textColor="@color/def_foreground"
                 android:textSize="18sp"
                 android:background="@drawable/shape_rounded_box_able_5dp"
-                android:backgroundTint="@color/secondary2"
+                android:backgroundTint="@color/secondary"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.CONFIRM)}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

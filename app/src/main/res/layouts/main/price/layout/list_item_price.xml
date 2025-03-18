@@ -13,8 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="5dp"
-        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}">
+        android:layout_margin="1dp"
+        android:padding="5dp"
+        android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}"
+        android:background="@drawable/shape_rounded_box_able_5dp"
+        android:backgroundTint="@color/def_card_background">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -24,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{dataContext.orgName}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_paragraph"
                 android:textSize="16sp"
                 android:ellipsize="middle"
                 android:maxLines="1"
@@ -40,7 +43,7 @@
                 android:layout_marginStart="10dp"
                 android:text="@{dataContext.medicineIngredientModel.mainIngredientName}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_paragraph"
                 android:textSize="16sp"
                 android:ellipsize="middle"
                 android:maxLines="1"
@@ -59,7 +62,7 @@
                 android:layout_marginEnd="5dp"
                 android:text="@string/client_name"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +74,7 @@
                 android:layout_marginEnd="10dp"
                 android:text="@{dataContext.clientName}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 android:ellipsize="middle"
                 android:maxLines="1"
@@ -85,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{dataContext.kdCode}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/maker_name"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -111,7 +114,7 @@
                 android:layout_marginStart="5dp"
                 android:text="@{dataContext.makerName}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 android:ellipsize="middle"
                 android:maxLines="1"
@@ -126,7 +129,7 @@
                 android:layout_marginEnd="5dp"
                 android:text="@{dataContext.maxPriceString}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_price_unit"
@@ -138,7 +141,7 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/price_unit"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_standard" />
@@ -148,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{dataContext.medicineSubModel.standard}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -163,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{dataContext.medicineSubModel.etc1}"
                 android:fontFamily="@font/nanum_gothic"
-                android:textColor="@color/def_foreground"
+                android:textColor="@color/def_card_foreground"
                 android:textSize="16sp"
                 android:ellipsize="middle"
                 android:maxLines="1"
@@ -173,9 +176,5 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="약가인하: 24년 11월 처방분부터 146원 -> 135원" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_gray" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
