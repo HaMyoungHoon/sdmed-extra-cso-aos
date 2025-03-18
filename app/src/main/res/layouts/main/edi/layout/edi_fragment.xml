@@ -77,19 +77,13 @@
                 android:backgroundTint="@color/def_button_background"
                 android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SEARCH)}" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-        <View
-            android:id="@+id/vw_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_gray"
-            app:layout_constraintTop_toBottomOf="@id/ll_header_container" />
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/spr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:swipeRefreshingEDIRefreshing="@{dataContext.refreshing}"
             app:swipeRefreshingEDIRefreshCallback="@{() -> dataContext.refreshingTemp()}"
-            app:layout_constraintTop_toBottomOf="@id/vw_line">
+            app:layout_constraintTop_toBottomOf="@id/ll_header_container">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_edi_list"
                 android:layout_width="match_parent"
