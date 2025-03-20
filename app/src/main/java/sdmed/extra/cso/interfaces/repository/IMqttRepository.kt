@@ -11,4 +11,5 @@ interface IMqttRepository {
     suspend fun postQnA(thisPK: String, content: String): RestResult
     suspend fun postEDIRequest(thisPK: String, content: String): RestResult
     suspend fun postEDIFileAdd(thisPK: String, content: String): RestResult
+    suspend fun postUserFileAdd(thisPK: String, content: String): RestResult
 }

@@ -1,7 +1,7 @@
 package sdmed.extra.cso.models.common
 
 import sdmed.extra.cso.models.retrofit.common.BlobUploadModel
-import sdmed.extra.cso.models.retrofit.common.UserFileType
+import sdmed.extra.cso.models.retrofit.users.UserFileType
 
 data class UserFileResultQueueModel(
     var uuid: String = "",

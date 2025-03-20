@@ -42,9 +42,11 @@ class MyFragmentVM(application: MultiDexApplication): FBaseViewModel(application
         LOGOUT(0),
         PASSWORD_CHANGE(1),
         MULTI_LOGIN(2),
-        IMAGE_TAXPAYER(3),
-        IMAGE_BANK_ACCOUNT(4),
-        IMAGE_CSO_REPORT(5),
-        IMAGE_MARKETING_CONTRACT(6),
+        IMAGE_TRAINING(3),
+        TRAINING_CERTIFICATE_ADD(4),
+        IMAGE_TAXPAYER(5),
+        IMAGE_BANK_ACCOUNT(6),
+        IMAGE_CSO_REPORT(7),
+        IMAGE_MARKETING_CONTRACT(8),
     }
 }

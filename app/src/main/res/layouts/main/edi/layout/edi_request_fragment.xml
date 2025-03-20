@@ -129,10 +129,9 @@
                             android:text="@string/save_desc"
                             android:fontFamily="@font/nanum_gothic"
                             android:textSize="18sp"
-                            android:textColor="@{dataContext.isSavable ? @color/absolute_white : @color/disable_fore_gray}"
-                            android:background="@drawable/selector_rounded_transparent"
-                            android:backgroundTint="@{dataContext.isSavable ? @color/secondary : @color/disable_back_gray}"
-                            android:backgroundTintMode="screen"
+                            android:textColor="@{dataContext.savable ? @color/def_button_foreground : @color/disable_fore_gray}"
+                            android:background="@drawable/shape_rounded_box_able_5dp"
+                            android:backgroundTint="@{dataContext.savable ? @color/def_button_background : @color/disable_back_gray}"
                             tools:textColor="@color/disable_fore_gray"
                             tools:backgroundTint="@color/disable_back_gray"
                             android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.SAVE)}"/>

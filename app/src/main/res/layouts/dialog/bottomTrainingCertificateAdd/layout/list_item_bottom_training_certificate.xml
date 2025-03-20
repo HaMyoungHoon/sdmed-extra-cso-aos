@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <import type="sdmed.extra.cso.models.retrofit.users.UserTrainingModel.ClickEvent" />
+        <variable
+            name="dataContext"
+            type="sdmed.extra.cso.models.retrofit.users.UserTrainingModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:background="@color/def_card_background">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_training"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:glideBlobUrl="@{dataContext.blobUrl}"
+            app:glideBlobMimeType="@{dataContext.mimeType}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() -> dataContext.onClick(ClickEvent.THIS)}"
+            tools:src="@drawable/buff_image" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_training_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{dataContext.trainingDateString}"
+            android:fontFamily="@font/nanum_gothic"
+            android:textSize="16sp"
+            android:textColor="@color/def_card_foreground"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@id/iv_training"
+            app:layout_constraintBottom_toTopOf="@id/tv_filename"
+            app:layout_constraintStart_toEndOf="@id/iv_training"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="1991-03-10" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_filename"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{dataContext.originalFilename}"
+            android:fontFamily="@font/nanum_gothic"
+            android:textSize="16sp"
+            android:textColor="@color/def_card_foreground"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/tv_training_date"
+            app:layout_constraintBottom_toBottomOf="@id/iv_training"
+            app:layout_constraintStart_toEndOf="@id/iv_training"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="파일이름.jpg" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

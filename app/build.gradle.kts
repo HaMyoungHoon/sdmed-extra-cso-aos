@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,12 +7,12 @@ plugins {
 
 android {
     namespace = "sdmed.extra.cso"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "sdmed.extra.cso"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
         multiDexEnabled = true
@@ -57,6 +55,7 @@ android {
                 "src/main/res/layouts/dialog/hospitalTemp",
                 "src/main/res/layouts/dialog/pharmacyTemp",
                 "src/main/res/layouts/dialog/bottomLogin",
+                "src/main/res/layouts/dialog/bottomTrainingCertificateAdd",
 
                 "src/main/res/drawables",
                 "src/main/res/drawables/shape",

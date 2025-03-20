@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/ll_header_container"
-            app:recyclerViewEDIDueDate="@{dataContext.dateModel}"
+            app:recyclerEDIDueDate="@{dataContext.dateModel}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

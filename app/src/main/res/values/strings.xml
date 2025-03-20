@@ -67,14 +67,14 @@
     <string name="permit_notify">알림 권한 요청</string>
     <string name="remove_desc">삭제</string>
     <string name="mqtt_title_none">info</string>
-    <string name="mqtt_title_qnaRequest">QNA 요청</string>
-    <string name="mqtt_title_qnaReply">QNA 답변</string>
-    <string name="mqtt_title_ediRequest">EDI 요청</string>
-    <string name="mqtt_title_ediReject">EDI 반려</string>
-    <string name="mqtt_title_ediOK">EDI 승인</string>
-    <string name="mqtt_title_ediRecep">EDI 수신</string>
-    <string name="mqtt_title_ediFileAdd">EDI 파일 추가</string>
-    <string name="mqtt_title_ediDelete">EDI 파일 제거</string>
+    <string name="mqtt_title_qna_request">QNA 요청</string>
+    <string name="mqtt_title_qna_reply">QNA 답변</string>
+    <string name="mqtt_title_edi_request">EDI 요청</string>
+    <string name="mqtt_title_edi_reject">EDI 반려</string>
+    <string name="mqtt_title_edi_ok">EDI 승인</string>
+    <string name="mqtt_title_edi_recep">EDI 수신</string>
+    <string name="mqtt_title_edi_file_add">EDI 파일 추가</string>
+    <string name="mqtt_title_edi_delete">EDI 파일 제거</string>
     <string name="price_unit">원</string>
     <string name="client_name">발주처</string>
     <string name="maker_name">제조사</string>
@@ -131,4 +131,11 @@
     <string name="user_file_upload">유저파일업로드</string>
     <string name="user_file_upload_comp">유저파일업로드 완료</string>
     <string name="user_file_upload_fail">유저파일업로드 실패</string>
+    <string name="training_certificate_add">교육수료증추가</string>
+    <string name="mqtt_title_taxpaayer_add">사업자등록증 추가</string>
+    <string name="mqtt_title_bank_account_add">통장사본 추가</string>
+    <string name="mqtt_title_cso_report_add">CSO 신고증 추가</string>
+    <string name="mqtt_title_marketing_contract_add">마케팅계약서 추가</string>
+    <string name="mqtt_title_training_certificate_add">교육수료증 추가</string>
+    <string name="mqtt_title_user_file">유저 파일 추가</string>
 </resources>

@@ -7,6 +7,7 @@ import sdmed.extra.cso.models.retrofit.edi.EDIUploadFileModel
 import sdmed.extra.cso.models.retrofit.edi.EDIUploadPharmaFileModel
 import sdmed.extra.cso.models.retrofit.qna.QnAFileModel
 import sdmed.extra.cso.models.retrofit.qna.QnAReplyFileModel
+import sdmed.extra.cso.models.retrofit.users.UserTrainingModel
 import sdmed.extra.cso.utils.FContentsType
 import sdmed.extra.cso.utils.FImageUtils
 
@@ -36,6 +37,12 @@ data class MediaViewParcelModel(
         return this
     }
     fun parse(data: QnAReplyFileModel): MediaViewParcelModel {
+        this.blobUrl = data.blobUrl
+        this.originalFilename = data.originalFilename
+        this.mimeType = data.mimeType
+        return this
+    }
+    fun parse(data: UserTrainingModel): MediaViewParcelModel {
         this.blobUrl = data.blobUrl
         this.originalFilename = data.originalFilename
         this.mimeType = data.mimeType

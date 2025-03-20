@@ -67,14 +67,14 @@
     <string name="permit_notify">notify permission request</string>
     <string name="remove_desc">remove</string>
     <string name="mqtt_title_none">info</string>
-    <string name="mqtt_title_qnaRequest">qna request</string>
-    <string name="mqtt_title_qnaReply">qna reply</string>
-    <string name="mqtt_title_ediRequest">edi request</string>
-    <string name="mqtt_title_ediReject">edi reject</string>
-    <string name="mqtt_title_ediOK">edi ok</string>
-    <string name="mqtt_title_ediRecep">edi recep</string>
-    <string name="mqtt_title_ediFileAdd">edi file add</string>
-    <string name="mqtt_title_ediDelete">edi file remove</string>
+    <string name="mqtt_title_qna_request">qna request</string>
+    <string name="mqtt_title_qna_reply">qna reply</string>
+    <string name="mqtt_title_edi_request">edi request</string>
+    <string name="mqtt_title_edi_reject">edi reject</string>
+    <string name="mqtt_title_edi_ok">edi ok</string>
+    <string name="mqtt_title_edi_recep">edi recep</string>
+    <string name="mqtt_title_edi_file_add">edi file add</string>
+    <string name="mqtt_title_edi_delete">edi file remove</string>
     <string name="price_unit">won</string>
     <string name="client_name">client</string>
     <string name="maker_name">maker</string>
@@ -131,4 +131,11 @@
     <string name="user_file_upload">user file upload</string>
     <string name="user_file_upload_comp">user file upload complete</string>
     <string name="user_file_upload_fail">user file upload fail</string>
+    <string name="training_certificate_add">training certi add</string>
+    <string name="mqtt_title_taxpaayer_add">taxpayer add</string>
+    <string name="mqtt_title_bank_account_add">bank account add</string>
+    <string name="mqtt_title_cso_report_add">cso report add</string>
+    <string name="mqtt_title_marketing_contract_add">marketing contract add</string>
+    <string name="mqtt_title_training_certificate_add">training certificate add</string>
+    <string name="mqtt_title_user_file">user file add</string>
 </resources>

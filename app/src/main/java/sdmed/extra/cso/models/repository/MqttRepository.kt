@@ -5,6 +5,7 @@ package sdmed.extra.cso.models.repository
 //import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient
 import sdmed.extra.cso.interfaces.repository.IMqttRepository
 import sdmed.extra.cso.interfaces.services.IMqttService
+import sdmed.extra.cso.models.RestResult
 import sdmed.extra.cso.models.mqtt.MqttContentModel
 import sdmed.extra.cso.models.mqtt.MqttContentType
 import sdmed.extra.cso.utils.FExtensions
@@ -30,6 +31,13 @@ class MqttRepository(private val _service: IMqttService): IMqttRepository {
     override suspend fun postEDIFileAdd(thisPK: String, content: String) = FExtensions.restTry {
         postPublish("aos-extra-cso", MqttContentModel().apply {
             this.contentType = MqttContentType.EDI_FILE_ADD
+            this.content = content
+            this.targetItemPK = thisPK
+        })
+    }
+    override suspend fun postUserFileAdd(thisPK: String, content: String) = FExtensions.restTry {
+        postPublish("aos-extra-cso", MqttContentModel().apply {
+            this.contentType = MqttContentType.USER_FILE_ADD
             this.content = content
             this.targetItemPK = thisPK
         })

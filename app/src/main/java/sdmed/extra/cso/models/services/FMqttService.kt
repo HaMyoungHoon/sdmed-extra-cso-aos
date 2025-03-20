@@ -4,12 +4,8 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import com.hivemq.client.mqtt.MqttClient
-import com.hivemq.client.mqtt.MqttWebSocketConfig
 import com.hivemq.client.mqtt.datatypes.MqttQos
-import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
-import com.hivemq.client.mqtt.mqtt5.message.connect.Mqtt5Connect
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish
 import com.hivemq.client.mqtt.mqtt5.message.subscribe.Mqtt5Subscribe
 import org.kodein.di.Kodein
@@ -18,7 +14,6 @@ import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 import sdmed.extra.cso.R
 import sdmed.extra.cso.interfaces.repository.IMqttRepository
-import sdmed.extra.cso.models.RestResult
 import sdmed.extra.cso.models.common.NotifyIndex
 import sdmed.extra.cso.models.mqtt.MqttConnectModel
 import sdmed.extra.cso.models.mqtt.MqttContentModel
@@ -26,7 +21,6 @@ import sdmed.extra.cso.models.mqtt.MqttContentType
 import sdmed.extra.cso.models.services.FNotificationService.NotifyType
 import sdmed.extra.cso.utils.FAmhohwa
 import sdmed.extra.cso.utils.FExtensions
-import sdmed.extra.cso.utils.FLog
 import kotlin.getValue
 
 class FMqttService(context: Context): Service(), KodeinAware {
@@ -50,6 +44,7 @@ class FMqttService(context: Context): Service(), KodeinAware {
     suspend fun mqttEDIRequest(thisPK: String, content: String) = mqttRepository.postEDIRequest(thisPK, content)
     suspend fun mqttEDIFileAdd(thisPK: String, content: String) = mqttRepository.postEDIFileAdd(thisPK, content)
     suspend fun mqttQnA(thisPK: String, content: String) = mqttRepository.postQnA(thisPK, content)
+    suspend fun mqttUserFileAdd(thisPK: String, content: String) = mqttRepository.postEDIFileAdd(thisPK, content)
     fun mqttConnect(mqttConnectModel: MqttConnectModel?) {
         mqttConnectModel ?: return
         if (client?.state?.isConnected == true) {
@@ -113,14 +108,15 @@ class FMqttService(context: Context): Service(), KodeinAware {
             }
             val title = when (mqttContentModel.contentType) {
                 MqttContentType.None -> context.getString(R.string.mqtt_title_none)
-                MqttContentType.QNA_REQUEST -> context.getString(R.string.mqtt_title_qnaRequest)
-                MqttContentType.QNA_REPLY -> context.getString(R.string.mqtt_title_qnaReply)
-                MqttContentType.EDI_REQUEST -> context.getString(R.string.mqtt_title_ediRequest)
-                MqttContentType.EDI_REJECT -> context.getString(R.string.mqtt_title_ediReject)
-                MqttContentType.EDI_OK -> context.getString(R.string.mqtt_title_ediOK)
-                MqttContentType.EDI_RECEP -> context.getString(R.string.mqtt_title_ediRecep)
-                MqttContentType.EDI_FILE_ADD -> context.getString(R.string.mqtt_title_ediFileAdd)
-                MqttContentType.EDI_FILE_DELETE -> context.getString(R.string.mqtt_title_ediDelete)
+                MqttContentType.QNA_REQUEST -> context.getString(R.string.mqtt_title_qna_request)
+                MqttContentType.QNA_REPLY -> context.getString(R.string.mqtt_title_qna_reply)
+                MqttContentType.EDI_REQUEST -> context.getString(R.string.mqtt_title_edi_request)
+                MqttContentType.EDI_REJECT -> context.getString(R.string.mqtt_title_edi_reject)
+                MqttContentType.EDI_OK -> context.getString(R.string.mqtt_title_edi_ok)
+                MqttContentType.EDI_RECEP -> context.getString(R.string.mqtt_title_edi_recep)
+                MqttContentType.EDI_FILE_ADD -> context.getString(R.string.mqtt_title_edi_file_add)
+                MqttContentType.EDI_FILE_DELETE -> context.getString(R.string.mqtt_title_edi_delete)
+                MqttContentType.USER_FILE_ADD -> context.getString(R.string.mqtt_title_user_file)
             }
             when (mqttContentModel.contentType) {
                 MqttContentType.None -> notificationService.sendNotify(context, title, mqttContentModel.content, NotifyType.WITH_VIBRATE)
@@ -132,6 +128,7 @@ class FMqttService(context: Context): Service(), KodeinAware {
                 MqttContentType.EDI_RECEP -> notificationService.sendNotify(context, NotifyIndex.EDI_RESPONSE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true, thisPK = mqttContentModel.targetItemPK)
                 MqttContentType.EDI_FILE_ADD -> { }
                 MqttContentType.EDI_FILE_DELETE -> notificationService.sendNotify(context, NotifyIndex.EDI_FILE_REMOVE, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true, thisPK = mqttContentModel.targetItemPK)
+                MqttContentType.USER_FILE_ADD -> notificationService.sendNotify(context, NotifyIndex.USER_FILE_UPLOAD, title, mqttContentModel.content, NotifyType.WITH_VIBRATE, isCancel = true)
             }
         } catch (_: Exception) {
         }

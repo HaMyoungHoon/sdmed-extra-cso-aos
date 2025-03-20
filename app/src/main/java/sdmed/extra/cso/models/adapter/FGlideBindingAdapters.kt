@@ -39,11 +39,9 @@ object FGlideBindingAdapters {
         if (!FImageUtils.isImage(mimeType) || glideBlobUrl.isNullOrEmpty()) {
             if (glideBlobDefImage != null && glideBlobDefImage != 0) {
                 glideLoad(imageView, glideBlobDefImage)
-                    .apply(defaultImageRequestOptions())
                     .into(imageView)
             } else {
                 glideLoad(imageView, FImageUtils.getDefaultImage(glideBlobMimeType))
-                    .apply(defaultImageRequestOptions())
                     .into(imageView)
             }
             return
@@ -68,11 +66,9 @@ object FGlideBindingAdapters {
         if (!FImageUtils.isImage(mimeType) || glideBlobUrl.isNullOrEmpty()) {
             if (glideBlobDefImage != null && glideBlobDefImage != 0) {
                 glideLoad(imageView, glideBlobDefImage)
-                    .apply(defaultImageRequestOptions())
                     .into(imageView)
             } else {
                 glideLoad(imageView, FImageUtils.getDefaultImage(glideBlobMimeType))
-                    .apply(defaultImageRequestOptions())
                     .into(imageView)
             }
             return

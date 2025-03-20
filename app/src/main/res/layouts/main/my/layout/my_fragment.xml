@@ -57,19 +57,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <View
-            android:id="@+id/vw_top_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_gray"
-            app:layout_constraintTop_toBottomOf="@id/cl_top_container" />
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:paddingBottom="55dp"
             android:clipToPadding="false"
-            app:layout_constraintTop_toBottomOf="@id/vw_top_line">
+            app:layout_constraintTop_toBottomOf="@id/cl_top_container">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -129,156 +123,199 @@
                             android:textSize="16sp"
                             tools:text="2025-02-24 16:58:36"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_TAXPAYER)}"
-                            android:layout_marginTop="10dp">
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/iv_taxpayer"
+                            android:layout_margin="1dp"
+                            app:showDividers="middle"
+                            app:divider="@drawable/shape_horizontal_divider_transparent_20"
+                            android:orientation="horizontal" >
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                app:layout_constraintDimensionRatio="1:1"
-                                app:glideBlobUrl="@{dataContext.thisData.taxPayerUrl}"
-                                app:glideBlobMimeType="@{dataContext.thisData.taxPayerMimeType}"
-                                tools:src="@drawable/buff_image"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"/>
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tv_company_name"
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{dataContext.thisData.companyName}"
-                                android:fontFamily="@font/nanum_gothic"
-                                android:textColor="@color/def_foreground"
-                                android:textSize="16sp"
-                                app:layout_constraintTop_toBottomOf="@id/iv_taxpayer"
-                                app:layout_constraintStart_toStartOf="@id/iv_taxpayer"
-                                app:layout_constraintEnd_toEndOf="@id/iv_taxpayer"
-                                tools:text="뿅뿅 주식회사" />
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{dataContext.thisData.companyNumber}"
-                                android:fontFamily="@font/nanum_gothic"
-                                android:textColor="@color/def_foreground"
-                                android:textSize="16sp"
-                                app:layout_constraintTop_toBottomOf="@id/tv_company_name"
-                                app:layout_constraintStart_toStartOf="@id/iv_taxpayer"
-                                app:layout_constraintEnd_toEndOf="@id/iv_taxpayer"
-                                tools:text="12-1345-567" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_BANK_ACCOUNT)}"
-                            android:layout_marginTop="10dp">
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/iv_bank_account"
+                                android:layout_weight="1"
+                                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_TRAINING)}" >
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_training"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    app:glideBlobUrl="@{dataContext.thisData.trainingUrl}"
+                                    app:glideBlobMimeType="@{dataContext.thisData.trainingMimeType}"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    tools:src="@drawable/buff_image" />
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_training_date"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{dataContext.thisData.trainingDate}"
+                                    android:fontFamily="@font/nanum_gothic"
+                                    android:textColor="@color/def_foreground"
+                                    android:textSize="16sp"
+                                    android:maxLines="1"
+                                    android:ellipsize="middle"
+                                    app:layout_constraintTop_toBottomOf="@id/iv_training"
+                                    app:layout_constraintStart_toStartOf="@id/iv_training"
+                                    app:layout_constraintEnd_toEndOf="@id/iv_training"
+                                    tools:text="1991-03-10"/>
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="@string/training_certificate_add"
+                                    android:fontFamily="@font/nanum_gothic"
+                                    android:textColor="@color/def_button_foreground"
+                                    android:background="@drawable/shape_rounded_box_able_5dp"
+                                    android:backgroundTint="@color/def_button_background"
+                                    android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.TRAINING_CERTIFICATE_ADD)}"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_training_date"
+                                    app:layout_constraintStart_toStartOf="@id/iv_training"
+                                    app:layout_constraintEnd_toEndOf="@id/iv_training" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                app:layout_constraintDimensionRatio="1:1"
-                                app:glideBlobUrl="@{dataContext.thisData.bankAccountUrl}"
-                                app:glideBlobMimeType="@{dataContext.thisData.bankAccountMimeType}"
-                                tools:src="@drawable/buff_image"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"/>
-                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_TAXPAYER)}" >
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_taxpayer"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    app:glideBlobUrl="@{dataContext.thisData.taxPayerUrl}"
+                                    app:glideBlobMimeType="@{dataContext.thisData.taxPayerMimeType}"
+                                    tools:src="@drawable/buff_image"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_company_name"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{dataContext.thisData.companyName}"
+                                    android:fontFamily="@font/nanum_gothic"
+                                    android:textColor="@color/def_foreground"
+                                    android:textSize="16sp"
+                                    android:maxLines="1"
+                                    android:ellipsize="middle"
+                                    app:layout_constraintTop_toBottomOf="@id/iv_taxpayer"
+                                    app:layout_constraintStart_toStartOf="@id/iv_taxpayer"
+                                    app:layout_constraintEnd_toEndOf="@id/iv_taxpayer"
+                                    tools:text="뿅뿅 주식회사" />
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_company_number"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{dataContext.thisData.companyNumber}"
+                                    android:fontFamily="@font/nanum_gothic"
+                                    android:textColor="@color/def_foreground"
+                                    android:textSize="16sp"
+                                    android:maxLines="1"
+                                    android:ellipsize="middle"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_company_name"
+                                    app:layout_constraintStart_toStartOf="@id/iv_taxpayer"
+                                    app:layout_constraintEnd_toEndOf="@id/iv_taxpayer"
+                                    tools:text="12-1345-567" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{dataContext.thisData.bankAccount}"
-                                android:fontFamily="@font/nanum_gothic"
-                                android:textColor="@color/def_foreground"
-                                android:textSize="16sp"
-                                app:layout_constraintTop_toBottomOf="@id/iv_bank_account"
-                                app:layout_constraintStart_toStartOf="@id/iv_bank_account"
-                                app:layout_constraintEnd_toEndOf="@id/iv_bank_account"
-                                tools:text="뿅뿅 주식회사" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_CSO_REPORT)}"
-                            android:layout_marginTop="10dp">
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/iv_cso_report"
+                                android:layout_weight="1"
+                                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_BANK_ACCOUNT)}">
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_bank_account"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    app:glideBlobUrl="@{dataContext.thisData.bankAccountUrl}"
+                                    app:glideBlobMimeType="@{dataContext.thisData.bankAccountMimeType}"
+                                    tools:src="@drawable/buff_image"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"/>
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{dataContext.thisData.bankAccount}"
+                                    android:fontFamily="@font/nanum_gothic"
+                                    android:textColor="@color/def_foreground"
+                                    android:textSize="16sp"
+                                    app:layout_constraintTop_toBottomOf="@id/iv_bank_account"
+                                    app:layout_constraintStart_toStartOf="@id/iv_bank_account"
+                                    app:layout_constraintEnd_toEndOf="@id/iv_bank_account"
+                                    tools:text="짱짱 은행 1231212 d sdf 3132" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                app:layout_constraintDimensionRatio="1:1"
-                                app:glideBlobUrl="@{dataContext.thisData.csoReportUrl}"
-                                app:glideBlobMimeType="@{dataContext.thisData.csoReportMimeType}"
-                                tools:src="@drawable/buff_image"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"/>
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/cso_report_desc"
-                                android:fontFamily="@font/nanum_gothic"
-                                android:textColor="@color/def_foreground"
-                                android:textSize="16sp"
-                                app:layout_constraintTop_toBottomOf="@id/iv_cso_report"
-                                app:layout_constraintStart_toStartOf="@id/iv_cso_report"
-                                app:layout_constraintEnd_toEndOf="@id/iv_cso_report" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_MARKETING_CONTRACT)}"
-                            android:layout_marginTop="10dp">
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/iv_marketing_contract"
+                                android:layout_weight="1"
+                                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_CSO_REPORT)}" >
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_cso_report"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    app:glideBlobUrl="@{dataContext.thisData.csoReportUrl}"
+                                    app:glideBlobMimeType="@{dataContext.thisData.csoReportMimeType}"
+                                    tools:src="@drawable/buff_image"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"/>
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_cso_report_date"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{dataContext.thisData.csoReportNumber}"
+                                    android:fontFamily="@font/nanum_gothic"
+                                    android:textColor="@color/def_foreground"
+                                    android:textSize="16sp"
+                                    android:maxLines="1"
+                                    android:ellipsize="middle"
+                                    app:layout_constraintTop_toBottomOf="@id/iv_cso_report"
+                                    app:layout_constraintStart_toStartOf="@id/iv_cso_report"
+                                    app:layout_constraintEnd_toEndOf="@id/iv_cso_report"
+                                    tools:text="1991-03-10" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                app:layout_constraintDimensionRatio="1:1"
-                                app:glideBlobUrl="@{dataContext.thisData.marketingContractUrl}"
-                                app:glideBlobMimeType="@{dataContext.thisData.marketingContractMimeType}"
-                                tools:src="@drawable/buff_image"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"/>
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/marketing_contract_desc"
-                                android:fontFamily="@font/nanum_gothic"
-                                android:textColor="@color/def_foreground"
-                                android:textSize="16sp"
-                                app:layout_constraintTop_toBottomOf="@id/iv_marketing_contract"
-                                app:layout_constraintStart_toStartOf="@id/iv_marketing_contract"
-                                app:layout_constraintEnd_toEndOf="@id/iv_marketing_contract" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                                android:layout_weight="1"
+                                android:onClick="@{() -> dataContext.relayCommand.execute(ClickEvent.IMAGE_MARKETING_CONTRACT)}" >
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_marketing_contract"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    app:glideBlobUrl="@{dataContext.thisData.marketingContractUrl}"
+                                    app:glideBlobMimeType="@{dataContext.thisData.marketingContractMimeType}"
+                                    tools:src="@drawable/buff_image"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"/>
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_contract_date"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{dataContext.thisData.contractDateString}"
+                                    android:fontFamily="@font/nanum_gothic"
+                                    android:textColor="@color/def_foreground"
+                                    android:textSize="16sp"
+                                    android:maxLines="1"
+                                    android:ellipsize="middle"
+                                    app:layout_constraintTop_toBottomOf="@id/iv_marketing_contract"
+                                    app:layout_constraintStart_toStartOf="@id/iv_marketing_contract"
+                                    app:layout_constraintEnd_toEndOf="@id/iv_marketing_contract"
+                                    tools:text="1991-03-10"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </HorizontalScrollView>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <View
-                    android:id="@+id/vw_hospital_top_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider_gray"
-                    app:layout_constraintTop_toBottomOf="@id/ll_middle_container" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_own_hospital_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
                     android:text="@string/own_hospital_list_desc"
                     android:fontFamily="@font/nanum_gothic"
                     android:textColor="@color/def_foreground"
                     android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@id/vw_hospital_top_line"
+                    app:layout_constraintTop_toBottomOf="@id/ll_middle_container"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
                 <androidx.recyclerview.widget.RecyclerView
@@ -288,21 +325,16 @@
                     app:recyclerUserHospitalList="@{dataContext.hosList}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@id/tv_own_hospital_list" />
-                <View
-                    android:id="@+id/vw_pharma_top_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider_gray"
-                    app:layout_constraintTop_toBottomOf="@id/rv_user_hospital" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_own_pharma_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
                     android:text="@string/own_pharma_list_desc"
                     android:fontFamily="@font/nanum_gothic"
                     android:textColor="@color/def_foreground"
                     android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@id/vw_pharma_top_line"
+                    app:layout_constraintTop_toBottomOf="@id/rv_user_hospital"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
                 <androidx.recyclerview.widget.RecyclerView

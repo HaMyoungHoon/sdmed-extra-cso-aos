@@ -35,9 +35,11 @@ import sdmed.extra.cso.utils.FStorage.putParcelable
 import sdmed.extra.cso.utils.FStorage.putParcelableList
 import sdmed.extra.cso.views.dialog.bottomLogin.BottomLoginDialog
 import sdmed.extra.cso.views.dialog.bottomLogin.BottomLoginDialogVM
+import sdmed.extra.cso.views.dialog.bottomTrainingCertificate.BottomTrainingCertificateAddDialog
 import sdmed.extra.cso.views.login.LoginActivity
 import sdmed.extra.cso.views.login.PasswordChangeActivity
 import sdmed.extra.cso.views.media.picker.MediaPickerActivity
+import sdmed.extra.cso.views.media.view.MediaListViewActivity
 import sdmed.extra.cso.views.media.view.MediaViewActivity
 import java.util.ArrayList
 
@@ -94,6 +96,8 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
             MyFragmentVM.ClickEvent.LOGOUT -> logout()
             MyFragmentVM.ClickEvent.PASSWORD_CHANGE -> startActivity(Intent(contextBuff, PasswordChangeActivity::class.java))
             MyFragmentVM.ClickEvent.MULTI_LOGIN -> bottomLoginOn()
+            MyFragmentVM.ClickEvent.IMAGE_TRAINING -> trainingImageClick()
+            MyFragmentVM.ClickEvent.TRAINING_CERTIFICATE_ADD -> trainingCertificateAdd()
             MyFragmentVM.ClickEvent.IMAGE_TAXPAYER -> taxImageClick()
             MyFragmentVM.ClickEvent.IMAGE_BANK_ACCOUNT -> bankAccountImageClick()
             MyFragmentVM.ClickEvent.IMAGE_CSO_REPORT -> csoReportImageClick()
@@ -141,6 +145,22 @@ class MyFragment: FBaseFragment<MyFragmentBinding, MyFragmentVM>() {
     }
     private fun bottomLoginOn() {
         BottomLoginDialog(true, dataContext.relayCommand).show(childFragmentManager, "")
+    }
+    private fun trainingImageClick() {
+        val context = contextBuff ?: return
+        val blobUrl = dataContext.thisData.value.trainingUrl
+        if (blobUrl != null) {
+            val ret = arrayListOf<MediaViewParcelModel>()
+            dataContext.thisData.value.trainingList.forEach { x ->
+                ret.add(MediaViewParcelModel().parse(x))
+            }
+            startActivity((Intent(context, MediaListViewActivity::class.java).apply {
+                putParcelableList(FConstants.MEDIA_LIST, ret)
+            }))
+        }
+    }
+    private fun trainingCertificateAdd() {
+        BottomTrainingCertificateAddDialog(dataContext.thisData.value.trainingList).show(childFragmentManager, "")
     }
     private fun taxImageClick() {
         val context = contextBuff ?: return

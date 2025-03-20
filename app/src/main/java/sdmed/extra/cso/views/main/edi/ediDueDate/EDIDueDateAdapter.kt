@@ -18,7 +18,7 @@ class EDIDueDateAdapter(relayCommand: ICommand): FRecyclerAdapter<ListItemEdiDue
 
     companion object {
         @JvmStatic
-        @BindingAdapter("recyclerViewEDIDueDate")
+        @BindingAdapter("recyclerEDIDueDate")
         fun setRecyclerViewEDIDueDate(recyclerView: RecyclerView, listItems: StateFlow<MutableList<EDIPharmaDueDateModel>>?) {
             val adapter = recyclerView.adapter as? EDIDueDateAdapter ?: return
             recyclerView.findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
