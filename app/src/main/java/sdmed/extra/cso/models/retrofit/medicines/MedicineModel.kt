@@ -4,7 +4,6 @@ import sdmed.extra.cso.bases.FDataModelClass
 
 data class MedicineModel(
     var thisPK: String = "",
-    var makerName: String? = null,
     var orgName: String = "",
     var innerName: String = "",
     var kdCode: String = "",
@@ -15,9 +14,11 @@ data class MedicineModel(
     var mainIngredientCode: String = "",
     var code: String = "",
     var makerCode: String = "",
+    var clientCode: String = "",
+    var makerName: String? = null,
+    var clientName: String? = null,
     var medicineDiv: MedicineDiv = MedicineDiv.Open,
     var inVisible: Boolean = false,
-    var clientName: String? = null,
     var maxPrice: Int = 0,
     var medicineIngredientModel: MedicineIngredientModel = MedicineIngredientModel(),
     var medicinePriceModel: MutableList<MedicinePriceModel> = mutableListOf(),
