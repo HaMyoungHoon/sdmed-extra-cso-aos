@@ -86,13 +86,13 @@ class MainActivity: FBaseActivity<MainActivityBinding, MainActivityVM>(UserRoles
     private fun setBackPressed() {
         _backPressed = object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (!finishConfirmed) {
-                    toast(R.string.back_btn_close_desc)
-                    finishConfirmed = true
-                    Handler(Looper.getMainLooper()).postDelayed({ finishConfirmed = false }, 3000L)
-                } else {
-                    finishAffinity()
-                }
+//                if (!finishConfirmed) {
+//                    toast(R.string.back_btn_close_desc)
+//                    finishConfirmed = true
+//                    Handler(Looper.getMainLooper()).postDelayed({ finishConfirmed = false }, 3000L)
+//                } else {
+                    moveTaskToBack(true)
+//                }
             }
         }
         this.onBackPressedDispatcher.addCallback(this, _backPressed!!)
