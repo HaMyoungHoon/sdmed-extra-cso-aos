@@ -8,13 +8,12 @@ import sdmed.extra.cso.models.retrofit.common.PharmaGroup
 import sdmed.extra.cso.models.retrofit.common.PharmaType
 import sdmed.extra.cso.models.retrofit.medicines.MedicineModel
 import java.sql.Date
-import java.util.*
 
 data class PharmaModel(
     var thisPK: String = "",
     var code: String = "",
-    var orgName: String = "",
     var innerName: String = "",
+    var orgName: String = "",
     var ownerName: String = "",
     var taxpayerNumber: String = "",
     var phoneNumber: String = "",

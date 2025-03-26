@@ -6,8 +6,8 @@ import sdmed.extra.cso.models.retrofit.pharmas.PharmaModel
 data class HospitalModel(
     var thisPK: String = "",
     var code: String = "",
-    var orgName: String = "",
     var innerName: String = "",
+    var orgName: String = "",
     var ownerName: String = "",
     var taxpayerNumber: String = "",
     var address: String = "",
