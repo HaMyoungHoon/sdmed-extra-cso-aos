@@ -142,7 +142,7 @@ class FBackgroundUserFileUpload(context: Context): Service(), KodeinAware {
             val blobName = data.blobName(context)
             val ret = commonRepository.postGenerateSasList(blobName.map { it.second })
             if (ret.result != true || ret.data == null) {
-                notificationService.sendNotify(context, NotifyIndex.QNA_UPLOAD, context.getString(R.string.qna_upload_fail), ret.msg ?: "")
+                notificationService.sendNotify(context, NotifyIndex.QNA_UPLOAD, context.getString(R.string.user_file_upload_fail), ret.msg ?: "")
                 return@coroutineScope
             }
             val uuid = UUID.randomUUID().toString()
@@ -165,11 +165,11 @@ class FBackgroundUserFileUpload(context: Context): Service(), KodeinAware {
                         resultEnqueue(UserFileResultQueueModel(data.uuid, data.userFileModel, data.mediaTypeIndex, mediaTypeIndex = data.mediaTypeIndex))
                     } else {
                         progressNotificationCall(data.uuid, true)
-                        notificationCall(context.getString(R.string.qna_upload_fail))
+                        notificationCall(context.getString(R.string.user_file_upload_fail))
                     }
                 } catch (_: Exception) {
                     progressNotificationCall(data.uuid, true)
-                    notificationCall(context.getString(R.string.qna_upload_fail))
+                    notificationCall(context.getString(R.string.user_file_upload_fail))
                 }
             }
         })
@@ -201,7 +201,7 @@ class FBackgroundUserFileUpload(context: Context): Service(), KodeinAware {
             val blobName = data.blobName(context)
             val ret = commonRepository.getGenerateSas(blobName.second)
             if (ret.result != true || ret.data == null) {
-                notificationService.sendNotify(context, NotifyIndex.QNA_UPLOAD, context.getString(R.string.qna_upload_fail), ret.msg ?: "")
+                notificationService.sendNotify(context, NotifyIndex.QNA_UPLOAD, context.getString(R.string.user_file_upload_fail), ret.msg ?: "")
                 return@coroutineScope
             }
             val uuid = UUID.randomUUID().toString()
@@ -224,11 +224,11 @@ class FBackgroundUserFileUpload(context: Context): Service(), KodeinAware {
                         resultEnqueue(UserTrainingFileResultQueueModel(data.uuid, data.userFileModel, data.trainingDate))
                     } else {
                         progressNotificationCall(data.uuid, true)
-                        notificationCall(context.getString(R.string.qna_upload_fail))
+                        notificationCall(context.getString(R.string.user_file_upload_fail))
                     }
                 } catch (_: Exception) {
                     progressNotificationCall(data.uuid, true)
-                    notificationCall(context.getString(R.string.qna_upload_fail))
+                    notificationCall(context.getString(R.string.user_file_upload_fail))
                 }
             }
         })
@@ -258,7 +258,7 @@ class FBackgroundUserFileUpload(context: Context): Service(), KodeinAware {
         if (isCancel) {
             notificationService.progressUpdate(context, uuid, isCancel = true)
         } else {
-            val title = context.getString(R.string.qna_upload)
+            val title = context.getString(R.string.user_file_upload)
             notificationService.makeProgressNotify(context, uuid, title)
         }
     }

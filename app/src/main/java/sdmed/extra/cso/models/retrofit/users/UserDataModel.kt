@@ -33,11 +33,11 @@ data class UserDataModel(
     val taxPayerUrl: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.blobUrl
     val taxPayerMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
     val bankAccountUrl: String? get() = fileList.find { it.userFileType == UserFileType.BankAccount }?.blobUrl
-    val bankAccountMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
+    val bankAccountMimeType: String? get() = fileList.find { it.userFileType == UserFileType.BankAccount }?.mimeType
     val csoReportUrl: String? get() = fileList.find { it.userFileType == UserFileType.CsoReport }?.blobUrl
-    val csoReportMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
+    val csoReportMimeType: String? get() = fileList.find { it.userFileType == UserFileType.CsoReport }?.mimeType
     val marketingContractUrl: String? get() = fileList.find { it.userFileType == UserFileType.MarketingContract }?.blobUrl
-    val marketingContractMimeType: String? get() = fileList.find { it.userFileType == UserFileType.Taxpayer }?.mimeType
+    val marketingContractMimeType: String? get() = fileList.find { it.userFileType == UserFileType.MarketingContract }?.mimeType
 
     val trainingUrl: String? get() = trainingList.firstOrNull()?.blobUrl
     val trainingMimeType: String? get() = trainingList.firstOrNull()?.mimeType
